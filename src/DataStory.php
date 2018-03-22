@@ -111,6 +111,22 @@ class DataStory
     }
 
     /**
+     * Установить посдключение к кэшу
+     *
+     * @param \Redis|\Memcached $cacheConnect - подключение к кэшу
+     *
+     * @throws DataStoryException
+     */
+    public function setCacheConnect($cacheConnect)
+    {
+        if (!($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
+            throw new DataStoryException('В качестве кэша можно использовать только Redis или Memcached');
+        }
+
+        $this->cacheConnect = $cacheConnect;
+    }
+
+    /**
      * Вернуть результат запроса к РБД
      *
      * @return DbResultItem|null
@@ -133,6 +149,10 @@ class DataStory
             $this->cacheQuery = new CacheQuery($this->dbConnect, $this->request, $this->params, $this->cacheConnect);
         }
 
+        if ($this->cacheQuery->getEditTags()) {
+            return (new Query($this->dbConnect, $this->request, $this->params))->execute();
+        }
+
         $result = $this->cacheQuery->get();
         if (is_null($result)) {
             $result = (new Query($this->dbConnect, $this->request, $this->params))->execute();
@@ -153,7 +173,7 @@ class DataStory
      * @throws AbstractCacheItemException
      * @throws DataStoryException
      */
-    public function getHtml()
+    public function getHtml(): string
     {
         if (!$this->cacheConnect) {
             throw new DataStoryException('Отсутствует подключение к кэширующему хранилищу');
@@ -163,7 +183,7 @@ class DataStory
             $this->cacheHtml = new CacheHtml($this->request, $this->params, $this->cacheConnect);
         }
 
-        return $this->cacheHtml->get();
+        return $this->cacheHtml->get()->getStringResult();
     }
 
     /**

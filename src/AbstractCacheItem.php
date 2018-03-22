@@ -31,7 +31,8 @@ abstract class AbstractCacheItem
         'paramSerializeFunc' => 'serialize',
         'ttl' => 3600,
         'lockValue' => '906a58a0aac5281e89718496686bb322',
-        'tryCount' => 5
+        'tryCount' => 5,
+        'tryDelay' => 10000
     ];
 
     /**
@@ -131,11 +132,18 @@ abstract class AbstractCacheItem
     protected $tags = [];
 
     /**
+     * Временной интервал между двумя последовательными попытками получить значение элемента кэша
+     *
+     * @var int
+     */
+    protected $tryDelay = 10000;
+
+    /**
      * Конструктор
      *
      * @param string $request - текст запроса
      * @param array $params - параметры запроса
-     * @param null $cacheConnect - подключение к хранилицу кэшей
+     * @param \Memcached|\Redis|null $cacheConnect - подключение к хранилицу кэшей
      * @param array $settings|null - настройки
      *
      * @throws AbstractCacheItemException
@@ -147,6 +155,10 @@ abstract class AbstractCacheItem
         array $settings = null
     )
     {
+        if ($cacheConnect && !($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
+            throw new AbstractCacheItemException('В качестве кэша можно использовать только Redis или Memcached');
+        }
+
         $this->initObject($settings ?? self::$settings);
 
         if (!$request) {
@@ -173,8 +185,12 @@ abstract class AbstractCacheItem
      *
      * @param \Memcached|\Redis $cacheConnect
      */
-    public function cacheConnect($cacheConnect)
+    public function setCacheConnect($cacheConnect)
     {
+        if (!($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
+            throw new AbstractCacheItemException('В качестве кэша можно использовать только Redis или Memcached');
+        }
+
         $this->cacheConnect = $cacheConnect;
     }
 
@@ -191,10 +207,6 @@ abstract class AbstractCacheItem
     {
         if (!$this->cacheConnect) {
             throw new CacheItemException('Подключение к хранилищу кэшей отсутствует');
-        }
-
-        if (!$tags) {
-            throw new AbstractCacheItemException('Теги отсутствуют');
         }
 
         foreach ($tags as &$tag) {
@@ -289,6 +301,7 @@ abstract class AbstractCacheItem
             $this->value = $this->cacheConnect->get($this->key);
 
             if ($this->value === $this->lockValue) {
+                usleep($this->tryDelay);
                 continue;
             }
 

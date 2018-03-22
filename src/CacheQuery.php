@@ -16,6 +16,13 @@ class CacheQuery extends AbstractCacheItem
     protected $dbConnect = null;
 
     /**
+     * Если запрос изменяющий, то в этом свойстве хранится список таблиц, которые изменяются этим запросом
+     *
+     * @var array
+     */
+    protected $editTags = [];
+
+    /**
      * Конструктор
      *
      * @param _PDO $dbConnect - подключение к РБД
@@ -43,12 +50,22 @@ class CacheQuery extends AbstractCacheItem
     protected function initTags(): void
     {
         if (!$this->tags) {
-            $tags = $this->dbConnect->getEditTables($query);
+            $this->editTags = $this->dbConnect->getEditTables($query);
 
-            parent::initTags($tags);
+            parent::initTags($this->editTags);
 
-            $this->tags = $tags;
+            $this->tags = $this->dbConnect->getTables($query);
         }
+    }
+
+    /**
+     * Вернуть список таблиц, изменяемых запросом
+     *
+     * @return array
+     */
+    public function getEditTags(): array
+    {
+        return $this->editTags;
     }
 
     /**
