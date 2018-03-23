@@ -126,8 +126,15 @@ class DataStory
         $this->cacheConnect = $cacheConnect;
     }
 
+    public function setDbConnect(_PDO $dbConnect)
+    {
+        $this->dbConnect = $dbConnect;
+    }
+
     /**
      * Вернуть результат запроса к РБД
+     *
+     * @param string $prefix - префикс имен результирующих полей
      *
      * @return DbResultItem|null
      *
@@ -135,7 +142,7 @@ class DataStory
      * @throws DataStoryException
      * @throws QueryException
      */
-    public function getValue()
+    public function getValue(string $prefix = '')
     {
         if (!$this->dbConnect) {
             throw new DataStoryException('Отсутствует подключение к РБД');
@@ -150,12 +157,12 @@ class DataStory
         }
 
         if ($this->cacheQuery->getEditTags()) {
-            return (new Query($this->dbConnect, $this->request, $this->params))->execute();
+            return (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
         }
 
         $result = $this->cacheQuery->get();
         if (is_null($result)) {
-            $result = (new Query($this->dbConnect, $this->request, $this->params))->execute();
+            $result = (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
 
             if (!$this->cacheQuery) {
                 $this->cacheQuery->set($result);

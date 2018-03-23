@@ -13,42 +13,42 @@ class Query
      *
      * @var string
      */
-    private $rawSql = '';
+    protected $rawSql = '';
 
     /**
      * Текст запроса после обработки SqlTemplater::sql()
      *
      * @var string
      */
-    private $sql = '';
+    protected $sql = '';
 
     /**
      * Параметры запроса до обработки SqlTemplater::sql()
      *
      * @var array
      */
-    private $rawParams = [];
+    protected $rawParams = [];
 
     /**
      * Параметры запроса
      *
      * @var array
      */
-    private $params = [];
+    protected $params = [];
 
     /**
      * Подключение к РБД
      *
      * @var null|_PDO
      */
-    private $dbConnect = null;
+    protected $dbConnect = null;
 
     /**
      * Результат запроса
      *
      * @var dbResultItem
      */
-    private $result = null;
+    protected $result = null;
 
     /**
      * Конструктор
