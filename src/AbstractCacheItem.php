@@ -309,7 +309,7 @@ abstract class AbstractCacheItem
                 return null;
             }
 
-            if ((int) $this->value['time'] < time() && min(array_merge($tagsTimes, [$this->value['time']])) !== $this->value['time']) {
+            if ((int) $this->value['time'] < time() || max(array_merge($this->getTagsTimes(), [$this->value['time']])) !== $this->value['time']) {
                 return null;
             }
 
@@ -340,6 +340,7 @@ abstract class AbstractCacheItem
         }
 
         $toSave['data'] = $data->getStringResult();
+        $toSave['time'] = time();
 
         if ($this->cacheConnect->set($this->key, json_encode($toSave, JSON_UNESCAPED_UNICODE), $this->ttl)) {
             return false;
@@ -364,7 +365,7 @@ abstract class AbstractCacheItem
             throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
         }
 
-        if (!$this->cacheConnect->set($this->key, $this->lockValue)) {
+        if (!$this->cacheConnect->set($this->key, $this->lockValue, $this->ttl)) {
             return false;
         }
 
