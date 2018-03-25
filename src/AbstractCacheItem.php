@@ -2,7 +2,7 @@
 
 namespace avtomon;
 
-class AbstractCacheItemException extends \Exception
+class AbstractCacheItemException extends CustomException
 {
 }
 
@@ -144,7 +144,7 @@ abstract class AbstractCacheItem
      * @param string $request - текст запроса
      * @param array $params - параметры запроса
      * @param \Memcached|\Redis|null $cacheConnect - подключение к хранилицу кэшей
-     * @param array $settings|null - настройки
+     * @param array $settings - настройки
      *
      * @throws AbstractCacheItemException
      */
@@ -152,14 +152,10 @@ abstract class AbstractCacheItem
         string $request,
         array $params = [],
         $cacheConnect = null,
-        array $settings = null
+        array $settings = []
     )
     {
-        if ($cacheConnect && !($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
-            throw new AbstractCacheItemException('В качестве кэша можно использовать только Redis или Memcached');
-        }
-
-        $this->initObject($settings ?? self::$settings);
+        $this->initObject($settings);
 
         if (!$request) {
             throw new AbstractCacheItemException('Текст запроса пуст');
@@ -203,19 +199,29 @@ abstract class AbstractCacheItem
      *
      * @throws AbstractCacheItemException
      */
-    protected function initTags(array $tags = []): void
+    public function initTags(): void
     {
-        if (!$this->cacheConnect) {
-            throw new CacheItemException('Подключение к хранилищу кэшей отсутствует');
+        if ($this->tags && !$this->cacheConnect) {
+            throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
         }
 
-        foreach ($tags as &$tag) {
+        foreach ($this->tags as &$tag) {
             if (!$this->cacheConnect->set($tag, time(), $this->tagTtl)) {
                 throw new AbstractCacheItemException('Не удалось установить значение тега');
             }
         }
 
         unset($tag);
+    }
+
+    /**
+     * Инициализация тегов
+     *
+     * @param array $tags - массив тегов
+     */
+    protected function setTags(array $tags = []): void
+    {
+        $this->tags = $tags;
     }
 
     /**
@@ -260,7 +266,7 @@ abstract class AbstractCacheItem
     protected function getKey(): string
     {
         if (!$this->key) {
-            $this->key = $this->hashFunc($this->request . $this->paramSerializeFunc($this->params) . $this->solt);
+            $this->key = ($this->hashFunc)($this->request . ($this->paramSerializeFunc)($this->params) . $this->solt);
         }
 
         return $this->key;
@@ -291,14 +297,14 @@ abstract class AbstractCacheItem
      *
      * @throws AbstractCacheItemException
      */
-    public function get(): ?array
+    public function get()
     {
         if (!$this->cacheConnect) {
             throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
         }
 
         for ($i = 0; $i < $this->tryCount; $i++) {
-            $this->value = $this->cacheConnect->get($this->key);
+            $this->value = $this->cacheConnect->get($this->getKey());
 
             if ($this->value === $this->lockValue) {
                 usleep($this->tryDelay);
@@ -339,10 +345,12 @@ abstract class AbstractCacheItem
             $value = $this->$key ?? $value;
         }
 
+        unset($value);
+
         $toSave['data'] = $data->getStringResult();
         $toSave['time'] = time();
 
-        if ($this->cacheConnect->set($this->key, json_encode($toSave, JSON_UNESCAPED_UNICODE), $this->ttl)) {
+        if ($this->cacheConnect->set($this->getKey(), json_encode($toSave, JSON_UNESCAPED_UNICODE), $this->ttl)) {
             return false;
         }
 
@@ -365,7 +373,7 @@ abstract class AbstractCacheItem
             throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
         }
 
-        if (!$this->cacheConnect->set($this->key, $this->lockValue, $this->ttl)) {
+        if (!$this->cacheConnect->set($this->getKey(), $this->lockValue, $this->ttl)) {
             return false;
         }
 

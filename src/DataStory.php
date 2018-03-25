@@ -2,7 +2,7 @@
 
 namespace avtomon;
 
-class DataStoryException extends \Exception
+class DataStoryException extends CustomException
 {
 }
 
@@ -73,6 +73,13 @@ class DataStory
     protected $cacheHtml = null;
 
     /**
+     * Свойства запроса
+     *
+     * @var array
+     */
+    protected $requestSettings = [];
+
+    /**
      * Создать или вернуть инстранс класса
      *
      * @param string $request - текст запроса
@@ -80,11 +87,11 @@ class DataStory
      *
      * @return DataStory
      */
-    public static function create(string $request, array $params = []): DataStory
+    public static function create(string $request, array $params = [], array $settings = []): DataStory
     {
         $key = md5($request . serialize($params));
-        if (!self::$instances[$key]) {
-            self::$instances[$key] = new DataStory($request, $params);
+        if (empty(self::$instances[$key])) {
+            self::$instances[$key] = new DataStory($request, $params, $settings);
         }
 
         return self::$instances[$key];
@@ -98,37 +105,62 @@ class DataStory
      *
      * @throws DataStoryException
      */
-    protected function __construct(string $request, array $params = [])
+    protected function __construct(string $request, array $params = [], array $settings = [])
     {
-        if (!$request) {
-            throw new DataStoryException('Текст запроса пуст');
-        }
-
-        $this->initObject(self::$settings);
+        $this->requestSettings = $this->initObject($settings);
 
         $this->request = $request;
         $this->params = $params;
     }
 
     /**
+     * Установить параметры запроса
+     *
+     * @param array $params - параметры
+     */
+    public function setParams(array $params): void
+    {
+        $this->params = $params;
+    }
+
+    /**
      * Установить посдключение к кэшу
      *
-     * @param \Redis|\Memcached $cacheConnect - подключение к кэшу
+     * @param null|\Redis|\Memcached $cacheConnect - подключение к кэшу
      *
      * @throws DataStoryException
      */
-    public function setCacheConnect($cacheConnect)
+    public function setCacheConnect($cacheConnect): void
     {
-        if (!($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
-            throw new DataStoryException('В качестве кэша можно использовать только Redis или Memcached');
-        }
-
         $this->cacheConnect = $cacheConnect;
     }
 
-    public function setDbConnect(_PDO $dbConnect)
+    /**
+     * Установить подключение к РБД
+     *
+     * @param _PDO|null $dbConnect
+     */
+    public function setDbConnect(?_PDO $dbConnect): void
     {
         $this->dbConnect = $dbConnect;
+    }
+
+    protected function getCacheQuery(): CacheQuery
+    {
+        if (!$this->cacheQuery) {
+            $this->cacheQuery = new CacheQuery($this->dbConnect, $this->request, $this->params, $this->cacheConnect, $this->requestSettings);
+        }
+
+        return $this->cacheQuery;
+    }
+
+    protected function getCacheHtml(): CacheHtml
+    {
+        if (!$this->cacheHtml) {
+            $this->cacheHtml = new CacheHtml($this->request, $this->params, $this->cacheConnect, $this->requestSettings);
+        }
+
+        return $this->cacheHtml;
     }
 
     /**
@@ -144,29 +176,16 @@ class DataStory
      */
     public function getValue(string $prefix = '')
     {
-        if (!$this->dbConnect) {
-            throw new DataStoryException('Отсутствует подключение к РБД');
-        }
-
-        if (!$this->cacheConnect) {
-            throw new DataStoryException('Отсутствует подключение к кэширующему хранилищу');
-        }
-
-        if (!$this->cacheQuery) {
-            $this->cacheQuery = new CacheQuery($this->dbConnect, $this->request, $this->params, $this->cacheConnect);
-        }
-
-        if ($this->cacheQuery->getEditTags()) {
-            return (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
+        if ($this->getCacheQuery()->getIsModifying()) {
+            $result = (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
+            $this->getCacheQuery()->initTags();
+            return $result;
         }
 
         $result = $this->cacheQuery->get();
-        if (is_null($result)) {
+        if (is_null($result->getResult())) {
             $result = (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
-
-            if (!$this->cacheQuery) {
-                $this->cacheQuery->set($result);
-            }
+            $this->getCacheQuery()->set($result);
         }
 
         return $result;
@@ -180,17 +199,9 @@ class DataStory
      * @throws AbstractCacheItemException
      * @throws DataStoryException
      */
-    public function getHtml(): string
+    public function getHtml(): ?string
     {
-        if (!$this->cacheConnect) {
-            throw new DataStoryException('Отсутствует подключение к кэширующему хранилищу');
-        }
-
-        if (!$this->cacheQuery) {
-            $this->cacheHtml = new CacheHtml($this->request, $this->params, $this->cacheConnect);
-        }
-
-        return $this->cacheHtml->get()->getStringResult();
+        return $this->getCacheHtml()->get()->getStringResult();
     }
 
     /**
@@ -204,15 +215,7 @@ class DataStory
      */
     public function setHtml(HTMLResultItem $html, array $tags = null): void
     {
-        if (!$this->cacheConnect) {
-            throw new DataStoryException('Отсутствует подключение к кэширующему хранилищу');
-        }
-
-        if (!$this->cacheQuery) {
-            $this->cacheHtml = new CacheHtml($this->request, $this->params, $this->cacheConnect, $tags);
-        }
-
-        if (!$this->cacheQuery->set($html)) {
+        if (!$this->getCacheHtml()->set($html)) {
             throw new DataStoryException('Не удалось сохранить HTML в кэше');
         }
     }

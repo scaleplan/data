@@ -2,7 +2,7 @@
 
 namespace avtomon;
 
-class CacheHtmlException extends AbstractCacheItemException
+class CacheHtmlException extends CustomException
 {
 }
 
@@ -26,20 +26,18 @@ class CacheHtml extends AbstractCacheItem
      * @param array $params - параметры запроса
      * @param null $cacheConnect - подключение к кэшу
      * @param array $tags - массив тегов
-     * @param array|null $settings - настройки объекта
+     * @param array $settings - настройки объекта
      *
      * @throws AbstractCacheItemException
      * @throws CacheHtmlException
      */
-    public function __construct(string $url, array $params = [], $cacheConnect = null, array $tags = [], array $settings = null)
+    public function __construct(string $url, array $params = [], $cacheConnect = null, array $tags = [], array $settings = [])
     {
-        if (!$url || preg_match(self::URL_TEMPLATE, $query)) {
+        if (!$url || !preg_match(self::URL_TEMPLATE, $url)) {
             throw new CacheHtmlException('URL не передан или передан в неверном формате');
         }
 
         parent::__construct($url, $params, $cacheConnect, $settings);
-
-        $this->initTags($tags);
     }
 
     /**
@@ -70,25 +68,13 @@ class CacheHtml extends AbstractCacheItem
     }
 
     /**
-     * Инициализация тегов
-     *
-     * @param array $tags - массив тегов
-     */
-    protected function initTags(?array $tags): void
-    {
-        if (!is_null($tags)) {
-            $this->tags = $tags;
-        }
-    }
-
-    /**
      * Получить данные элемента кэша
      *
      * @return HTMLResultItem|null
      *
      * @throws AbstractCacheItemException
      */
-    public function get(): ?HTMLResultItem
+    public function get(): HTMLResultItem
     {
         $result = parent::get();
         $time = $result['time'] ?? 0;
@@ -96,6 +82,6 @@ class CacheHtml extends AbstractCacheItem
             $result = null;
         }
 
-        return $result ? new HTMLResultItem($result['data']) : null;
+        return new HTMLResultItem($result['data'] ?? null);
     }
 }

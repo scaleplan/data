@@ -2,7 +2,7 @@
 
 namespace avtomon;
 
-class CacheQueryException extends AbstractCacheItemException
+class CacheQueryException extends CustomException
 {
 }
 
@@ -16,11 +16,11 @@ class CacheQuery extends AbstractCacheItem
     protected $dbConnect = null;
 
     /**
-     * Если запрос изменяющий, то в этом свойстве хранится список таблиц, которые изменяются этим запросом
+     * Изменяет ли запрос данные БД
      *
-     * @var array
+     * @var bool
      */
-    protected $editTags = [];
+    protected $isModifying = true;
 
     /**
      * Конструктор
@@ -29,43 +29,44 @@ class CacheQuery extends AbstractCacheItem
      * @param string $request - текст SQL-запроса
      * @param array $params - параметры запроса
      * @param null $cacheConnect - подключение к кэшу
-     * @param array|null $settings - настройки объекта
+     * @param array $settings - настройки объекта
      *
      * @throws AbstractCacheItemException
      */
-    public function __construct(_PDO $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = null)
+    public function __construct(_PDO $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = [])
     {
         $this->dbConnect = $dbConnect;
+        $this->request = $request;
+
+        $this->generateTags();
 
         parent::__construct($request, $params, $cacheConnect, $settings);
-
-        $this->initTags();
     }
 
     /**
      * Инициализация тегов
-     *
-     * @throws AbstractCacheItemException
      */
-    protected function initTags(): void
+    protected function generateTags(): void
     {
-        if (!$this->tags) {
-            $this->editTags = $this->dbConnect->getEditTables($query);
-
-            parent::initTags($this->editTags);
-
-            $this->tags = $this->dbConnect->getTables($query);
+        if ($this->tags || !$this->request) {
+            return;
         }
+
+        $editTags = $this->dbConnect->getEditTables($this->request);
+
+        $this->isModifying = (bool) $editTags;
+
+        $this->tags = $editTags ?: $this->dbConnect->getTables($this->request);
     }
 
     /**
      * Вернуть список таблиц, изменяемых запросом
      *
-     * @return array
+     * @return bool
      */
-    public function getEditTags(): array
+    public function getIsModifying(): bool
     {
-        return $this->editTags;
+        return $this->isModifying;
     }
 
     /**
@@ -75,10 +76,10 @@ class CacheQuery extends AbstractCacheItem
      *
      * @throws AbstractCacheItemException
      */
-    public function get(): ?DbResultItem
+    public function get(): DbResultItem
     {
         $result = parent::get();
-        return $result ? new DbResultItem($result['data']) : null;
+        return new DbResultItem($result['data'] ?? null);
     }
 
     /**

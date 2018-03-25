@@ -2,7 +2,7 @@
 
 namespace avtomon;
 
-class QueryException extends \Exception
+class QueryException extends CustomException
 {
 }
 
@@ -63,7 +63,7 @@ class Query
             throw new QueryException('Текст запроса пуст');
         }
 
-        $this->rawSql = $query;
+        $this->rawSql = $sql;
         $this->rawParams = $params;
         $this->dbConnect = $dbConnect;
     }
@@ -109,9 +109,7 @@ class Query
      */
     public function getParams(): array
     {
-        if (!$this->sql) {
-            list($this->sql, $this->params) = SqlTemplater::sql($this->rawSql, $this->rawParams);
-        }
+        $this->getSql();
 
         return $this->params;
     }
