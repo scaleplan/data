@@ -8,6 +8,9 @@ class AbstractCacheItemException extends CustomException
 
 abstract class AbstractCacheItem
 {
+    /**
+     * Трейт инициализации
+     */
     use InitTrait;
 
     /**
@@ -52,7 +55,7 @@ abstract class AbstractCacheItem
     /**
      * Данные из езультата запроса или значение для сохранения в кэше
      *
-     * @var AbstractResult
+     * @var null|AbstractResult
      */
     protected $data = null;
 
@@ -215,7 +218,7 @@ abstract class AbstractCacheItem
     }
 
     /**
-     * Инициализация тегов
+     * Установка тегов
      *
      * @param array $tags - массив тегов
      */
@@ -311,13 +314,16 @@ abstract class AbstractCacheItem
                 continue;
             }
 
-            if (($this->value = json_decode($this->value, true)) === null || !array_diff_key($this->value, self::CACHE_STRUCTURE)) {
+            $this->value = json_decode($this->value, true);
+            if ($this->value === null || array_diff_key($this->value, self::CACHE_STRUCTURE)) {
                 return null;
             }
 
-            if ((int) $this->value['time'] < time() || max(array_merge($this->getTagsTimes(), [$this->value['time']])) !== $this->value['time']) {
+            if (max(array_merge($this->getTagsTimes(), [$this->value['time']])) !== $this->value['time']) {
                 return null;
             }
+
+            $this->data = $this->value['data'] ?? null;
 
             return $this->value;
         }
@@ -347,15 +353,31 @@ abstract class AbstractCacheItem
 
         unset($value);
 
-        $toSave['data'] = $data->getStringResult();
+        $toSave['data'] = $data->getResult();
         $toSave['time'] = time();
 
-        if ($this->cacheConnect->set($this->getKey(), json_encode($toSave, JSON_UNESCAPED_UNICODE), $this->ttl)) {
+        if (!$this->cacheConnect->set($this->getKey(), json_encode($toSave, JSON_UNESCAPED_UNICODE), $this->ttl)) {
             return false;
         }
 
         $this->data = $data;
         $this->value = $toSave;
+
+        return true;
+    }
+
+    /**
+     * Удаление элемента кэша
+     *
+     * @return bool
+     *
+     * @throws Exception
+     */
+    public function delete(): bool
+    {
+        if (!$this->cacheConnect->delete($this->getKey())) {
+            return false;
+        }
 
         return true;
     }

@@ -145,6 +145,11 @@ class DataStory
         $this->dbConnect = $dbConnect;
     }
 
+    /**
+     * Вернуть объект кэша запросов
+     *
+     * @return CacheQuery
+     */
     protected function getCacheQuery(): CacheQuery
     {
         if (!$this->cacheQuery) {
@@ -154,6 +159,11 @@ class DataStory
         return $this->cacheQuery;
     }
 
+    /**
+     * Вернуть объект кэша страниц
+     *
+     * @return CacheHtml
+     */
     protected function getCacheHtml(): CacheHtml
     {
         if (!$this->cacheHtml) {
@@ -174,21 +184,37 @@ class DataStory
      * @throws DataStoryException
      * @throws QueryException
      */
-    public function getValue(string $prefix = '')
+    public function getValue(string $prefix = ''): ?DbResultItem
     {
+        $getQuery = function () use ($prefix) {
+            return (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
+        };
+
         if ($this->getCacheQuery()->getIsModifying()) {
-            $result = (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
+            $result = $getQuery();
             $this->getCacheQuery()->initTags();
             return $result;
         }
 
         $result = $this->cacheQuery->get();
         if (is_null($result->getResult())) {
-            $result = (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
+            $result = $getQuery();
             $this->getCacheQuery()->set($result);
         }
 
         return $result;
+    }
+
+    /**
+     * Удаление элемента кэша запросов к БД
+     *
+     * @return bool
+     *
+     * @throws Exception
+     */
+    public function deleteValue(): bool
+    {
+        return $this->getCacheQuery()->delete();
     }
 
     /**
@@ -199,9 +225,11 @@ class DataStory
      * @throws AbstractCacheItemException
      * @throws DataStoryException
      */
-    public function getHtml(): ?string
+    public function getHtml(string $verifyingFilePath = ''): ?HTMLResultItem
     {
-        return $this->getCacheHtml()->get()->getStringResult();
+        $cacheHtml = $this->getCacheHtml();
+        $cacheHtml->setCheckFile($verifyingFilePath);
+        return $this->getCacheHtml()->get();
     }
 
     /**
@@ -215,8 +243,39 @@ class DataStory
      */
     public function setHtml(HTMLResultItem $html, array $tags = null): void
     {
-        if (!$this->getCacheHtml()->set($html)) {
+        $cacheHtml = $this->getCacheHtml();
+        $cacheHtml->setTags($tags);
+        if (!$cacheHtml->set($html)) {
             throw new DataStoryException('Не удалось сохранить HTML в кэше');
         }
+    }
+
+    /**
+     * Удаление элемента кэша страниц
+     *
+     * @return bool
+     *
+     * @throws Exception
+     */
+    public function deleteHtml(): bool
+    {
+        return $this->getCacheHtml()->delete();
+    }
+
+    /**
+     * Создать объект запроса и выполнить его
+     *
+     * @param string $request - текст запроса
+     * @param array $params - параметры запроса
+     *
+     * @return DbResultItem|null
+     *
+     * @throws AbstractCacheItemException
+     * @throws DataStoryException
+     * @throws QueryException
+     */
+    public static function execQuery(string $request, array $params = [], array $settings = []): ?DbResultItem
+    {
+        return self::create($request, $params, $settings)->getValue();
     }
 }

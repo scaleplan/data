@@ -46,7 +46,7 @@ class Query
     /**
      * Результат запроса
      *
-     * @var dbResultItem
+     * @var DbResultItem
      */
     protected $result = null;
 
@@ -129,9 +129,9 @@ class Query
      *
      * @param string $prefix - префикс ключеей
      *
-     * @return dbResultItem
+     * @return DbResultItem
      */
-    public function execute(string $prefix = ''): dbResultItem
+    public function execute(string $prefix = ''): DbResultItem
     {
         if (!$this->dbConnect) {
             throw new QueryException('Сначала установите подключение к базе данных');
@@ -139,7 +139,7 @@ class Query
 
         $result = $this->dbConnect->query($this->getSql(), $this->getParams());
 
-        return $this->result = new dbResultItem($result, $prefix);
+        return $this->result = new DbResultItem($result, $prefix);
     }
 
     /**
@@ -158,7 +158,12 @@ class Query
         return $this->dbConnect->async($this->getSql(), $this->getParams());
     }
 
-    public function getResult(): dbResultItem
+    /**
+     * Вернуть результат запроса
+     *
+     * @return DbResultItem
+     */
+    public function getResult(): DbResultItem
     {
         return $this->result;
     }

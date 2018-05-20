@@ -41,13 +41,23 @@ class CacheHtml extends AbstractCacheItem
     }
 
     /**
+     * Установить пусть к файлу проверки
+     *
+     * @param string $filePath - путь к файлу
+     */
+    public function setCheckFile(string $filePath): void
+    {
+        $this->checkFile = $filePath;
+    }
+
+    /**
      * Проверить актуальность кэша по времени изменения файла
      *
      * @param int $cacheTime - время установки кэша
      *
      * @return bool
      *
-     * @throws MShellException
+     * @throws CacheHtmlException
      */
     protected function checkFileTime(int $cacheTime): bool
     {
@@ -55,11 +65,7 @@ class CacheHtml extends AbstractCacheItem
             return true;
         }
 
-        $fileTime = filemtime($this->checkFile);
-        if ($fileTime === false) {
-            throw new MShellException('Передан неправильный путь к файлу');
-        }
-
+        $fileTime = @filemtime($this->checkFile);
         if ($cacheTime < $fileTime) {
             return false;
         }
@@ -83,5 +89,15 @@ class CacheHtml extends AbstractCacheItem
         }
 
         return new HTMLResultItem($result['data'] ?? null);
+    }
+
+    /**
+     * Установка тегов
+     *
+     * @param array $tags - массив тегов
+     */
+    public function setTags(array $tags = []): void
+    {
+        parent::setTags($tags);
     }
 }
