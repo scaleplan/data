@@ -2,10 +2,22 @@
 
 namespace avtomon;
 
+/**
+ * Класс ошибок
+ *
+ * Class DataStoryException
+ * @package avtomon
+ */
 class DataStoryException extends CustomException
 {
 }
 
+/**
+ * Основной класс получения данных
+ *
+ * Class DataStory
+ * @package avtomon
+ */
 class DataStory
 {
     /**
@@ -49,28 +61,28 @@ class DataStory
      *
      * @var null|_PDO
      */
-    protected $dbConnect = null;
+    protected $dbConnect;
 
     /**
      * Подключение к хранилищу кэшей
      *
      * @var null|\Redis|\Memcached
      */
-    protected $cacheConnect = null;
+    protected $cacheConnect;
 
     /**
      * Объект кэша запросов
      *
      * @var null|CacheQuery
      */
-    protected $cacheQuery = null;
+    protected $cacheQuery;
 
     /**
      * Объект кэша страниц
      *
      * @var null|CacheHtml
      */
-    protected $cacheHtml = null;
+    protected $cacheHtml;
 
     /**
      * Свойства запроса
@@ -84,6 +96,7 @@ class DataStory
      *
      * @param string $request - текст запроса
      * @param array $params - параметры запроса
+     * @param array $settings - дополниетельные настройки
      *
      * @return DataStory
      */
@@ -103,7 +116,7 @@ class DataStory
      * @param string $request - текст запроса
      * @param array $params - параметры запроса
      *
-     * @throws DataStoryException
+     * @param array $settings - дополниетельные настройки
      */
     protected function __construct(string $request, array $params = [], array $settings = [])
     {
@@ -127,8 +140,6 @@ class DataStory
      * Установить посдключение к кэшу
      *
      * @param null|\Redis|\Memcached $cacheConnect - подключение к кэшу
-     *
-     * @throws DataStoryException
      */
     public function setCacheConnect($cacheConnect): void
     {
@@ -149,6 +160,8 @@ class DataStory
      * Вернуть объект кэша запросов
      *
      * @return CacheQuery
+     *
+     * @throws AbstractCacheItemException
      */
     protected function getCacheQuery(): CacheQuery
     {
@@ -163,6 +176,9 @@ class DataStory
      * Вернуть объект кэша страниц
      *
      * @return CacheHtml
+     *
+     * @throws AbstractCacheItemException
+     * @throws CacheHtmlException
      */
     protected function getCacheHtml(): CacheHtml
     {
@@ -179,10 +195,8 @@ class DataStory
      * @param string $prefix - префикс имен результирующих полей
      *
      * @return DbResultItem|null
-     *
      * @throws AbstractCacheItemException
-     * @throws DataStoryException
-     * @throws QueryException
+     * @throws DbResultItemException
      */
     public function getValue(string $prefix = ''): ?DbResultItem
     {
@@ -196,8 +210,8 @@ class DataStory
             return $result;
         }
 
-        $result = $this->cacheQuery->get();
-        if (is_null($result->getResult())) {
+        $result = $this->getCacheQuery()->get();
+        if ($result->getResult() === null) {
             $result = $getQuery();
             $this->getCacheQuery()->set($result);
         }
@@ -210,7 +224,7 @@ class DataStory
      *
      * @return bool
      *
-     * @throws Exception
+     * @throws AbstractCacheItemException
      */
     public function deleteValue(): bool
     {
@@ -220,10 +234,12 @@ class DataStory
     /**
      * Вернуть HTML
      *
+     * @param string $verifyingFilePath - путь к файлу, по которому будет проверяться акутуальность кэша
+     *
      * @return HTMLResultItem|null
      *
      * @throws AbstractCacheItemException
-     * @throws DataStoryException
+     * @throws CacheHtmlException
      */
     public function getHtml(string $verifyingFilePath = ''): ?HTMLResultItem
     {
@@ -239,6 +255,7 @@ class DataStory
      * @param array|null $tags - теги
      *
      * @throws AbstractCacheItemException
+     * @throws CacheHtmlException
      * @throws DataStoryException
      */
     public function setHtml(HTMLResultItem $html, array $tags = null): void
@@ -255,7 +272,8 @@ class DataStory
      *
      * @return bool
      *
-     * @throws Exception
+     * @throws AbstractCacheItemException
+     * @throws CacheHtmlException
      */
     public function deleteHtml(): bool
     {
@@ -267,12 +285,12 @@ class DataStory
      *
      * @param string $request - текст запроса
      * @param array $params - параметры запроса
+     * @param array $settings - настройки
      *
      * @return DbResultItem|null
      *
      * @throws AbstractCacheItemException
-     * @throws DataStoryException
-     * @throws QueryException
+     * @throws DbResultItemException
      */
     public static function execQuery(string $request, array $params = [], array $settings = []): ?DbResultItem
     {

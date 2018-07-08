@@ -2,16 +2,28 @@
 
 namespace avtomon;
 
+/**
+ * Класс ошибок
+ *
+ * Class CacheHtmlException
+ * @package avtomon
+ */
 class CacheHtmlException extends CustomException
 {
 }
 
+/**
+ * Класс управления кэшированием HTML-страниц
+ *
+ * Class CacheHtml
+ * @package avtomon
+ */
 class CacheHtml extends AbstractCacheItem
 {
     /**
      * Регулярное выражение для проверки правильности формата передаваемого урла
      */
-    const URL_TEMPLATE = '/^.+?\/[^\/]+$/';
+    protected const URL_TEMPLATE = '/^.+?\/[^\/]+$/';
 
     /**
      * Путь до файла, по которому будет проверяться актуальность кэша
@@ -21,7 +33,8 @@ class CacheHtml extends AbstractCacheItem
     protected $checkFile = '';
 
     /**
-     * CacheHtml constructor.
+     * Конструктор
+     *
      * @param string $url - текст урла
      * @param array $params - параметры запроса
      * @param null $cacheConnect - подключение к кэшу
@@ -56,8 +69,6 @@ class CacheHtml extends AbstractCacheItem
      * @param int $cacheTime - время установки кэша
      *
      * @return bool
-     *
-     * @throws CacheHtmlException
      */
     protected function checkFileTime(int $cacheTime): bool
     {
@@ -65,12 +76,7 @@ class CacheHtml extends AbstractCacheItem
             return true;
         }
 
-        $fileTime = @filemtime($this->checkFile);
-        if ($cacheTime < $fileTime) {
-            return false;
-        }
-
-        return true;
+        return $cacheTime >= @filemtime($this->checkFile);
     }
 
     /**
@@ -80,7 +86,7 @@ class CacheHtml extends AbstractCacheItem
      *
      * @throws AbstractCacheItemException
      */
-    public function get(): HTMLResultItem
+    public function get(): ?HTMLResultItem
     {
         $result = parent::get();
         $time = $result['time'] ?? 0;

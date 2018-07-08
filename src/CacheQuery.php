@@ -2,18 +2,30 @@
 
 namespace avtomon;
 
+/**
+ * Класс ошибок
+ *
+ * Class CacheQueryException
+ * @package avtomon
+ */
 class CacheQueryException extends CustomException
 {
 }
 
+/**
+ * Класс кэширования результатов запросов к БД
+ *
+ * Class CacheQuery
+ * @package avtomon
+ */
 class CacheQuery extends AbstractCacheItem
 {
     /**
      * Подключение к РБД
      *
-     * @var _PDO
+     * @var _PDO|null
      */
-    protected $dbConnect = null;
+    protected $dbConnect;
 
     /**
      * Изменяет ли запрос данные БД
@@ -72,9 +84,10 @@ class CacheQuery extends AbstractCacheItem
     /**
      * Получить данные элемента кэша
      *
-     * @return DbResultItem|null
+     * @return DbResultItem
      *
      * @throws AbstractCacheItemException
+     * @throws DbResultItemException
      */
     public function get(): DbResultItem
     {

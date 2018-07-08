@@ -2,10 +2,22 @@
 
 namespace avtomon;
 
+/**
+ * Класс ошибок
+ *
+ * Class AbstractCacheItemException
+ * @package avtomon
+ */
 class AbstractCacheItemException extends CustomException
 {
 }
 
+/**
+ * Базовый класс кэширования
+ *
+ * Class AbstractCacheItem
+ * @package avtomon
+ */
 abstract class AbstractCacheItem
 {
     /**
@@ -16,7 +28,7 @@ abstract class AbstractCacheItem
     /**
      * Структура элемента кэша по умолчанию
      */
-    const CACHE_STRUCTURE = [
+    protected const CACHE_STRUCTURE = [
         'data' => '',
         'time' => 0,
         'tags' => []
@@ -57,7 +69,7 @@ abstract class AbstractCacheItem
      *
      * @var null|AbstractResult
      */
-    protected $data = null;
+    protected $data;
 
     /**
      * Значение сохраненное в кэше
@@ -71,7 +83,7 @@ abstract class AbstractCacheItem
      *
      * @var \Memcached|\Redis|null
      */
-    protected $cacheConnect = null;
+    protected $cacheConnect;
 
     /**
      * Время жизни тега
@@ -182,9 +194,11 @@ abstract class AbstractCacheItem
     /**
      * Установить подключение к кэширующему хранилищу
      *
-     * @param \Memcached|\Redis $cacheConnect
+     * @param \Memcached|\Redis $cacheConnect - объект подключения
+     *
+     * @throws AbstractCacheItemException
      */
-    public function setCacheConnect($cacheConnect)
+    public function setCacheConnect($cacheConnect): void
     {
         if (!($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
             throw new AbstractCacheItemException('В качестве кэша можно использовать только Redis или Memcached');
@@ -195,10 +209,6 @@ abstract class AbstractCacheItem
 
     /**
      * Инициализация заданного массива тегов
-     *
-     * @param array $tags - массив тегов
-     *
-     * @return bool
      *
      * @throws AbstractCacheItemException
      */
@@ -236,7 +246,7 @@ abstract class AbstractCacheItem
      */
     public function setHashFunc($hashFunc): void
     {
-        if (!in_array(gettype($hashFunc), ['callable', 'string'])) {
+        if (!\in_array(\gettype($hashFunc), ['callable', 'string'], true)) {
             throw new AbstractCacheItemException('Формат передачи функции хэширования неверен');
         }
 
@@ -252,7 +262,7 @@ abstract class AbstractCacheItem
      */
     public function setParamSerializeFunc($serializeFunc): void
     {
-        if (!in_array(gettype($serializeFunc), ['callable', 'string'])) {
+        if (!\in_array(\gettype($serializeFunc), ['callable', 'string'], true)) {
             throw new AbstractCacheItemException('Формат передачи функции сериализации неверен');
         }
 
@@ -263,8 +273,6 @@ abstract class AbstractCacheItem
      * Функция получения ключа элемента кэша
      *
      * @return string
-     *
-     * @throws Exception
      */
     protected function getKey(): string
     {
@@ -323,9 +331,7 @@ abstract class AbstractCacheItem
                 return null;
             }
 
-            $this->data = $this->value['data'] ?? null;
-
-            return $this->value;
+            return $this->data = $this->value['data'] ?? null;
         }
 
         return null;
@@ -353,7 +359,7 @@ abstract class AbstractCacheItem
 
         unset($value);
 
-        $toSave['data'] = $data->getResult();
+        $toSave['data'] = $data->getArrayResult() ?? $data->getStringResult();
         $toSave['time'] = time();
 
         if (!$this->cacheConnect->set($this->getKey(), json_encode($toSave, JSON_UNESCAPED_UNICODE), $this->ttl)) {
@@ -370,8 +376,6 @@ abstract class AbstractCacheItem
      * Удаление элемента кэша
      *
      * @return bool
-     *
-     * @throws Exception
      */
     public function delete(): bool
     {
@@ -400,6 +404,8 @@ abstract class AbstractCacheItem
         }
 
         $this->value = $this->lockValue;
+
+        return true;
     }
 
 

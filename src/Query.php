@@ -2,10 +2,22 @@
 
 namespace avtomon;
 
+/**
+ * Класс ошибок
+ *
+ * Class QueryException
+ * @package avtomon
+ */
 class QueryException extends CustomException
 {
 }
 
+/**
+ * Класс организации запросов к БД
+ *
+ * Class Query
+ * @package avtomon
+ */
 class Query
 {
     /**
@@ -41,14 +53,14 @@ class Query
      *
      * @var null|_PDO
      */
-    protected $dbConnect = null;
+    protected $dbConnect;
 
     /**
      * Результат запроса
      *
-     * @var DbResultItem
+     * @var DbResultItem|null
      */
-    protected $result = null;
+    protected $result;
 
     /**
      * Конструктор
@@ -56,6 +68,8 @@ class Query
      * @param string $sql - необработанный текст запроса
      * @param _PDO|null $dbConnect - подключение к РБД
      * @param array $params - необработанный массив параметров запроса
+     *
+     * @throws QueryException
      */
     public function __construct(_PDO $dbConnect = null, string $sql, array $params = [])
     {
@@ -96,7 +110,9 @@ class Query
     public function getSql(): string
     {
         if (!$this->sql) {
-            list($this->sql, $this->params) = SqlTemplater::sql($this->rawSql, $this->rawParams);
+            $sql = $this->rawSql;
+            $params = $this->rawParams;
+            [$this->sql, $this->params] = SqlTemplater::sql($sql, $params);
         }
 
         return $this->sql;
@@ -119,7 +135,7 @@ class Query
      *
      * @param _PDO $dbConnect - подключение к РБД
      */
-    public function setDbConnect(_PDO $dbConnect)
+    public function setDbConnect(_PDO $dbConnect): void
     {
         $this->dbConnect = $dbConnect;
     }
@@ -127,9 +143,12 @@ class Query
     /**
      * Выполнить запрос
      *
-     * @param string $prefix - префикс ключеей
+     * @param string $prefix - префикс ключей
      *
      * @return DbResultItem
+     *
+     * @throws DbResultItemException
+     * @throws QueryException
      */
     public function execute(string $prefix = ''): DbResultItem
     {
