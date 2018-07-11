@@ -162,6 +162,7 @@ abstract class AbstractCacheItem
      * @param array $settings - настройки
      *
      * @throws AbstractCacheItemException
+     * @throws \ReflectionException
      */
     protected function __construct(
         string $request,
@@ -184,7 +185,9 @@ abstract class AbstractCacheItem
     /**
      * Установить настройки объекта
      *
-     * @param array $settings
+     * @param array $settings - массив настроек
+     *
+     * @throws \ReflectionException
      */
     public function setSettings(array $settings): void
     {
@@ -338,7 +341,7 @@ abstract class AbstractCacheItem
     }
 
     /**
-     * Cсохранение значение в кэше
+     * Cохранение значение в кэше
      *
      * @param AbstractResult $data - значение для сохрания
      *

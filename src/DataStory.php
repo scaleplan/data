@@ -115,8 +115,9 @@ class DataStory
      *
      * @param string $request - текст запроса
      * @param array $params - параметры запроса
+     * @param array $settings - настройки
      *
-     * @param array $settings - дополниетельные настройки
+     * @throws \ReflectionException
      */
     protected function __construct(string $request, array $params = [], array $settings = [])
     {
@@ -194,11 +195,12 @@ class DataStory
      *
      * @param string $prefix - префикс имен результирующих полей
      *
-     * @return DbResultItem|null
+     * @return DbResultItem
+     *
      * @throws AbstractCacheItemException
      * @throws DbResultItemException
      */
-    public function getValue(string $prefix = ''): ?DbResultItem
+    public function getValue(string $prefix = ''): DbResultItem
     {
         $getQuery = function () use ($prefix) {
             return (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
@@ -236,12 +238,12 @@ class DataStory
      *
      * @param string $verifyingFilePath - путь к файлу, по которому будет проверяться акутуальность кэша
      *
-     * @return HTMLResultItem|null
+     * @return HTMLResultItem
      *
      * @throws AbstractCacheItemException
      * @throws CacheHtmlException
      */
-    public function getHtml(string $verifyingFilePath = ''): ?HTMLResultItem
+    public function getHtml(string $verifyingFilePath = ''): HTMLResultItem
     {
         $cacheHtml = $this->getCacheHtml();
         $cacheHtml->setCheckFile($verifyingFilePath);

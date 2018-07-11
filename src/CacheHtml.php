@@ -86,7 +86,7 @@ class CacheHtml extends AbstractCacheItem
      *
      * @throws AbstractCacheItemException
      */
-    public function get(): ?HTMLResultItem
+    public function get(): HTMLResultItem
     {
         $result = parent::get();
         $time = $result['time'] ?? 0;

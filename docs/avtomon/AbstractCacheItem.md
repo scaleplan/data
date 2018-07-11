@@ -208,7 +208,7 @@ abstract class устанавливает следующие свойства:
 - [`getKey()`](#getKey) &mdash; Функция получения ключа элемента кэша
 - [`getTagsTimes()`](#getTagsTimes) &mdash; Возвращает массив времен актуальности тегов асоциированных с запросом
 - [`get()`](#get) &mdash; Получить значение элемента кэша
-- [`set()`](#set) &mdash; Cсохранение значение в кэше
+- [`set()`](#set) &mdash; Cохранение значение в кэше
 - [`delete()`](#delete) &mdash; Удаление элемента кэша
 - [`setLock()`](#setLock) &mdash; Установить блокировку по ключу
 
@@ -227,6 +227,7 @@ abstract class устанавливает следующие свойства:
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `setSettings()` <a name="setSettings"></a>
 
@@ -236,8 +237,10 @@ abstract class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$settings` (`array`)
+    - `$settings` (`array`) &mdash; - массив настроек
 - Ничего не возвращает.
+- Выбрасывает одно из следующих исключений:
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `setCacheConnect()` <a name="setCacheConnect"></a>
 
@@ -335,7 +338,7 @@ abstract class устанавливает следующие свойства:
 
 ### `set()` <a name="set"></a>
 
-Cсохранение значение в кэше
+Cохранение значение в кэше
 
 #### Сигнатура
 

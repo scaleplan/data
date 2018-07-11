@@ -162,8 +162,10 @@ class устанавливает следующие свойства:
 - Может принимать следующий параметр(ы):
     - `$request` (`string`) &mdash; - текст запроса
     - `$params` (`array`) &mdash; - параметры запроса
-    - `$settings` (`array`) &mdash; - дополниетельные настройки
+    - `$settings` (`array`) &mdash; - настройки
 - Ничего не возвращает.
+- Выбрасывает одно из следующих исключений:
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `setParams()` <a name="setParams"></a>
 
@@ -230,9 +232,7 @@ class устанавливает следующие свойства:
 - **public** method.
 - Может принимать следующий параметр(ы):
     - `$prefix` (`string`) &mdash; - префикс имен результирующих полей
-- Может возвращать одно из следующих значений:
-    - `avtomon\DbResultItem`
-    - `null`
+- Возвращает `avtomon\DbResultItem` value.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - `avtomon\DbResultItemException`
@@ -257,9 +257,7 @@ class устанавливает следующие свойства:
 - **public** method.
 - Может принимать следующий параметр(ы):
     - `$verifyingFilePath` (`string`) &mdash; - путь к файлу, по которому будет проверяться акутуальность кэша
-- Может возвращать одно из следующих значений:
-    - `avtomon\HTMLResultItem`
-    - `null`
+- Возвращает `avtomon\HTMLResultItem` value.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - [`avtomon\CacheHtmlException`](../avtomon/CacheHtmlException.md)

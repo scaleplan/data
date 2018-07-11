@@ -12,6 +12,18 @@
     },
     "require": {
         "php": ">=7.2",
-        "avtomon/_PDO": "dev-master"
-    }
+        "avtomon/_PDO": "dev-master",
+        "avtomon/SqlTemplater": "dev-master",
+        "avtomon/InitTrait": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:avtomon/SqlTemplater.git"
+        },
+        {
+            "type": "git",
+            "url": "git@github.com:avtomon/InitTrait.git"
+        }
+    ]
 }
