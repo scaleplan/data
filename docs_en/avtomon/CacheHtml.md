@@ -58,15 +58,16 @@ Constructor
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$url`(`string`) &mdash; - text url
-  - `$params`(`array`) &mdash; - query parameters
-  - `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
-  - `$tags`(`array`) &mdash; - array of tags
-  - `$settings`(`array`) &mdash; - settings
+  - `$url`(`string`) - text Urla
+  - `$params`(`array`) - query parameters
+  - `$cacheConnect`(`Memcached`| `Redis`|`null`) - connect to the cache store
+  - `$tags`(`array`) - array of tags
+  - `$settings`(`array`) - settings
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
   - [`avtomon\CacheHtmlException`](../avtomon/CacheHtmlException.md)
+  - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `setCheckFile()`<a name="setCheckFile"> </a>
 
@@ -76,7 +77,7 @@ Set to the check file
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$filePath`(`string`) &mdash; - the path to the file
+  - `$filePath`(`string`) - path to the file
 - Returns nothing.
 
 ### `checkFileTime()`<a name="checkFileTime"> </a>
@@ -87,7 +88,7 @@ Check the cache relevance by file modification time
 
 - **protected** method.
 - It can take the following parameter (s):
-  - `$cacheTime`(`int`) &mdash; - cache installation time
+  - `$cacheTime`(`int`) - cache installation time
 - Returns the `bool`value.
 
 ### `get()`<a name="get"> </a>
@@ -111,6 +112,6 @@ Installing Tags
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$tags`(`array`) &mdash; - array of tags
+  - `$tags`(`array`) - array of tags
 - Returns nothing.
 

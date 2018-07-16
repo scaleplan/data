@@ -72,6 +72,7 @@ class устанавливает следующие свойства:
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `generateTags()` <a name="generateTags"></a>
 
@@ -81,6 +82,8 @@ class устанавливает следующие свойства:
 
 - **protected** method.
 - Ничего не возвращает.
+- Выбрасывает одно из следующих исключений:
+    - `avtomon\CachePDOException`
 
 ### `getIsModifying()` <a name="getIsModifying"></a>
 

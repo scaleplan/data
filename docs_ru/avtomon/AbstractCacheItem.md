@@ -220,10 +220,10 @@ abstract class устанавливает следующие свойства:
 
 - **protected** method.
 - Может принимать следующий параметр(ы):
-    - `$request` (`string`) &mdash; - текст запроса
-    - `$params` (`array`) &mdash; - параметры запроса
-    - `$cacheConnect` (`Memcached`|`Redis`|`null`) &mdash; - подключение к хранилицу кэшей
-    - `$settings` (`array`) &mdash; - настройки
+    - `$request` (`string`) - текст запроса
+    - `$params` (`array`) - параметры запроса
+    - `$cacheConnect` (`Memcached`|`Redis`|`null`) - подключение к хранилицу кэшей
+    - `$settings` (`array`) - настройки
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -237,7 +237,7 @@ abstract class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$settings` (`array`) &mdash; - массив настроек
+    - `$settings` (`array`) - массив настроек
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`ReflectionException`](http://php.net/class.ReflectionException)
@@ -250,7 +250,7 @@ abstract class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$cacheConnect` (`Memcached`|`Redis`) &mdash; - объект подключения
+    - `$cacheConnect` (`Memcached`|`Redis`) - объект подключения
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -274,7 +274,7 @@ abstract class устанавливает следующие свойства:
 
 - **protected** method.
 - Может принимать следующий параметр(ы):
-    - `$tags` (`array`) &mdash; - массив тегов
+    - `$tags` (`array`) - массив тегов
 - Ничего не возвращает.
 
 ### `setHashFunc()` <a name="setHashFunc"></a>
@@ -285,7 +285,7 @@ abstract class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$hashFunc` (`string`|`callable`) &mdash; - функция хэширования
+    - `$hashFunc` (`string`|`callable`) - функция хэширования
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -298,7 +298,7 @@ abstract class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$serializeFunc` (`callable`|`string`) &mdash; - функция сериализации
+    - `$serializeFunc` (`callable`|`string`) - функция сериализации
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -344,7 +344,7 @@ Cохранение значение в кэше
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$data` (`avtomon\AbstractResult`) &mdash; - значение для сохрания
+    - `$data` (`avtomon\AbstractResult`) - значение для сохрания
 - Возвращает `bool` value.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)

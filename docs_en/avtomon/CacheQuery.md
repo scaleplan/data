@@ -72,6 +72,7 @@ Constructor
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `generateTags()`<a name="generateTags"> </a>
 
@@ -81,6 +82,8 @@ Initializing Tags
 
 - **protected** method.
 - Returns nothing.
+- Throws one of the following exceptions:
+  - `avtomon\CachePDOException`
 
 ### `getIsModifying()`<a name="getIsModifying"> </a>
 

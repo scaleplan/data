@@ -44,6 +44,7 @@ class CacheQuery extends AbstractCacheItem
      * @param array $settings - настройки объекта
      *
      * @throws AbstractCacheItemException
+     * @throws \ReflectionException
      */
     public function __construct(CachePDO $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = [])
     {
@@ -57,6 +58,8 @@ class CacheQuery extends AbstractCacheItem
 
     /**
      * Инициализация тегов
+     *
+     * @throws CachePDOException
      */
     protected function generateTags(): void
     {

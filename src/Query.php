@@ -147,6 +147,7 @@ class Query
      *
      * @return DbResultItem
      *
+     * @throws CachePDOException
      * @throws DbResultItemException
      * @throws QueryException
      */
@@ -166,6 +167,7 @@ class Query
      *
      * @return bool
      *
+     * @throws CachePDOException
      * @throws QueryException
      */
     public function executeAsync(): bool

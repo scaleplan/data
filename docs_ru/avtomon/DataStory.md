@@ -152,6 +152,8 @@ class устанавливает следующие свойства:
     - `$params` (`array`) - параметры запроса
     - `$settings` (`array`) - дополниетельные настройки
 - Возвращает [`DataStory`](../avtomon/DataStory.md) value.
+- Выбрасывает одно из следующих исключений:
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `__construct()` <a name="__construct"></a>
 
@@ -222,6 +224,7 @@ class устанавливает следующие свойства:
 - Возвращает [`CacheQuery`](../avtomon/CacheQuery.md) value.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `getCacheHtml()` <a name="getCacheHtml"></a>
 
@@ -234,6 +237,7 @@ class устанавливает следующие свойства:
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - [`avtomon\CacheHtmlException`](../avtomon/CacheHtmlException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `getValue()` <a name="getValue"></a>
 
@@ -248,6 +252,7 @@ class устанавливает следующие свойства:
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - `avtomon\DbResultItemException`
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `deleteValue()` <a name="deleteValue"></a>
 
@@ -259,6 +264,7 @@ class устанавливает следующие свойства:
 - Возвращает `bool` value.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `getHtml()` <a name="getHtml"></a>
 
@@ -273,6 +279,7 @@ class устанавливает следующие свойства:
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - [`avtomon\CacheHtmlException`](../avtomon/CacheHtmlException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `setHtml()` <a name="setHtml"></a>
 
@@ -289,6 +296,7 @@ class устанавливает следующие свойства:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - [`avtomon\CacheHtmlException`](../avtomon/CacheHtmlException.md)
     - [`avtomon\DataStoryException`](../avtomon/DataStoryException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `deleteHtml()` <a name="deleteHtml"></a>
 
@@ -301,6 +309,7 @@ class устанавливает следующие свойства:
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - [`avtomon\CacheHtmlException`](../avtomon/CacheHtmlException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `execQuery()` <a name="execQuery"></a>
 
@@ -319,4 +328,5 @@ class устанавливает следующие свойства:
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - `avtomon\DbResultItemException`
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 

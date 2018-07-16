@@ -99,6 +99,8 @@ class DataStory
      * @param array $settings - дополниетельные настройки
      *
      * @return DataStory
+     *
+     * @throws \ReflectionException
      */
     public static function create(string $request, array $params = [], array $settings = []): DataStory
     {
@@ -173,6 +175,7 @@ class DataStory
      * @return CacheQuery
      *
      * @throws AbstractCacheItemException
+     * @throws \ReflectionException
      */
     protected function getCacheQuery(): CacheQuery
     {
@@ -190,6 +193,7 @@ class DataStory
      *
      * @throws AbstractCacheItemException
      * @throws CacheHtmlException
+     * @throws \ReflectionException
      */
     protected function getCacheHtml(): CacheHtml
     {
@@ -209,6 +213,7 @@ class DataStory
      *
      * @throws AbstractCacheItemException
      * @throws DbResultItemException
+     * @throws \ReflectionException
      */
     public function getValue(string $prefix = ''): DbResultItem
     {
@@ -238,6 +243,7 @@ class DataStory
      * @return bool
      *
      * @throws AbstractCacheItemException
+     * @throws \ReflectionException
      */
     public function deleteValue(): bool
     {
@@ -253,6 +259,7 @@ class DataStory
      *
      * @throws AbstractCacheItemException
      * @throws CacheHtmlException
+     * @throws \ReflectionException
      */
     public function getHtml(string $verifyingFilePath = ''): HTMLResultItem
     {
@@ -270,6 +277,7 @@ class DataStory
      * @throws AbstractCacheItemException
      * @throws CacheHtmlException
      * @throws DataStoryException
+     * @throws \ReflectionException
      */
     public function setHtml(HTMLResultItem $html, array $tags = []): void
     {
@@ -287,6 +295,7 @@ class DataStory
      *
      * @throws AbstractCacheItemException
      * @throws CacheHtmlException
+     * @throws \ReflectionException
      */
     public function deleteHtml(): bool
     {
@@ -304,6 +313,7 @@ class DataStory
      *
      * @throws AbstractCacheItemException
      * @throws DbResultItemException
+     * @throws \ReflectionException
      */
     public static function execQuery(string $request, array $params = [], array $settings = []): ?DbResultItem
     {

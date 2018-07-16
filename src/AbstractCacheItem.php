@@ -382,7 +382,8 @@ abstract class AbstractCacheItem
      */
     public function delete(): bool
     {
-        if (!$this->cacheConnect->unlink($this->getKey())) {
+        $func = $this->cacheConnect instanceof \Redis ? 'unlink' : 'delete';
+        if (!$this->cacheConnect->$func($this->getKey())) {
             return false;
         }
 

@@ -220,10 +220,10 @@ Constructor
 
 - **protected** method.
 - It can take the following parameter (s):
-  - `$request`(`string`) &mdash; - the text of the request
-  - `$params`(`array`) &mdash; - query parameters
-  - `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
-  - `$settings`(`array`) &mdash; - settings
+  - `$request`(`string`) - the text of the request
+  - `$params`(`array`) - query parameters
+  - `$cacheConnect`(`Memcached`| `Redis`|`null`) - connect to the cache store
+  - `$settings`(`array`) - settings
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -237,7 +237,7 @@ Set object settings
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$settings`(`array`) &mdash; - array of settings
+  - `$settings`(`array`) - array of settings
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`ReflectionException`](http://php.net/class.ReflectionException)
@@ -250,7 +250,7 @@ Establish a connection to the caching repository
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$cacheConnect`(`Memcached`| `Redis`) &mdash; - connection object
+  - `$cacheConnect`(`Memcached`| `Redis`) - connection object
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -274,7 +274,7 @@ Installing Tags
 
 - **protected** method.
 - It can take the following parameter (s):
-  - `$tags`(`array`) &mdash; - array of tags
+  - `$tags`(`array`) - array of tags
 - Returns nothing.
 
 ### `setHashFunc()`<a name="setHashFunc"> </a>
@@ -285,7 +285,7 @@ Set key hashing function
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$hashFunc`(`string`| `callable`) &mdash; - hash function
+  - `$hashFunc`(`string`| `callable`) - hash function
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -298,7 +298,7 @@ Set the query parameter's serialization function
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$serializeFunc`(`callable`| `string`) &mdash; - serialization function
+  - `$serializeFunc`(`callable`| `string`) - serialization function
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -344,7 +344,7 @@ Saving the value in the cache
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$data`(`avtomon\AbstractResult`) &mdash; - value to save
+  - `$data`(`avtomon\AbstractResult`) - value to save
 - Returns the `bool`value.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)

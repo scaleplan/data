@@ -43,6 +43,7 @@ class CacheHtml extends AbstractCacheItem
      *
      * @throws AbstractCacheItemException
      * @throws CacheHtmlException
+     * @throws \ReflectionException
      */
     public function __construct(string $url, array $params = [], $cacheConnect = null, array $tags = [], array $settings = [])
     {

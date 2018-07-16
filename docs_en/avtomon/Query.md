@@ -173,6 +173,7 @@ Run Query
   - `$prefix`(`string`) - the prefix of the keys
 - Returns the `avtomon\DbResultItem`value.
 - Throws one of the following exceptions:
+  - `avtomon\CachePDOException`
   - `avtomon\DbResultItemException`
   - [`avtomon\QueryException`](../avtomon/QueryException.md)
 
@@ -185,6 +186,7 @@ Query asynchronously
 - **public** method.
 - Returns the `bool`value.
 - Throws one of the following exceptions:
+  - `avtomon\CachePDOException`
   - [`avtomon\QueryException`](../avtomon/QueryException.md)
 
 ### `getResult()`<a name="getResult"> </a>

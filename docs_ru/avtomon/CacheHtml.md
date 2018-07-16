@@ -58,15 +58,16 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$url` (`string`) &mdash; - текст урла
-    - `$params` (`array`) &mdash; - параметры запроса
-    - `$cacheConnect` (`Memcached`|`Redis`|`null`) &mdash; - подключение к хранилицу кэшей
-    - `$tags` (`array`) &mdash; - массив тегов
-    - `$settings` (`array`) &mdash; - настройки
+    - `$url` (`string`) - текст урла
+    - `$params` (`array`) - параметры запроса
+    - `$cacheConnect` (`Memcached`|`Redis`|`null`) - подключение к хранилицу кэшей
+    - `$tags` (`array`) - массив тегов
+    - `$settings` (`array`) - настройки
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
     - [`avtomon\CacheHtmlException`](../avtomon/CacheHtmlException.md)
+    - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `setCheckFile()` <a name="setCheckFile"></a>
 
@@ -76,7 +77,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$filePath` (`string`) &mdash; - путь к файлу
+    - `$filePath` (`string`) - путь к файлу
 - Ничего не возвращает.
 
 ### `checkFileTime()` <a name="checkFileTime"></a>
@@ -87,7 +88,7 @@ class устанавливает следующие свойства:
 
 - **protected** method.
 - Может принимать следующий параметр(ы):
-    - `$cacheTime` (`int`) &mdash; - время установки кэша
+    - `$cacheTime` (`int`) - время установки кэша
 - Возвращает `bool` value.
 
 ### `get()` <a name="get"></a>
@@ -111,6 +112,6 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$tags` (`array`) &mdash; - массив тегов
+    - `$tags` (`array`) - массив тегов
 - Ничего не возвращает.
 

@@ -173,6 +173,7 @@ class устанавливает следующие свойства:
     - `$prefix` (`string`) - префикс ключей
 - Возвращает `avtomon\DbResultItem` value.
 - Выбрасывает одно из следующих исключений:
+    - `avtomon\CachePDOException`
     - `avtomon\DbResultItemException`
     - [`avtomon\QueryException`](../avtomon/QueryException.md)
 
@@ -185,6 +186,7 @@ class устанавливает следующие свойства:
 - **public** method.
 - Возвращает `bool` value.
 - Выбрасывает одно из следующих исключений:
+    - `avtomon\CachePDOException`
     - [`avtomon\QueryException`](../avtomon/QueryException.md)
 
 ### `getResult()` <a name="getResult"></a>
