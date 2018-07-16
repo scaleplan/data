@@ -14,7 +14,7 @@ Signature
 ---------
 
 - **class**.
-- It is a subclass of the class [`AbstractCacheItem`](../ avtomon/AbstractCacheItem.md).
+- It is a subclass of the class [`AbstractCacheItem`](../avtomon/AbstractCacheItem.md).
 
 Properties
 ----------
@@ -32,8 +32,8 @@ Connection to the RDB
 
 - **protected** property.
 - Can be one of the following types:
-- `avtomon\_PDO`
-- `null`
+  - `avtomon \ _PDO`
+  - `null`
 
 ### `$isModifying`<a name="isModifying"> </a>
 
@@ -64,14 +64,14 @@ Constructor
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$dbConnect`(`avtomon\_PDO`) &mdash; - connection to the RDB
-	- `$request`(`string`) &mdash; - the text of the request
-	- `$params`(`array`) &mdash; - query parameters
-	- `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
-	- `$settings`(`array`) &mdash; - settings
+  - `$dbConnect`(`avtomon \ _PDO`) &mdash; - connection to the RDB
+  - `$request`(`string`) &mdash; - the text of the request
+  - `$params`(`array`) &mdash; - query parameters
+  - `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
+  - `$settings`(`array`) &mdash; - settings
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `generateTags()`<a name="generateTags"> </a>
 
@@ -99,7 +99,7 @@ Set the query type: changing (true) or reading (false)
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$flag`(`bool`)
+  - `$flag`(`bool`)
 - Returns nothing.
 
 ### `get()`<a name="get"> </a>
@@ -111,10 +111,10 @@ Get Cache Item Data
 - **public** method.
 - Can return one of the following values:
 - array
-- `null`
+  - `null`
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
-- `avtomon\DbResultItemException`
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - `avtomon \ DbResultItemException`
 
 ### `getTags()`<a name="getTags"> </a>
 

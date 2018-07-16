@@ -14,7 +14,7 @@ Signature
 ---------
 
 - **class**.
-- It is a subclass of the class [`AbstractCacheItem`](../ avtomon/AbstractCacheItem.md).
+- It is a subclass of the class [`AbstractCacheItem`](../avtomon/AbstractCacheItem.md).
 
 Constants
 ---------
@@ -58,15 +58,15 @@ Constructor
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$url`(`string`) &mdash; - text url
-	- `$params`(`array`) &mdash; - query parameters
-	- `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
-	- `$tags`(`array`) &mdash; - array of tags
-	- `$settings`(`array`) &mdash; - settings
+  - `$url`(`string`) &mdash; - text url
+  - `$params`(`array`) &mdash; - query parameters
+  - `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
+  - `$tags`(`array`) &mdash; - array of tags
+  - `$settings`(`array`) &mdash; - settings
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
-  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ CacheHtmlException`](../avtomon/CacheHtmlException.md)
 
 ### `setCheckFile()`<a name="setCheckFile"> </a>
 
@@ -76,7 +76,7 @@ Set to the check file
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$filePath`(`string`) &mdash; - the path to the file
+  - `$filePath`(`string`) &mdash; - the path to the file
 - Returns nothing.
 
 ### `checkFileTime()`<a name="checkFileTime"> </a>
@@ -87,7 +87,7 @@ Check the cache relevance by file modification time
 
 - **protected** method.
 - It can take the following parameter (s):
-	- `$cacheTime`(`int`) &mdash; - cache installation time
+  - `$cacheTime`(`int`) &mdash; - cache installation time
 - Returns the `bool`value.
 
 ### `get()`<a name="get"> </a>
@@ -99,9 +99,9 @@ Get Cache Item Data
 - **public** method.
 - Can return one of the following values:
 - array
-- `null`
+  - `null`
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `setTags()`<a name="setTags"> </a>
 
@@ -111,6 +111,6 @@ Installing Tags
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$tags`(`array`) &mdash; - array of tags
+  - `$tags`(`array`) &mdash; - array of tags
 - Returns nothing.
 

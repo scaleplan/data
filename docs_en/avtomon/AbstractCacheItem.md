@@ -79,8 +79,8 @@ Data from the result of the query or value to be stored in the cache
 
 - **protected** property.
 - Can be one of the following types:
-- `null`
-- `avtomon\AbstractResult`
+  - `null`
+  - `avtomon \ AbstractResult`
 
 ### `$value`<a name="value"> </a>
 
@@ -99,9 +99,9 @@ Connecting to the cache store
 
 - **protected** property.
 - Can be one of the following types:
-- `Memcached`
-- `Redis`
-- `null`
+  - `Memcached`
+  - `Redis`
+  - `null`
 
 ### `$tagTtl`<a name="tagTtl"> </a>
 
@@ -154,8 +154,8 @@ Hash key hash cache salt
 
 - **protected** property.
 - Can be one of the following types:
-- `string`
-- `callable`
+  - `string`
+  - `callable`
 
 ### `$paramSerializeFunc`<a name="paramSerializeFunc"> </a>
 
@@ -220,13 +220,13 @@ Constructor
 
 - **protected** method.
 - It can take the following parameter (s):
-	- `$request`(`string`) &mdash; - the text of the request
-	- `$params`(`array`) &mdash; - query parameters
-	- `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
-	- `$settings`(`array`) &mdash; - settings
+  - `$request`(`string`) &mdash; - the text of the request
+  - `$params`(`array`) &mdash; - query parameters
+  - `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
+  - `$settings`(`array`) &mdash; - settings
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
   - [`ReflectionException`](http://php.net/class.ReflectionException)
 
 ### `setSettings()`<a name="setSettings"> </a>
@@ -237,7 +237,7 @@ Set object settings
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$settings`(`array`) &mdash; - array of settings
+  - `$settings`(`array`) &mdash; - array of settings
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`ReflectionException`](http://php.net/class.ReflectionException)
@@ -250,10 +250,10 @@ Establish a connection to the caching repository
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$cacheConnect`(`Memcached`| `Redis`) &mdash; - connection object
+  - `$cacheConnect`(`Memcached`| `Redis`) &mdash; - connection object
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `initTags()`<a name="initTags"> </a>
 
@@ -264,7 +264,7 @@ Initialize the specified array of tags
 - **public** method.
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `setTags()`<a name="setTags"> </a>
 
@@ -274,7 +274,7 @@ Installing Tags
 
 - **protected** method.
 - It can take the following parameter (s):
-	- `$tags`(`array`) &mdash; - array of tags
+  - `$tags`(`array`) &mdash; - array of tags
 - Returns nothing.
 
 ### `setHashFunc()`<a name="setHashFunc"> </a>
@@ -285,10 +285,10 @@ Set key hashing function
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$hashFunc`(`string`| `callable`) &mdash; - hash function
+  - `$hashFunc`(`string`| `callable`) &mdash; - hash function
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `setParamSerializeFunc()`<a name="setParamSerializeFunc"> </a>
 
@@ -298,10 +298,10 @@ Set the query parameter's serialization function
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$serializeFunc`(`callable`| `string`) &mdash; - serialization function
+  - `$serializeFunc`(`callable`| `string`) &mdash; - serialization function
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `getKey()`<a name="getKey"> </a>
 
@@ -321,7 +321,7 @@ Returns an array of validity times for tags associated with a query
 - **protected** method.
 Returns the `array`value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `get()`<a name="get"> </a>
 
@@ -332,9 +332,9 @@ Get the value of the cache entry
 - **public** method.
 - Can return one of the following values:
 - array
-- `null`
+  - `null`
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `set()`<a name="set"> </a>
 
@@ -344,10 +344,10 @@ Saving the value in the cache
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$data`(`avtomon\AbstractResult`) &mdash; - value to save
+  - `$data`(`avtomon \ AbstractResult`) &mdash; - value to save
 - Returns the `bool`value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `delete()`<a name="delete"> </a>
 
@@ -367,5 +367,5 @@ Set lock by key
 - **public** method.
 - Returns the `bool`value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 

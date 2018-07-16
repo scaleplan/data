@@ -14,4 +14,4 @@ Signature
 ---------
 
 - **class**.
-- It is a subclass of the class `avtomon\CustomException`.
+- It is a subclass of the class `avtomon \ CustomException`.

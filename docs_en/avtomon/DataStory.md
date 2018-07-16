@@ -74,8 +74,8 @@ Connection to the RDB
 
 - **protected** property.
 - Can be one of the following types:
-- `null`
-- `avtomon\_PDO`
+  - `null`
+  - `avtomon \ _PDO`
 
 ### `$cacheConnect`<a name="cacheConnect"> </a>
 
@@ -85,9 +85,9 @@ Connecting to the cache store
 
 - **protected** property.
 - Can be one of the following types:
-- `null`
-- `Redis`
-- `Memcached`
+  - `null`
+  - `Redis`
+  - `Memcached`
 
 ### `$cacheQuery`<a name="cacheQuery"> </a>
 
@@ -97,8 +97,8 @@ Query Cache Object
 
 - **protected** property.
 - Can be one of the following types:
-- `null`
-  - [`CacheQuery`](../ avtomon/CacheQuery.md)
+  - `null`
+  - [`CacheQuery`](../avtomon/CacheQuery.md)
 
 ### `$cacheHtml`<a name="cacheHtml"> </a>
 
@@ -108,8 +108,8 @@ Page cache object
 
 - **protected** property.
 - Can be one of the following types:
-- `null`
-  - [`CacheHtml`](../ avtomon/CacheHtml.md)
+  - `null`
+  - [`CacheHtml`](../avtomon/CacheHtml.md)
 
 ### `$requestSettings`<a name="requestSettings"> </a>
 
@@ -148,10 +148,10 @@ Create or return class intstrans
 
 - **public static** method.
 - It can take the following parameter (s):
-	- `$request`(`string`) &mdash; - the text of the request
-	- `$params`(`array`) &mdash; - query parameters
-	- `$settings`(`array`) &mdash; - additional settings
-- Returns [`DataStory`](../ avtomon/DataStory.md) value.
+  - `$request`(`string`) &mdash; - the text of the request
+  - `$params`(`array`) &mdash; - query parameters
+  - `$settings`(`array`) &mdash; - additional settings
+- Returns [`DataStory`](../avtomon/DataStory.md) value.
 
 ### `__construct()`<a name="__construct"> </a>
 
@@ -161,9 +161,9 @@ Constructor
 
 - **protected** method.
 - It can take the following parameter (s):
-	- `$request`(`string`) &mdash; - the text of the request
-	- `$params`(`array`) &mdash; - query parameters
-	- `$settings`(`array`) &mdash; - settings
+  - `$request`(`string`) &mdash; - the text of the request
+  - `$params`(`array`) &mdash; - query parameters
+  - `$settings`(`array`) &mdash; - settings
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`ReflectionException`](http://php.net/class.ReflectionException)
@@ -176,7 +176,7 @@ Set the query type: changing (true) or reading (false)
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$flag`(`bool`)
+  - `$flag`(`bool`)
 - Returns nothing.
 
 ### `setParams()`<a name="setParams"> </a>
@@ -187,7 +187,7 @@ Set query parameters
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$params`(`array`) &mdash; - options
+  - `$params`(`array`) &mdash; - options
 - Returns nothing.
 
 ### `setCacheConnect()`<a name="setCacheConnect"> </a>
@@ -198,7 +198,7 @@ Set cache connection
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$cacheConnect`(`null`| `Redis`|`Memcached`) &mdash; - connection to the cache
+  - `$cacheConnect`(`null`| `Redis`|`Memcached`) &mdash; - connection to the cache
 - Returns nothing.
 
 ### `setDbConnect()`<a name="setDbConnect"> </a>
@@ -209,7 +209,7 @@ Establish connection to the RDB
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$dbConnect`(`avtomon\_PDO`| `null`)
+  - `$dbConnect`(`avtomon \ _PDO`| `null`)
 - Returns nothing.
 
 ### `getCacheQuery()`<a name="getCacheQuery"> </a>
@@ -219,9 +219,9 @@ Return query cache object
 #### Signature
 
 - **protected** method.
-- Returns [`CacheQuery`](../ avtomon/CacheQuery.md) value.
+- Returns [`CacheQuery`](../avtomon/CacheQuery.md) value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `getCacheHtml()`<a name="getCacheHtml"> </a>
 
@@ -230,10 +230,10 @@ Return page cache object
 #### Signature
 
 - **protected** method.
-- Returns [`CacheHtml`](../ avtomon/CacheHtml.md) value.
+- Returns [`CacheHtml`](../avtomon/CacheHtml.md) value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
-  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ CacheHtmlException`](../avtomon/CacheHtmlException.md)
 
 ### `getValue()`<a name="getValue"> </a>
 
@@ -243,11 +243,11 @@ Return the query result to the RDB
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$prefix`(`string`) &mdash; - the prefix of the names of the resulting fields
-- Returns the `avtomon\DbResultItem`value.
+  - `$prefix`(`string`) &mdash; - the prefix of the names of the resulting fields
+- Returns the `avtomon \ DbResultItem`value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
-- `avtomon\DbResultItemException`
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - `avtomon \ DbResultItemException`
 
 ### `deleteValue()`<a name="deleteValue"> </a>
 
@@ -258,7 +258,7 @@ Removing the query cache entry for the database
 - **public** method.
 - Returns the `bool`value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `getHtml()`<a name="getHtml"> </a>
 
@@ -268,11 +268,11 @@ Return HTML
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$verifyingFilePath`(`string`) &mdash; - the path to the file by which the cache's caching will be checked
-- Returns the `avtomon\HTMLResultItem`value.
+  - `$verifyingFilePath`(`string`) &mdash; - the path to the file by which the cache's caching will be checked
+- Returns the `avtomon \ HTMLResultItem`value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
-  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ CacheHtmlException`](../avtomon/CacheHtmlException.md)
 
 ### `setHtml()`<a name="setHtml"> </a>
 
@@ -282,13 +282,13 @@ Cache HTML page
 
 - **public** method.
 - It can take the following parameter (s):
-	- `$html`(`avtomon\HTMLResultItem`) &mdash; - HTML
-	- `$tags`(`array`) &mdash; - tags
+  - `$html`(`avtomon \ HTMLResultItem`) &mdash; - HTML
+  - `$tags`(`array`) &mdash; - tags
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
-  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
-  - [`avtomon\DataStoryException`](../ avtomon/DataStoryException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ CacheHtmlException`](../avtomon/CacheHtmlException.md)
+  - [`avtomon \ DataStoryException`](../avtomon/DataStoryException.md)
 
 ### `deleteHtml()`<a name="deleteHtml"> </a>
 
@@ -299,8 +299,8 @@ Deleting a page cache element
 - **public** method.
 - Returns the `bool`value.
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
-  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon \ CacheHtmlException`](../avtomon/CacheHtmlException.md)
 
 ### `execQuery()`<a name="execQuery"> </a>
 
@@ -310,13 +310,13 @@ Create a query object and execute it
 
 - **public static** method.
 - It can take the following parameter (s):
-	- `$request`(`string`) &mdash; - the text of the request
-	- `$params`(`array`) &mdash; - query parameters
-	- `$settings`(`array`) &mdash; - settings
+  - `$request`(`string`) &mdash; - the text of the request
+  - `$params`(`array`) &mdash; - query parameters
+  - `$settings`(`array`) &mdash; - settings
 - Can return one of the following values:
-- `avtomon\DbResultItem`
-- `null`
+  - `avtomon \ DbResultItem`
+  - `null`
 - Throws one of the following exceptions:
-  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
-- `avtomon\DbResultItemException`
+  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - `avtomon \ DbResultItemException`
 
