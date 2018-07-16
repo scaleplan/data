@@ -19,6 +19,10 @@
     "repositories": [
         {
             "type": "git",
+            "url": "git@github.com:avtomon/_PDO.git"
+        },
+        {
+            "type": "git",
             "url": "git@github.com:avtomon/SqlTemplater.git"
         },
         {
