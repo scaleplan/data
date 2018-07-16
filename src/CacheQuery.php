@@ -32,7 +32,7 @@ class CacheQuery extends AbstractCacheItem
      *
      * @var bool
      */
-    protected $isModifying = true;
+    protected $isModifying = false;
 
     /**
      * Конструктор
@@ -72,13 +72,23 @@ class CacheQuery extends AbstractCacheItem
     }
 
     /**
-     * Вернуть список таблиц, изменяемых запросом
+     * Изменяющий ли запрос
      *
      * @return bool
      */
     public function getIsModifying(): bool
     {
         return $this->isModifying;
+    }
+
+    /**
+     * Установить тип запроса: изменяющий (true) или читающий (false)
+     *
+     * @param bool $flag
+     */
+    public function setIsModifying(bool $flag = true): void
+    {
+        $this->isModifying = $flag;
     }
 
     /**

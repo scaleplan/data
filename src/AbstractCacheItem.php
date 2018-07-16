@@ -76,7 +76,7 @@ abstract class AbstractCacheItem
      *
      * @var array
      */
-    protected $value = self::CACHE_STRUCTURE;
+    protected $value;
 
     /**
      * Подключение к хранилицу кэшей
@@ -300,7 +300,7 @@ abstract class AbstractCacheItem
         }
 
         return array_map(function ($tag) {
-            return $this->cacheConnect->get($tag);
+            return (int) $this->cacheConnect->get($tag);
         }, $this->tags);
     }
 
@@ -376,13 +376,13 @@ abstract class AbstractCacheItem
     }
 
     /**
-     * Удаление элемента кэша
+     * Асинхронное удаление элемента кэша
      *
      * @return bool
      */
     public function delete(): bool
     {
-        if (!$this->cacheConnect->delete($this->getKey())) {
+        if (!$this->cacheConnect->unlink($this->getKey())) {
             return false;
         }
 

@@ -128,6 +128,16 @@ class DataStory
     }
 
     /**
+     * Установить тип запроса: изменяющий (true) или читающий (false)
+     *
+     * @param bool $flag
+     */
+    public function setIsModifying(bool $flag = true): void
+    {
+        $this->requestSettings['isModifying'] = $flag;
+    }
+
+    /**
      * Установить параметры запроса
      *
      * @param array $params - параметры
@@ -214,6 +224,7 @@ class DataStory
 
         $result = $this->getCacheQuery()->get();
         if ($result->getResult() === null) {
+            $this->getCacheQuery()->setLock();
             $result = $getQuery();
             $this->getCacheQuery()->set($result);
         }
@@ -260,7 +271,7 @@ class DataStory
      * @throws CacheHtmlException
      * @throws DataStoryException
      */
-    public function setHtml(HTMLResultItem $html, array $tags = null): void
+    public function setHtml(HTMLResultItem $html, array $tags = []): void
     {
         $cacheHtml = $this->getCacheHtml();
         $cacheHtml->setTags($tags);

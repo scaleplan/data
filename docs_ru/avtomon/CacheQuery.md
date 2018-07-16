@@ -51,7 +51,8 @@ class устанавливает следующие свойства:
 
 - [`__construct()`](#__construct) &mdash; Конструктор
 - [`generateTags()`](#generateTags) &mdash; Инициализация тегов
-- [`getIsModifying()`](#getIsModifying) &mdash; Вернуть список таблиц, изменяемых запросом
+- [`getIsModifying()`](#getIsModifying) &mdash; Изменяющий ли запрос
+- [`setIsModifying()`](#setIsModifying) &mdash; Установить тип запроса: изменяющий (true) или читающий (false)
 - [`get()`](#get) &mdash; Получить данные элемента кэша
 - [`getTags()`](#getTags) &mdash; Вернуть теги запроса
 
@@ -83,12 +84,23 @@ class устанавливает следующие свойства:
 
 ### `getIsModifying()` <a name="getIsModifying"></a>
 
-Вернуть список таблиц, изменяемых запросом
+Изменяющий ли запрос
 
 #### Сигнатура
 
 - **public** method.
 - Возвращает `bool` value.
+
+### `setIsModifying()` <a name="setIsModifying"></a>
+
+Установить тип запроса: изменяющий (true) или читающий (false)
+
+#### Сигнатура
+
+- **public** method.
+- Может принимать следующий параметр(ы):
+    - `$flag` (`bool`)
+- Ничего не возвращает.
 
 ### `get()` <a name="get"></a>
 

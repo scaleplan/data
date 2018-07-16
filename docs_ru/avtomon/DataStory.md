@@ -127,6 +127,7 @@ class устанавливает следующие свойства:
 
 - [`create()`](#create) &mdash; Создать или вернуть инстранс класса
 - [`__construct()`](#__construct) &mdash; Конструктор
+- [`setIsModifying()`](#setIsModifying) &mdash; Установить тип запроса: изменяющий (true) или читающий (false)
 - [`setParams()`](#setParams) &mdash; Установить параметры запроса
 - [`setCacheConnect()`](#setCacheConnect) &mdash; Установить посдключение к кэшу
 - [`setDbConnect()`](#setDbConnect) &mdash; Установить подключение к РБД
@@ -166,6 +167,17 @@ class устанавливает следующие свойства:
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`ReflectionException`](http://php.net/class.ReflectionException)
+
+### `setIsModifying()` <a name="setIsModifying"></a>
+
+Установить тип запроса: изменяющий (true) или читающий (false)
+
+#### Сигнатура
+
+- **public** method.
+- Может принимать следующий параметр(ы):
+    - `$flag` (`bool`)
+- Ничего не возвращает.
 
 ### `setParams()` <a name="setParams"></a>
 
