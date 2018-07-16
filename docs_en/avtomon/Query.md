@@ -72,7 +72,7 @@ Connection to the RDB
 - **protected** property.
 - Can be one of the following types:
   - `null`
-  - `avtomon \ _PDO`
+  - `avtomon\_PDO`
 
 ### `$result`<a name="result"> </a>
 
@@ -82,7 +82,7 @@ Query result
 
 - **protected** property.
 - Can be one of the following types:
-  - `avtomon \ DbResultItem`
+  - `avtomon\DbResultItem`
   - `null`
 
 Methods
@@ -108,12 +108,12 @@ Constructor
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$dbConnect`(`avtomon \ _PDO`)
+  - `$dbConnect`(`avtomon\_PDO`)
   - `$sql`(`string`)
   - `$params`(`array`)
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon \ QueryException`](../avtomon/QueryException.md)
+  - [`avtomon\QueryException`](../avtomon/QueryException.md)
 
 ### `getRawSql()`<a name="getRawSql"> </a>
 
@@ -159,7 +159,7 @@ Establish connection to the RDB
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$dbConnect`(`avtomon \ _PDO`) &mdash; - connection to the RDB
+  - `$dbConnect`(`avtomon\_PDO`) &mdash; - connection to the RDB
 - Returns nothing.
 
 ### `execute()`<a name="execute"> </a>
@@ -171,10 +171,10 @@ Run Query
 - **public** method.
 - It can take the following parameter (s):
   - `$prefix`(`string`) &mdash; - key prefix
-- Returns the `avtomon \ DbResultItem`value.
+- Returns the `avtomon\DbResultItem`value.
 - Throws one of the following exceptions:
-  - `avtomon \ DbResultItemException`
-  - [`avtomon \ QueryException`](../avtomon/QueryException.md)
+  - `avtomon\DbResultItemException`
+  - [`avtomon\QueryException`](../avtomon/QueryException.md)
 
 ### `executeAsync()`<a name="executeAsync"> </a>
 
@@ -185,7 +185,7 @@ Query asynchronously
 - **public** method.
 - Returns the `bool`value.
 - Throws one of the following exceptions:
-  - [`avtomon \ QueryException`](../avtomon/QueryException.md)
+  - [`avtomon\QueryException`](../avtomon/QueryException.md)
 
 ### `getResult()`<a name="getResult"> </a>
 
@@ -194,5 +194,5 @@ Return result of request
 #### Signature
 
 - **public** method.
-- Returns the `avtomon \ DbResultItem`value.
+- Returns the `avtomon\DbResultItem`value.
 

@@ -51,7 +51,7 @@ class Query
     /**
      * Подключение к РБД
      *
-     * @var null|_PDO
+     * @var null|CachePDO
      */
     protected $dbConnect;
 
@@ -66,12 +66,12 @@ class Query
      * Конструктор
      *
      * @param string $sql - необработанный текст запроса
-     * @param _PDO|null $dbConnect - подключение к РБД
+     * @param CachePDO|null $dbConnect - подключение к РБД
      * @param array $params - необработанный массив параметров запроса
      *
      * @throws QueryException
      */
-    public function __construct(_PDO $dbConnect = null, string $sql, array $params = [])
+    public function __construct(CachePDO $dbConnect = null, string $sql, array $params = [])
     {
         if (!$sql) {
             throw new QueryException('Текст запроса пуст');
@@ -133,9 +133,9 @@ class Query
     /**
      * Установить подключение к РБД
      *
-     * @param _PDO $dbConnect - подключение к РБД
+     * @param CachePDO $dbConnect - подключение к РБД
      */
-    public function setDbConnect(_PDO $dbConnect): void
+    public function setDbConnect(CachePDO $dbConnect): void
     {
         $this->dbConnect = $dbConnect;
     }

@@ -32,7 +32,7 @@ Connection to the RDB
 
 - **protected** property.
 - Can be one of the following types:
-  - `avtomon \ _PDO`
+  - `avtomon\_PDO`
   - `null`
 
 ### `$isModifying`<a name="isModifying"> </a>
@@ -64,14 +64,14 @@ Constructor
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$dbConnect`(`avtomon \ _PDO`) &mdash; - connection to the RDB
+  - `$dbConnect`(`avtomon\_PDO`) &mdash; - connection to the RDB
   - `$request`(`string`) &mdash; - the text of the request
   - `$params`(`array`) &mdash; - query parameters
   - `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
   - `$settings`(`array`) &mdash; - settings
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `generateTags()`<a name="generateTags"> </a>
 
@@ -113,8 +113,8 @@ Get Cache Item Data
 - array
   - `null`
 - Throws one of the following exceptions:
-  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
-  - `avtomon \ DbResultItemException`
+  - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - `avtomon\DbResultItemException`
 
 ### `getTags()`<a name="getTags"> </a>
 

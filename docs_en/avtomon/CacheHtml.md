@@ -65,8 +65,8 @@ Constructor
   - `$settings`(`array`) &mdash; - settings
 - Returns nothing.
 - Throws one of the following exceptions:
-  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
-  - [`avtomon \ CacheHtmlException`](../avtomon/CacheHtmlException.md)
+  - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\CacheHtmlException`](../avtomon/CacheHtmlException.md)
 
 ### `setCheckFile()`<a name="setCheckFile"> </a>
 
@@ -101,7 +101,7 @@ Get Cache Item Data
 - array
   - `null`
 - Throws one of the following exceptions:
-  - [`avtomon \ AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
 
 ### `setTags()`<a name="setTags"> </a>
 

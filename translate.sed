@@ -2,6 +2,7 @@
 
 s/] (/](/g
 s/\s*\/\s*/\//g
+s/\s*\\\s*/\\/g
 s/& mdash/\&mdash/g
 s/(# /(#/g
 s/Класс ошибки/Error class/g

@@ -23,7 +23,7 @@ class CacheQuery extends AbstractCacheItem
     /**
      * Подключение к РБД
      *
-     * @var _PDO|null
+     * @var CachePDO|null
      */
     protected $dbConnect;
 
@@ -37,7 +37,7 @@ class CacheQuery extends AbstractCacheItem
     /**
      * Конструктор
      *
-     * @param _PDO $dbConnect - подключение к РБД
+     * @param CachePDO $dbConnect - подключение к РБД
      * @param string $request - текст SQL-запроса
      * @param array $params - параметры запроса
      * @param null $cacheConnect - подключение к кэшу
@@ -45,7 +45,7 @@ class CacheQuery extends AbstractCacheItem
      *
      * @throws AbstractCacheItemException
      */
-    public function __construct(_PDO $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = [])
+    public function __construct(CachePDO $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = [])
     {
         $this->dbConnect = $dbConnect;
         $this->request = $request;

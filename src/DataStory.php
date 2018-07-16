@@ -59,7 +59,7 @@ class DataStory
     /**
      * Подключение к РБД
      *
-     * @var null|_PDO
+     * @var null|CachePDO
      */
     protected $dbConnect;
 
@@ -160,9 +160,9 @@ class DataStory
     /**
      * Установить подключение к РБД
      *
-     * @param _PDO|null $dbConnect
+     * @param CachePDO|null $dbConnect
      */
-    public function setDbConnect(?_PDO $dbConnect): void
+    public function setDbConnect(?CachePDO $dbConnect): void
     {
         $this->dbConnect = $dbConnect;
     }
