@@ -1,9 +1,9 @@
-the <small>avtomon</small>
+<small> avtomon </small>
 
 AbstractCacheItem
 =================
 
-Cache base class
+Base class of caching
 
 Description
 -----------
@@ -18,354 +18,354 @@ Signature
 Constants
 ---------
 
-the abstract class sets the following constants:
+The abstract class sets the following constants:
 
-- ['CACHE_STRUCTURE'](#CACHE_STRUCTURE) &mdash; the default cache element Structure
+  - [`CACHE_STRUCTURE`](#CACHE_STRUCTURE) &mdash; Default cache structure
 
 Properties
 ----------
 
-the abstract class sets the following properties:
+The abstract class sets the following properties:
 
-- ['$settings'](#$settings) &mdash; cache item Settings
-- ['$request`](#$request) &mdash; request Text
-- ['$params`](#$params) &mdash; query Parameters
-- ['$data'](#$data) &mdash; the data from the query result or the value to be cached
-- ['$value'](#$value) &mdash; value stored in cache
-  - [`$cacheConnect`](#$cacheConnect) &mdash; the Connection to granilith caches
-- ['$tagTtl'](#$tagTtl) &mdash; tag lifetime
-- ['$ttl'](#$ttl) &mdash; cache item lifetime
-  - [`$lockValue`](#$lockValue) &mdash; the value of the item cache indicating a lock
-- ['$tryCount'](#$tryCount) &mdash; number of times to get the value of the cache item
-  - [`$>`](#$solt) &mdash; the Salt of the hash of the cache key
-- ['$hashFunc'](#$hashFunc)
-  - [`$paramSerializeFunc`](#$paramSerializeFunc) &mdash; a Function to serialize query parameters
-- ['$key'](#$key) &mdash; cache Key
-- ['$tags'](#$tags) &mdash; cache item Tags
-- ['$tryDelay'](#$tryDelay) &mdash; the time interval between two consecutive attempts to retrieve the value of a cache item
+  - [`$settings`](#$settings) &mdash; Cache item settings
+  - [`$request`](#$request) &mdash; Request text
+  - [`$params`](#$params) &mdash; Query Parameters
+  - [`$data`](#$data) &mdash; Data from the result of the query or value to be stored in the cache
+  - [`$value`](#$value) &mdash; Value stored in the cache
+  - [`$cacheConnect`](#$cacheConnect) &mdash; Connecting to the cache store
+  - [`$tagTtl`](#$tagTtl) &mdash; TTL lifetime
+  - [`$ttl`](#$ttl) &mdash; Cache element lifetime
+  - [`$lockValue`](#$lockValue) &mdash; The value of the cache entry denoting a lock
+  - [`$tryCount`](#$tryCount) &mdash; The number of attempts to get the value of the cache entry
+  - [`$solt`](#$solt) &mdash; Hash key hash cache salt
+  - [`$hashFunc`](#$hashFunc)
+  - [`$paramSerializeFunc`](#$paramSerializeFunc) &mdash; Function serialization query parameters
+  - [`$key`](#$key) &mdash; Cache key
+  - [`$tags`](#$tags) &mdash; Cache element tags
+  - [`$tryDelay`](#$tryDelay) &mdash; The time interval between two consecutive attempts to get the value of the cache entry
 
-### '$settings '<a name= "settings" ></a>
+### `$settings`<a name="settings"> </a>
 
 Cache item settings
 
 #### Signature
 
-- **protected static * * property.
-- Value 'array'.
+**protected static** property.
+- The value of `array`.
 
-### '$request ' <a name="request" ></a>
+### `$request`<a name="request"> </a>
 
-Query text
-
-#### Signature
-
-- **protected * * property.
-- Value `string'.
-
-### '$params '<a name= "params" ></a>
-
-Query parameter
+Request text
 
 #### Signature
 
-- **protected * * property.
-- Value 'array'.
+- **protected** property.
+- The value of `string`.
 
-### '$data '<a name= "data" ></a>
+### `$params`<a name="params"> </a>
 
-Data from the query result or value to be cached
+Query Parameters
 
 #### Signature
 
-- **protected * * property.
+- **protected** property.
+- The value of `array`.
+
+### `$data`<a name="data"> </a>
+
+Data from the result of the query or value to be stored in the cache
+
+#### Signature
+
+- **protected** property.
 - Can be one of the following types:
-    - 'null`
-    - `avtomon\AbstractResult`
+- `null`
+- `avtomon\AbstractResult`
 
-### '$value '<a name= "value" ></a>
+### `$value`<a name="value"> </a>
 
-The value stored in the cache
-
-#### Signature
-
-- **protected * * property.
-- Value 'array'.
-
-### '$cacheConnect '<a name= "cacheConnect" ></a>
-
-Connecting to cache storage
+Value stored in the cache
 
 #### Signature
 
-- **protected * * property.
+- **protected** property.
+- The value of `array`.
+
+### `$cacheConnect`<a name="cacheConnect"> </a>
+
+Connecting to the cache store
+
+#### Signature
+
+- **protected** property.
 - Can be one of the following types:
-    - 'Memcached`
-    - 'Redis`
-    - 'null`
+- `Memcached`
+- `Redis`
+- `null`
 
-### '$tagTtl '<a name= "tagTtl" ></a>
+### `$tagTtl`<a name="tagTtl"> </a>
 
-Tag life time
-
-#### Signature
-
-- **protected * * property.
-- The value `int`.
-
-### '$ttl '<a name= " ttl " ></a>
-
-The life time of the cache element
+TTL lifetime
 
 #### Signature
 
-- **protected * * property.
-- The value `int`.
+- **protected** property.
+- The value of `int`.
 
-### '$lockValue '<a name= "lockValue"></a>
+### `$ttl`<a name="ttl"> </a>
 
-The value of the cache element indicates a lock
-
-#### Signature
-
-- **protected * * property.
-- Value `string'.
-
-### '$tryCount '<a name= "tryCount" ></a>
-
-Number of times to get cache item value
+Cache element lifetime
 
 #### Signature
 
-- **protected * * property.
-- The value `int`.
+- **protected** property.
+- The value of `int`.
 
-### '$solt '<a name= "solt" ></a>
+### `$lockValue`<a name="lockValue"> </a>
 
-The salt of the hash of the cache key
-
-#### Signature
-
-- **protected * * property.
-- Value `string'.
-
-### '$hashFunc '<a name= "hashFunc" ></a>
+The value of the cache entry denoting a lock
 
 #### Signature
 
-- **protected * * property.
+- **protected** property.
+- The value of `string`.
+
+### `$tryCount`<a name="tryCount"> </a>
+
+The number of attempts to get the value of the cache entry
+
+#### Signature
+
+- **protected** property.
+- The value of `int`.
+
+### `$solt`<a name="solt"> </a>
+
+Hash key hash cache salt
+
+#### Signature
+
+- **protected** property.
+- The value of `string`.
+
+### `$hashFunc`<a name="hashFunc"> </a>
+
+#### Signature
+
+- **protected** property.
 - Can be one of the following types:
-    - 'string`
-    - `callable`
+- `string`
+- `callable`
 
-### '$paramSerializeFunc '<a name= "paramSerializeFunc" ></a>
+### `$paramSerializeFunc`<a name="paramSerializeFunc"> </a>
 
-Function serializing query parameters
-
-#### Signature
-
-- **protected * * property.
-- Null.`
-
-### '$key '<a name= " key " ></a>
-
-The cache key
+Function serialization query parameters
 
 #### Signature
 
-- **protected * * property.
-- Value `string'.
+- **protected** property.
+- The value of `null`.
 
-### '$tags '<a name= "tags" ></a>
+### `$key`<a name="key"> </a>
 
-Cache item tags
-
-#### Signature
-
-- **protected * * property.
-- Value 'array'.
-
-### '$tryDelay '<a name= "tryDelay"></a>
-
-The time interval between two consecutive attempts to retrieve the value of a cache item
+Cache key
 
 #### Signature
 
-- **protected * * property.
-- The value `int`.
+- **protected** property.
+- The value of `string`.
+
+### `$tags`<a name="tags"> </a>
+
+Cache element tags
+
+#### Signature
+
+- **protected** property.
+- The value of `array`.
+
+### `$tryDelay`<a name="tryDelay"> </a>
+
+The time interval between two consecutive attempts to get the value of the cache entry
+
+#### Signature
+
+- **protected** property.
+- The value of `int`.
 
 Methods
 -------
 
-Methods of the abstract class:
+Abstract class methods:
 
-  - [`__construct (`' ](#__construct) &mdash; Constructor
-- ['setSettings()'](#setSettings) &mdash; set object settings
-  - [`setCacheConnect()`](#setCacheConnect) &mdash; to establish a connection to the caching storage
-- ['initTags()'](#initTags) &mdash; Initialization of a given tag array
-- ['setTags()'](#setTags) &mdash; tagging
-  - [`setHashFunc()`](#setHashFunc) &mdash; Set the hash key
-  - [`setParamSerializeFunc()`](#setParamSerializeFunc) &mdash; Set the serialization of query parameters
-  - [`getKey()`](#getKey) &mdash; a Function of receiving the key for the cache item
-  - [`getTagsTimes()`](#getTagsTimes) &mdash; Returns an array of times, the relevance of tags assotsiirovannyh request
-- ['get()'](#get) &mdash; Get cache item value
-- ['set()'](#set) &mdash; Saving value in cache
-- ['delete()'](#delete) &mdash; Asynchronous cache item deletion
-- ['setLock()'](#setLock) &mdash; set key lock
+  - [`__construct()`](#__construct) &mdash; Constructor
+  - [`setSettings()`](#setSettings) &mdash; Set object settings
+  - [`setCacheConnect()`](#setCacheConnect) &mdash; Establish a connection to the caching repository
+  - [`initTags()`](#initTags) &mdash; Initialize the specified array of tags
+  - [`setTags()`](#setTags) &mdash; Installing Tags
+  - [`setHashFunc()`](#setHashFunc) &mdash; Set key hashing function
+  - [`setParamSerializeFunc()`](#setParamSerializeFunc) &mdash; Set the query parameter's serialization function
+  - [`getKey()`](#getKey) &mdash; The function to retrieve the cache entry key
+  - [`getTagsTimes()`](#getTagsTimes) &mdash; Returns an array of validity times for tags associated with a query
+  - [`get()`](#get) &mdash; Get the value of the cache entry
+  - [`set()`](#set) &mdash; Saving the value in the cache
+  - [`delete()`](#delete) &mdash; Asynchronous deletion of a cache entry
+  - [`setLock()`](#setLock) &mdash; Set lock by key
 
-### `__construct() '<a name= "__construct " ></a>
+### `__construct()`<a name="__construct"> </a>
 
-Designer
+Constructor
 
 #### Signature
 
-- **protected * * method.
-- Can take the following parameter (s):
-    - '$request ' ('string`) &mdash; - request text
-    - '$params ' ('array`) &mdash; - query parameters
-    - '$cacheConnect ' ('Memcached' | 'Redis`|`null') &mdash; - connect to cache storage
-    - '$settings ' ('array`) &mdash; - settings
-- It doesn't make it back.
+- **protected** method.
+- It can take the following parameter (s):
+	- `$request`(`string`) &mdash; - the text of the request
+	- `$params`(`array`) &mdash; - query parameters
+	- `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
+	- `$settings`(`array`) &mdash; - settings
+- Returns nothing.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
-    - ['ReflectionException'](http://php.net/class.ReflectionException)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`ReflectionException`](http://php.net/class.ReflectionException)
 
-### 'setSettings()' <a name= "setSettings" ></a>
+### `setSettings()`<a name="setSettings"> </a>
 
 Set object settings
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$settings ' ('array`) &mdash; - array of settings
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$settings`(`array`) &mdash; - array of settings
+- Returns nothing.
 - Throws one of the following exceptions:
-    - ['ReflectionException'](http://php.net/class.ReflectionException)
+  - [`ReflectionException`](http://php.net/class.ReflectionException)
 
-### 'setCacheConnect (`'<a name= "setCacheConnect" ></a>
+### `setCacheConnect()`<a name="setCacheConnect"> </a>
 
-Connect to the cache storage
+Establish a connection to the caching repository
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$cacheConnect ' ('Memcached' | 'Redis') &mdash; - connection object
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$cacheConnect`(`Memcached`| `Redis`) &mdash; - connection object
+- Returns nothing.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### 'initTags()' <a name= "initTags" ></a>
+### `initTags()`<a name="initTags"> </a>
 
-Initialize a given array of tags
+Initialize the specified array of tags
 
 #### Signature
 
-- **public * * method.
-- It doesn't make it back.
+- **public** method.
+- Returns nothing.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### `setTags() '<a name= "setTags" ></a>
+### `setTags()`<a name="setTags"> </a>
 
-Tagging
-
-#### Signature
-
-- **protected * * method.
-- Can take the following parameter (s):
-    - '$tags ' ('array`) &mdash; - array of tags
-- It doesn't make it back.
-
-### 'setHashFunc()' <a name= "setHashFunc" ></a>
-
-Set the hash key
+Installing Tags
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$hashFunc ' ('string`| 'callable') &mdash; - hash function
-- It doesn't make it back.
+- **protected** method.
+- It can take the following parameter (s):
+	- `$tags`(`array`) &mdash; - array of tags
+- Returns nothing.
+
+### `setHashFunc()`<a name="setHashFunc"> </a>
+
+Set key hashing function
+
+#### Signature
+
+- **public** method.
+- It can take the following parameter (s):
+	- `$hashFunc`(`string`| `callable`) &mdash; - hash function
+- Returns nothing.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### 'setParamSerializeFunc (`'<a name= "setParamSerializeFunc" ></a>
+### `setParamSerializeFunc()`<a name="setParamSerializeFunc"> </a>
 
-Set the serialization of query parameters
+Set the query parameter's serialization function
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$serializeFunc ' ('callable`| 'string') &mdash; - serialization function
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$serializeFunc`(`callable`| `string`) &mdash; - serialization function
+- Returns nothing.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### 'getKey()' <a name= 'getKey' ></a>
+### `getKey()`<a name="getKey"> </a>
 
-A function of receiving the key for the cache item
-
-#### Signature
-
-- **protected * * method.
-- Returns 'string' value.
-
-### `getTagsTimes() '<a name= "getTagsTimes" ></a>
-
-Returns an array of the time-to-date tags associated with the query
+The function to retrieve the cache entry key
 
 #### Signature
 
-- **protected * * method.
-- Returns 'array' value.
+- **protected** method.
+Returns `string`value.
+
+### `getTagsTimes()`<a name="getTagsTimes"> </a>
+
+Returns an array of validity times for tags associated with a query
+
+#### Signature
+
+- **protected** method.
+Returns the `array`value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### 'get()' <a name= ' get ' ></a>
+### `get()`<a name="get"> </a>
 
-To get the value of a cache item
+Get the value of the cache entry
 
 #### Signature
 
-- **public * * method.
+- **public** method.
 - Can return one of the following values:
-    - 'array`
-    - 'null`
+- array
+- `null`
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### 'set()' <a name= " set " ></a>
+### `set()`<a name="set"> </a>
 
-Save the value in the cache
+Saving the value in the cache
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$data ' ('avtomon\AbstractResult') &mdash; - value to save
-- Returns `bool ' value.
+- **public** method.
+- It can take the following parameter (s):
+	- `$data`(`avtomon\AbstractResult`) &mdash; - value to save
+- Returns the `bool`value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### 'delete()' <a name= 'delete' ></a>
+### `delete()`<a name="delete"> </a>
 
-Asynchronous deletion of a cache item
+Asynchronous deletion of a cache entry
 
 #### Signature
 
-- **public * * method.
-- Returns `bool ' value.
+- **public** method.
+- Returns the `bool`value.
 
-### 'setLock()' <a name= "setLock" ></a>
+### `setLock()`<a name="setLock"> </a>
 
 Set lock by key
 
 #### Signature
 
-- **public * * method.
-- Returns `bool ' value.
+- **public** method.
+- Returns the `bool`value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 

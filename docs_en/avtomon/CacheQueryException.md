@@ -1,4 +1,4 @@
-the <small>avtomon</small>
+<small> avtomon </small>
 
 CacheQueryException
 ===================
@@ -14,4 +14,4 @@ Signature
 ---------
 
 - **class**.
-- Is a subclass of the class `avtomon\CustomException`.
+- It is a subclass of the class `avtomon\CustomException`.

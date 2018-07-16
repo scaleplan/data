@@ -1,9 +1,9 @@
-the <small>avtomon</small>
+<small> avtomon </small>
 
 CacheHtml
 =========
 
-Class control the caching of HTML pages
+Class of caching HTML pages
 
 Description
 -----------
@@ -14,103 +14,103 @@ Signature
 ---------
 
 - **class**.
-- Is a subclass of the class ['AbstractCacheItem'](../avtomon/AbstractCacheItem.md).
+- It is a subclass of the class [`AbstractCacheItem`](../ avtomon/AbstractCacheItem.md).
 
 Constants
 ---------
 
 class sets the following constants:
 
-  - [`URL_TEMPLATE`](#URL_TEMPLATE) &mdash; a Regular expression to validate the format of the transmitted url
+  - [`URL_TEMPLATE`](#URL_TEMPLATE) &mdash; Regular expression for verifying the correct format of the transmitted URL
 
 Properties
 ----------
 
 class sets the following properties:
 
-- ['$checkFile'](#$checkFile) &mdash; the Path to the file where the cache will be checked
+  - [`$checkFile`](#$checkFile) &mdash; The path to the file on which the cache relevance will be checked
 
-### '$checkFile '<a name= "checkFile" ></a>
+### `$checkFile`<a name="checkFile"> </a>
 
-The path to the file that will be used to check whether the cache is up-to-date
+The path to the file on which the cache relevance will be checked
 
 #### Signature
 
-- **protected * * property.
-- Value `string'.
+- **protected** property.
+- The value of `string`.
 
 Methods
 -------
 
 Class methods class:
 
-  - [`__construct (`' ](#__construct) &mdash; Constructor
-  - [`setCheckFile()`](#setCheckFile) &mdash; Set the file check
-  - [`checkFileTime()`](#checkFileTime) &mdash; to Check the relevance of the cache file changes
-- ['get()'](#get) &mdash; Get cache item data
-- ['setTags()'](#setTags) &mdash; tagging
+  - [`__construct()`](#__construct) &mdash; Constructor
+  - [`setCheckFile()`](#setCheckFile) &mdash; Set to the check file
+  - [`checkFileTime()`](#checkFileTime) &mdash; Check the cache relevance by file modification time
+  - [`get()`](#get) &mdash; Get Cache Item Data
+  - [`setTags()`](#setTags) &mdash; Installing Tags
 
-### `__construct() '<a name= "__construct " ></a>
+### `__construct()`<a name="__construct"> </a>
 
-Designer
+Constructor
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$url ' ('string`) &mdash; - url text
-    - '$params ' ('array`) &mdash; - query parameters
-    - '$cacheConnect ' ('Memcached' | 'Redis`|`null') &mdash; - connect to cache storage
-    - '$tags ' ('array`) &mdash; - array of tags
-    - '$settings ' ('array`) &mdash; - settings
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$url`(`string`) &mdash; - text url
+	- `$params`(`array`) &mdash; - query parameters
+	- `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
+	- `$tags`(`array`) &mdash; - array of tags
+	- `$settings`(`array`) &mdash; - settings
+- Returns nothing.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
-      - [`avtomon\CacheHtmlException'](../avtomon/CacheHtmlException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
 
-### 'setCheckFile()' <a name= 'setCheckFile' ></a>
+### `setCheckFile()`<a name="setCheckFile"> </a>
 
-To install the file check
-
-#### Signature
-
-- **public * * method.
-- Can take the following parameter (s):
-    - '$filePath ' ('string`) &mdash; - file path
-- It doesn't make it back.
-
-### 'checkFileTime()' <a name= 'checkFileTime' ></a>
-
-To check the relevance of the cache file changes
+Set to the check file
 
 #### Signature
 
-- **protected * * method.
-- Can take the following parameter (s):
-    - '$cacheTime ' ('int`) &mdash; - cache installation time
-- Returns `bool ' value.
+- **public** method.
+- It can take the following parameter (s):
+	- `$filePath`(`string`) &mdash; - the path to the file
+- Returns nothing.
 
-### 'get()' <a name= ' get ' ></a>
+### `checkFileTime()`<a name="checkFileTime"> </a>
 
-Get cache item data
+Check the cache relevance by file modification time
 
 #### Signature
 
-- **public * * method.
+- **protected** method.
+- It can take the following parameter (s):
+	- `$cacheTime`(`int`) &mdash; - cache installation time
+- Returns the `bool`value.
+
+### `get()`<a name="get"> </a>
+
+Get Cache Item Data
+
+#### Signature
+
+- **public** method.
 - Can return one of the following values:
-    - 'array`
-    - 'null`
+- array
+- `null`
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### `setTags() '<a name= "setTags" ></a>
+### `setTags()`<a name="setTags"> </a>
 
-Tagging
+Installing Tags
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$tags ' ('array`) &mdash; - array of tags
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$tags`(`array`) &mdash; - array of tags
+- Returns nothing.
 

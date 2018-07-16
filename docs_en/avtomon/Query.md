@@ -1,9 +1,9 @@
-the <small>avtomon</small>
+<small> avtomon </small>
 
 Query
-=== = = 
+=====
 
-Class to query the database
+Class of organization of database queries
 
 Description
 -----------
@@ -20,179 +20,179 @@ Properties
 
 class sets the following properties:
 
-- ['$rawSql'](#$rawSql) &mdash; the text of the SQL query template
-- ['$sql'](#$sql) &mdash; query Text after processing SqlTemplater:: sql()
-  - [`$rawParams`](#$rawParams) &mdash; the parameters of the request before processing SqlTemplater::sql()
-- ['$params`](#$params) &mdash; query Parameters
-- ['$dbConnect'](#$dbConnect) &mdash; connection to RDB
-- ['$result`](#$result) &mdash; query Result
+  - [`$rawSql`](#$rawSql) &mdash; The text of the SQL query template
+  - [`$sql`](#$sql) &mdash; The request text after processing SqlTemplater :: sql()
+  - [`$rawParams`](#$rawParams) &mdash; Query parameters before processing SqlTemplater :: sql()
+  - [`$params`](#$params) &mdash; Query Parameters
+  - [`$dbConnect`](#$dbConnect) &mdash; Connection to the RDB
+  - [`$result`](#$result) &mdash; Query result
 
-### '$rawSql '<a name= "rawSql" ></a>
+### `$rawSql`<a name="rawSql"> </a>
 
-The template text of the SQL query
-
-#### Signature
-
-- **protected * * property.
-- Value `string'.
-
-### '$sql '<a name= " sql " ></a>
-
-The text of the query after processing SqlTemplater::sql()
+The text of the SQL query template
 
 #### Signature
 
-- **protected * * property.
-- Value `string'.
+- **protected** property.
+- The value of `string`.
 
-### '$rawParams '<a name= "rawParams" ></a>
+### `$sql`<a name="sql"> </a>
 
-The parameters of the request before processing SqlTemplater::sql()
-
-#### Signature
-
-- **protected * * property.
-- Value 'array'.
-
-### '$params '<a name= "params" ></a>
-
-Query parameter
+The request text after processing SqlTemplater :: sql()
 
 #### Signature
 
-- **protected * * property.
-- Value 'array'.
+- **protected** property.
+- The value of `string`.
 
-### '$dbConnect '<a name= "dbConnect" ></a>
+### `$rawParams`<a name="rawParams"> </a>
 
-Connection to RBD
+Query parameters before processing SqlTemplater :: sql()
 
 #### Signature
 
-- **protected * * property.
+- **protected** property.
+- The value of `array`.
+
+### `$params`<a name="params"> </a>
+
+Query Parameters
+
+#### Signature
+
+- **protected** property.
+- The value of `array`.
+
+### `$dbConnect`<a name="dbConnect"> </a>
+
+Connection to the RDB
+
+#### Signature
+
+- **protected** property.
 - Can be one of the following types:
-    - 'null`
-    `'avtomon\_PDO`
+- `null`
+- `avtomon\_PDO`
 
-### '$result '<a name= "result" ></a>
+### `$result`<a name="result"> </a>
 
 Query result
 
 #### Signature
 
-- **protected * * property.
+- **protected** property.
 - Can be one of the following types:
-    - `avtomon\DbResultItem`
-    - 'null`
+- `avtomon\DbResultItem`
+- `null`
 
 Methods
 -------
 
 Class methods class:
 
-  - [`__construct (`' ](#__construct) &mdash; Constructor
-- ['getRawSql()'](#getRawSql) &mdash; Return raw query text
-- ['getRawParams()'](#getRawParams) &mdash; Return raw array of query parameters
-- ['getSql (`' ](#getSql) &mdash; Return the query text after processing SqlTemplater:: sql()
-- ['getParams (`' ](#getParams) &mdash; Return query parameters after processing SqlTemplater:: sql()
-- ['setDbConnect()'](#setDbConnect) &mdash; connect to RDB
-- ['execute()'](#execute) &mdash; execute request
-- ['executeAsync()'](#executeAsync) &mdash; execute request asynchronously
-- ['getResult()'](#getResult) &mdash; Return request result
+  - [`__construct()`](#__construct) &mdash; Constructor
+  - [`getRawSql()`](#getRawSql) &mdash; Return unprocessed query text
+  - [`getRawParams()`](#getRawParams) &mdash; Return an unhandled array of query parameters
+  - [`getSql()`](#getSql) &mdash; Return the text of the request after processing SqlTemplater :: sql()
+  - [`getParams()`](#getParams) &mdash; Return query parameters after processing SqlTemplater :: sql()
+  - [`setDbConnect()`](#setDbConnect) &mdash; Establish connection to the RDB
+  - [`execute()`](#execute) &mdash; Run Query
+  - [`executeAsync()`](#executeAsync) &mdash; Query asynchronously
+  - [`getResult()`](#getResult) &mdash; Return result of request
 
-### `__construct() '<a name= "__construct " ></a>
+### `__construct()`<a name="__construct"> </a>
 
-Designer
+Constructor
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$dbConnect ' (`avtomon\_PDO`)
-    - '$sql ' ('string`)
-    - '$params ' ('array`)
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$dbConnect`(`avtomon\_PDO`)
+	- `$sql`(`string`)
+	- `$params`(`array`)
+- Returns nothing.
 - Throws one of the following exceptions:
-      - [`avtomon\QueryException'](../avtomon/QueryException.md)
+  - [`avtomon\QueryException`](../ avtomon/QueryException.md)
 
-### 'getRawSql()' <a name= "getRawSql" ></a>
+### `getRawSql()`<a name="getRawSql"> </a>
 
-To return the raw request body
-
-#### Signature
-
-- **public * * method.
-- Returns 'string' value.
-
-### 'getRawParams()' <a name= "getRawParams" ></a>
-
-Return the raw array of query parameters
+Return unprocessed query text
 
 #### Signature
 
-- **public * * method.
-- Returns 'array' value.
+- **public** method.
+Returns `string`value.
 
-### 'getSql()' <a name= "getSql" ></a>
+### `getRawParams()`<a name="getRawParams"> </a>
 
-Return the query text after processing SqlTemplater:: sql()
-
-#### Signature
-
-- **public * * method.
-- Returns 'string' value.
-
-### 'getParams()' <a name= "getParams" ></a>
-
-Return query parameters after processing SqlTemplater:: sql()
+Return an unhandled array of query parameters
 
 #### Signature
 
-- **public * * method.
-- Returns 'array' value.
+- **public** method.
+Returns the `array`value.
 
-### 'setDbConnect()' <a name= "setDbConnect" ></a>
+### `getSql()`<a name="getSql"> </a>
 
-Establish connection to RBD
-
-#### Signature
-
-- **public * * method.
-- Can take the following parameter (s):
-    - '$dbConnect ' (`avtomon\_PDO`) &mdash; - connection to RDB
-- It doesn't make it back.
-
-### 'execute()' <a name= "execute" ></a>
-
-Run the query
+Return the text of the request after processing SqlTemplater :: sql()
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$prefix ' ('string`) &mdash; - prefix of keys
-- Returns `avtomon\DbResultItem ' value.
+- **public** method.
+Returns `string`value.
+
+### `getParams()`<a name="getParams"> </a>
+
+Return query parameters after processing SqlTemplater :: sql()
+
+#### Signature
+
+- **public** method.
+Returns the `array`value.
+
+### `setDbConnect()`<a name="setDbConnect"> </a>
+
+Establish connection to the RDB
+
+#### Signature
+
+- **public** method.
+- It can take the following parameter (s):
+	- `$dbConnect`(`avtomon\_PDO`) &mdash; - connection to the RDB
+- Returns nothing.
+
+### `execute()`<a name="execute"> </a>
+
+Run Query
+
+#### Signature
+
+- **public** method.
+- It can take the following parameter (s):
+	- `$prefix`(`string`) &mdash; - key prefix
+- Returns the `avtomon\DbResultItem`value.
 - Throws one of the following exceptions:
-    - `avtomon\DbResultItemException`
-      - [`avtomon\QueryException'](../avtomon/QueryException.md)
+- `avtomon\DbResultItemException`
+  - [`avtomon\QueryException`](../ avtomon/QueryException.md)
 
-### 'executeAsync()' <a name= 'executeAsync' ></a>
+### `executeAsync()`<a name="executeAsync"> </a>
 
-Run the query asynchronously
+Query asynchronously
 
 #### Signature
 
-- **public * * method.
-- Returns `bool ' value.
+- **public** method.
+- Returns the `bool`value.
 - Throws one of the following exceptions:
-      - [`avtomon\QueryException'](../avtomon/QueryException.md)
+  - [`avtomon\QueryException`](../ avtomon/QueryException.md)
 
-### 'getResult()' <a name= "getResult" ></a>
+### `getResult()`<a name="getResult"> </a>
 
-Return query result
+Return result of request
 
 #### Signature
 
-- **public * * method.
-- Returns `avtomon\DbResultItem ' value.
+- **public** method.
+- Returns the `avtomon\DbResultItem`value.
 

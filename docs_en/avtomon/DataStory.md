@@ -1,6 +1,6 @@
-the <small>avtomon</small>
+<small> avtomon </small>
 
-Database
+DataStory
 =========
 
 Primary data acquisition class
@@ -20,303 +20,303 @@ Properties
 
 class sets the following properties:
 
-- ['$settings`](#$settings) &mdash; class Settings
-- ['$instances'](#$instances) &mdash; class instances Available
-- ['$request`](#$request) &mdash; request Text
-- ['$params`](#$params) &mdash; query Parameters
-- ['$dbConnect'](#$dbConnect) &mdash; connection to RDB
-  - [`$cacheConnect`](#$cacheConnect) &mdash; the connection to the repository caches
-- ['$cacheQuery'](#$cacheQuery) &mdash; query cache Object
-- ['$cacheHtml'](#$cacheHtml) &mdash; page cache Object
-- ['$requestSettings'](#$requestSettings) &mdash; query Properties
+  - [`$settings`](#$settings) &mdash; Class settings
+  - [`$instances`](#$instances) &mdash; Available instances of the class
+  - [`$request`](#$request) &mdash; Request text
+  - [`$params`](#$params) &mdash; Query Parameters
+  - [`$dbConnect`](#$dbConnect) &mdash; Connection to the RDB
+  - [`$cacheConnect`](#$cacheConnect) &mdash; Connecting to the cache store
+  - [`$cacheQuery`](#$cacheQuery) &mdash; Query Cache Object
+  - [`$cacheHtml`](#$cacheHtml) &mdash; Page cache object
+  - [`$requestSettings`](#$requestSettings) &mdash; Request Properties
 
-### '$settings '<a name= "settings" ></a>
+### `$settings`<a name="settings"> </a>
 
 Class settings
 
 #### Signature
 
-- **protected static * * property.
-- Value 'array'.
+**protected static** property.
+- The value of `array`.
 
-### `$object`<a name="instances"></a>
+### `$instances`<a name="instances"> </a>
 
 Available instances of the class
 
 #### Signature
 
-- **protected static * * property.
-- Value 'array'.
+**protected static** property.
+- The value of `array`.
 
-### '$request ' <a name="request" ></a>
+### `$request`<a name="request"> </a>
 
-Query text
-
-#### Signature
-
-- **protected * * property.
-- Value `string'.
-
-### '$params '<a name= "params" ></a>
-
-Query parameter
+Request text
 
 #### Signature
 
-- **protected * * property.
-- Value 'array'.
+- **protected** property.
+- The value of `string`.
 
-### '$dbConnect '<a name= "dbConnect" ></a>
+### `$params`<a name="params"> </a>
 
-Connection to RBD
+Query Parameters
 
 #### Signature
 
-- **protected * * property.
+- **protected** property.
+- The value of `array`.
+
+### `$dbConnect`<a name="dbConnect"> </a>
+
+Connection to the RDB
+
+#### Signature
+
+- **protected** property.
 - Can be one of the following types:
-    - 'null`
-    `'avtomon\_PDO`
+- `null`
+- `avtomon\_PDO`
 
-### '$cacheConnect '<a name= "cacheConnect" ></a>
+### `$cacheConnect`<a name="cacheConnect"> </a>
 
-The connection to the repository caches
-
-#### Signature
-
-- **protected * * property.
-- Can be one of the following types:
-    - 'null`
-    - 'Redis`
-    - 'Memcached`
-
-### '$cacheQuery '<a name= "cacheQuery" ></a>
-
-Query cache object
+Connecting to the cache store
 
 #### Signature
 
-- **protected * * property.
+- **protected** property.
 - Can be one of the following types:
-    - 'null`
-    - ['CacheQuery'](../avtomon/CacheQuery.md)
+- `null`
+- `Redis`
+- `Memcached`
 
-### '$cacheHtml '<a name= "cacheHtml" ></a>
+### `$cacheQuery`<a name="cacheQuery"> </a>
+
+Query Cache Object
+
+#### Signature
+
+- **protected** property.
+- Can be one of the following types:
+- `null`
+  - [`CacheQuery`](../ avtomon/CacheQuery.md)
+
+### `$cacheHtml`<a name="cacheHtml"> </a>
 
 Page cache object
 
 #### Signature
 
-- **protected * * property.
+- **protected** property.
 - Can be one of the following types:
-    - 'null`
-    - ['CacheHtml'](../avtomon/CacheHtml.md)
+- `null`
+  - [`CacheHtml`](../ avtomon/CacheHtml.md)
 
-### '$requestSettings '<a name= "requestSettings" ></a>
+### `$requestSettings`<a name="requestSettings"> </a>
 
-Query properties
+Request Properties
 
 #### Signature
 
-- **protected * * property.
-- Value 'array'.
+- **protected** property.
+- The value of `array`.
 
 Methods
 -------
 
 Class methods class:
 
-- ['create()'](#create) &mdash; Create or return instrans class
-  - [`__construct (`' ](#__construct) &mdash; Constructor
-  - [`setIsModifying()`](#setIsModifying) &mdash; Set request type: modify (true) or reading (false)
-- ['setParams (`' ](#setParams) &mdash; set query parameters
-- ['setCacheConnect()'](#setCacheConnect) &mdash; set cache connection
-- ['setDbConnect()'](#setDbConnect) &mdash; connect to RDB
-  - [`getCacheQuery()`](#getCacheQuery) &mdash; Return the object of the query cache
-- ['getCacheHtml (`' ](#getCacheHtml) &mdash; Return page cache object
-- ['getValue (`' ](#getValue) &mdash; Return the result of a query to the RDB
-- ['deleteValue()'](#deleteValue) &mdash; Delete database query cache item
-- ['getHtml (`' ](#getHtml) &mdash; Return HTML
-- ['setHtml (`' ](#setHtml) &mdash; Save to cache HTML page
-- ['deleteHtml()'](#deleteHtml) &mdash; Delete page cache item
-- ['execQuery()'](#execQuery) &mdash; Create a query object and execute it
+  - [`create()`](#create) &mdash; Create or return class intstrans
+  - [`__construct()`](#__construct) &mdash; Constructor
+  - [`setIsModifying()`](#setIsModifying) &mdash; Set the query type: changing (true) or reading (false)
+  - [`setParams()`](#setParams) &mdash; Set query parameters
+  - [`setCacheConnect()`](#setCacheConnect) &mdash; Set cache connection
+  - [`setDbConnect()`](#setDbConnect) &mdash; Establish connection to the RDB
+  - [`getCacheQuery()`](#getCacheQuery) &mdash; Return query cache object
+  - [`getCacheHtml()`](#getCacheHtml) &mdash; Return page cache object
+  - [`getValue()`](#getValue) &mdash; Return the query result to the RDB
+  - [`deleteValue()`](#deleteValue) &mdash; Removing the query cache entry for the database
+  - [`getHtml()`](#getHtml) &mdash; Return HTML
+  - [`setHtml()`](#setHtml) &mdash; Cache HTML page
+  - [`deleteHtml()`](#deleteHtml) &mdash; Deleting a page cache element
+  - [`execQuery()`](#execQuery) &mdash; Create a query object and execute it
 
-### 'create()' <a name= 'create' ></a>
+### `create()`<a name="create"> </a>
 
-Create or return an instrans class
-
-#### Signature
-
-- **public static * * method.
-- Can take the following parameter (s):
-    - '$request ' ('string`) &mdash; - request text
-    - '$params ' ('array`) &mdash; - query parameters
-    - '$settings ' ('array`) &mdash; - additional settings
-- Return [`DataStory`](../avtomon/DataStory.md) value.
-
-### `__construct() '<a name= "__construct " ></a>
-
-Designer
+Create or return class intstrans
 
 #### Signature
 
-- **protected * * method.
-- Can take the following parameter (s):
-    - '$request ' ('string`) &mdash; - request text
-    - '$params ' ('array`) &mdash; - query parameters
-    - '$settings ' ('array`) &mdash; - settings
-- It doesn't make it back.
+- **public static** method.
+- It can take the following parameter (s):
+	- `$request`(`string`) &mdash; - the text of the request
+	- `$params`(`array`) &mdash; - query parameters
+	- `$settings`(`array`) &mdash; - additional settings
+- Returns [`DataStory`](../ avtomon/DataStory.md) value.
+
+### `__construct()`<a name="__construct"> </a>
+
+Constructor
+
+#### Signature
+
+- **protected** method.
+- It can take the following parameter (s):
+	- `$request`(`string`) &mdash; - the text of the request
+	- `$params`(`array`) &mdash; - query parameters
+	- `$settings`(`array`) &mdash; - settings
+- Returns nothing.
 - Throws one of the following exceptions:
-    - ['ReflectionException'](http://php.net/class.ReflectionException)
+  - [`ReflectionException`](http://php.net/class.ReflectionException)
 
-### 'setIsModifying`)' <a name= "setIsModifying" ></a>
+### `setIsModifying()`<a name="setIsModifying"> </a>
 
-Set the query type to changing (true) or reading (false)
-
-#### Signature
-
-- **public * * method.
-- Can take the following parameter (s):
-    - '$flag ' ('bool`)
-- It doesn't make it back.
-
-### 'setParams()' <a name= "setParams" ></a>
-
-To set the query parameters
+Set the query type: changing (true) or reading (false)
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$params ' ('array`) &mdash; - parameters
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$flag`(`bool`)
+- Returns nothing.
 
-### 'setCacheConnect (`'<a name= "setCacheConnect" ></a>
+### `setParams()`<a name="setParams"> </a>
 
-Install a post-connection to the cache
-
-#### Signature
-
-- **public * * method.
-- Can take the following parameter (s):
-    - '$cacheConnect ' ('null`|' Redis`|`Memcached') &mdash; - connect to cache
-- It doesn't make it back.
-
-### 'setDbConnect()' <a name= "setDbConnect" ></a>
-
-Establish connection to RBD
+Set query parameters
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$dbConnect ' ('avtomon\_PDO`|' null`)
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$params`(`array`) &mdash; - options
+- Returns nothing.
 
-### 'getCacheQuery`)' <a name= "getCacheQuery" ></a>
+### `setCacheConnect()`<a name="setCacheConnect"> </a>
 
-Return the query cache object
+Set cache connection
 
 #### Signature
 
-- **protected * * method.
-- Return [`CacheQuery`](../avtomon/CacheQuery.md) value.
+- **public** method.
+- It can take the following parameter (s):
+	- `$cacheConnect`(`null`| `Redis`|`Memcached`) &mdash; - connection to the cache
+- Returns nothing.
+
+### `setDbConnect()`<a name="setDbConnect"> </a>
+
+Establish connection to the RDB
+
+#### Signature
+
+- **public** method.
+- It can take the following parameter (s):
+	- `$dbConnect`(`avtomon\_PDO`| `null`)
+- Returns nothing.
+
+### `getCacheQuery()`<a name="getCacheQuery"> </a>
+
+Return query cache object
+
+#### Signature
+
+- **protected** method.
+- Returns [`CacheQuery`](../ avtomon/CacheQuery.md) value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### 'getCacheHtml`)' <a name= 'getCacheHtml' ></a>
+### `getCacheHtml()`<a name="getCacheHtml"> </a>
 
 Return page cache object
 
 #### Signature
 
-- **protected * * method.
-- Return [`CacheHtml`](../avtomon/CacheHtml.md) value.
+- **protected** method.
+- Returns [`CacheHtml`](../ avtomon/CacheHtml.md) value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
-      - [`avtomon\CacheHtmlException'](../avtomon/CacheHtmlException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
 
-### 'getValue()' <a name= "getValue" ></a>
+### `getValue()`<a name="getValue"> </a>
 
-Return the result of the query to the RDB
+Return the query result to the RDB
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$prefix ' ('string`) &mdash; - prefix of result field names
-- Returns `avtomon\DbResultItem ' value.
+- **public** method.
+- It can take the following parameter (s):
+	- `$prefix`(`string`) &mdash; - the prefix of the names of the resulting fields
+- Returns the `avtomon\DbResultItem`value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
-    - `avtomon\DbResultItemException`
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+- `avtomon\DbResultItemException`
 
-### 'deleteValue()' <a name= 'deleteValue' ></a>
+### `deleteValue()`<a name="deleteValue"> </a>
 
-Delete the database query cache item
+Removing the query cache entry for the database
 
 #### Signature
 
-- **public * * method.
-- Returns `bool ' value.
+- **public** method.
+- Returns the `bool`value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
 
-### 'getHtml()' <a name= "getHtml" ></a>
+### `getHtml()`<a name="getHtml"> </a>
 
 Return HTML
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    - '$verifyingFilePath ' ('string`) &mdash; - path to the file on which the cache will be checked
-- Returns`avtomon\HTMLResultItem ' value.
+- **public** method.
+- It can take the following parameter (s):
+	- `$verifyingFilePath`(`string`) &mdash; - the path to the file by which the cache's caching will be checked
+- Returns the `avtomon\HTMLResultItem`value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
-      - [`avtomon\CacheHtmlException'](../avtomon/CacheHtmlException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
 
-### 'setHtml()' <a name= 'setHtml' ></a>
+### `setHtml()`<a name="setHtml"> </a>
 
-Save to cache HTML page
+Cache HTML page
 
 #### Signature
 
-- **public * * method.
-- Can take the following parameter (s):
-    	- `$html`(`avtomon\HTMLResultItem`) &mdash; - the HTML
-    - '$tags '(`array') &mdash; - tags
-- It doesn't make it back.
+- **public** method.
+- It can take the following parameter (s):
+	- `$html`(`avtomon\HTMLResultItem`) &mdash; - HTML
+	- `$tags`(`array`) &mdash; - tags
+- Returns nothing.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
-      - [`avtomon\CacheHtmlException'](../avtomon/CacheHtmlException.md)
-      - [`avtomon\DataStoryException'](../avtomon/DataStoryException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
+  - [`avtomon\DataStoryException`](../ avtomon/DataStoryException.md)
 
-### 'deleteHtml()' <a name= 'deleteHtml' ></a>
+### `deleteHtml()`<a name="deleteHtml"> </a>
 
-Deleting a page cache item
+Deleting a page cache element
 
 #### Signature
 
-- **public * * method.
-- Returns `bool ' value.
+- **public** method.
+- Returns the `bool`value.
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
-      - [`avtomon\CacheHtmlException'](../avtomon/CacheHtmlException.md)
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+  - [`avtomon\CacheHtmlException`](../ avtomon/CacheHtmlException.md)
 
-### 'execQuery()' <a name= "execQuery" ></a>
+### `execQuery()`<a name="execQuery"> </a>
 
 Create a query object and execute it
 
 #### Signature
 
-- **public static * * method.
-- Can take the following parameter (s):
-    - '$request ' ('string`) &mdash; - request text
-    - '$params ' ('array`) &mdash; - query parameters
-    - '$settings ' ('array`) &mdash; - settings
+- **public static** method.
+- It can take the following parameter (s):
+	- `$request`(`string`) &mdash; - the text of the request
+	- `$params`(`array`) &mdash; - query parameters
+	- `$settings`(`array`) &mdash; - settings
 - Can return one of the following values:
-    - `avtomon\DbResultItem`
-    - 'null`
+- `avtomon\DbResultItem`
+- `null`
 - Throws one of the following exceptions:
-      - [`avtomon\AbstractCacheItemException'](../avtomon/AbstractCacheItemException.md)
-    - `avtomon\DbResultItemException`
+  - [`avtomon\AbstractCacheItemException`](../ avtomon/AbstractCacheItemException.md)
+- `avtomon\DbResultItemException`
 
