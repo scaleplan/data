@@ -32,7 +32,7 @@ Connection to the RDB
 
 - **protected** property.
 - Can be one of the following types:
-  - `avtomon\_PDO`
+  - `avtomon\CachePDO`
   - `null`
 
 ### `$isModifying`<a name="isModifying"> </a>
@@ -64,11 +64,11 @@ Constructor
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$dbConnect`(`avtomon\_PDO`) &mdash; - connection to the RDB
-  - `$request`(`string`) &mdash; - the text of the request
-  - `$params`(`array`) &mdash; - query parameters
-  - `$cacheConnect`(`Memcached`| `Redis`|`null`) &mdash; - connection to the cache store
-  - `$settings`(`array`) &mdash; - settings
+  - `$dbConnect`(`avtomon\CachePDO`) - connection to the RDB
+  - `$request`(`string`) - the text of the request
+  - `$params`(`array`) - query parameters
+  - `$cacheConnect`(`Memcached`| `Redis`|`null`) - connect to the cache store
+  - `$settings`(`array`) - settings
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)

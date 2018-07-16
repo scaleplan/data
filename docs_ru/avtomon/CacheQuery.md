@@ -32,7 +32,7 @@ class устанавливает следующие свойства:
 
 - **protected** property.
 - Может быть одного из следующих типов:
-    - `avtomon\_PDO`
+    - `avtomon\CachePDO`
     - `null`
 
 ### `$isModifying` <a name="isModifying"></a>
@@ -64,11 +64,11 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$dbConnect` (`avtomon\_PDO`) &mdash; - подключение к РБД
-    - `$request` (`string`) &mdash; - текст запроса
-    - `$params` (`array`) &mdash; - параметры запроса
-    - `$cacheConnect` (`Memcached`|`Redis`|`null`) &mdash; - подключение к хранилицу кэшей
-    - `$settings` (`array`) &mdash; - настройки
+    - `$dbConnect` (`avtomon\CachePDO`) - подключение к РБД
+    - `$request` (`string`) - текст запроса
+    - `$params` (`array`) - параметры запроса
+    - `$cacheConnect` (`Memcached`|`Redis`|`null`) - подключение к хранилицу кэшей
+    - `$settings` (`array`) - настройки
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)

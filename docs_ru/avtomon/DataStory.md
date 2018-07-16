@@ -75,7 +75,7 @@ class устанавливает следующие свойства:
 - **protected** property.
 - Может быть одного из следующих типов:
     - `null`
-    - `avtomon\_PDO`
+    - `avtomon\CachePDO`
 
 ### `$cacheConnect` <a name="cacheConnect"></a>
 
@@ -148,9 +148,9 @@ class устанавливает следующие свойства:
 
 - **public static** method.
 - Может принимать следующий параметр(ы):
-    - `$request` (`string`) &mdash; - текст запроса
-    - `$params` (`array`) &mdash; - параметры запроса
-    - `$settings` (`array`) &mdash; - дополниетельные настройки
+    - `$request` (`string`) - текст запроса
+    - `$params` (`array`) - параметры запроса
+    - `$settings` (`array`) - дополниетельные настройки
 - Возвращает [`DataStory`](../avtomon/DataStory.md) value.
 
 ### `__construct()` <a name="__construct"></a>
@@ -161,9 +161,9 @@ class устанавливает следующие свойства:
 
 - **protected** method.
 - Может принимать следующий параметр(ы):
-    - `$request` (`string`) &mdash; - текст запроса
-    - `$params` (`array`) &mdash; - параметры запроса
-    - `$settings` (`array`) &mdash; - настройки
+    - `$request` (`string`) - текст запроса
+    - `$params` (`array`) - параметры запроса
+    - `$settings` (`array`) - настройки
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`ReflectionException`](http://php.net/class.ReflectionException)
@@ -187,7 +187,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$params` (`array`) &mdash; - параметры
+    - `$params` (`array`) - параметры
 - Ничего не возвращает.
 
 ### `setCacheConnect()` <a name="setCacheConnect"></a>
@@ -198,7 +198,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$cacheConnect` (`null`|`Redis`|`Memcached`) &mdash; - подключение к кэшу
+    - `$cacheConnect` (`null`|`Redis`|`Memcached`) - подключение к кэшу
 - Ничего не возвращает.
 
 ### `setDbConnect()` <a name="setDbConnect"></a>
@@ -209,7 +209,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$dbConnect` (`avtomon\_PDO`|`null`)
+    - `$dbConnect` (`avtomon\CachePDO`|`null`)
 - Ничего не возвращает.
 
 ### `getCacheQuery()` <a name="getCacheQuery"></a>
@@ -243,7 +243,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$prefix` (`string`) &mdash; - префикс имен результирующих полей
+    - `$prefix` (`string`) - префикс имен результирующих полей
 - Возвращает `avtomon\DbResultItem` value.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -268,7 +268,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$verifyingFilePath` (`string`) &mdash; - путь к файлу, по которому будет проверяться акутуальность кэша
+    - `$verifyingFilePath` (`string`) - путь к файлу, по которому будет проверяться акутуальность кэша
 - Возвращает `avtomon\HTMLResultItem` value.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -282,8 +282,8 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$html` (`avtomon\HTMLResultItem`) &mdash; - HTML
-    - `$tags` (`array`) &mdash; - теги
+    - `$html` (`avtomon\HTMLResultItem`) - HTML
+    - `$tags` (`array`) - теги
 - Ничего не возвращает.
 - Выбрасывает одно из следующих исключений:
     - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -310,9 +310,9 @@ class устанавливает следующие свойства:
 
 - **public static** method.
 - Может принимать следующий параметр(ы):
-    - `$request` (`string`) &mdash; - текст запроса
-    - `$params` (`array`) &mdash; - параметры запроса
-    - `$settings` (`array`) &mdash; - настройки
+    - `$request` (`string`) - текст запроса
+    - `$params` (`array`) - параметры запроса
+    - `$settings` (`array`) - настройки
 - Может возвращать одно из следующих значений:
     - `avtomon\DbResultItem`
     - `null`

@@ -72,7 +72,7 @@ class устанавливает следующие свойства:
 - **protected** property.
 - Может быть одного из следующих типов:
     - `null`
-    - `avtomon\_PDO`
+    - `avtomon\CachePDO`
 
 ### `$result` <a name="result"></a>
 
@@ -108,7 +108,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$dbConnect` (`avtomon\_PDO`)
+    - `$dbConnect` (`avtomon\CachePDO`)
     - `$sql` (`string`)
     - `$params` (`array`)
 - Ничего не возвращает.
@@ -159,7 +159,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$dbConnect` (`avtomon\_PDO`) &mdash; - подключение к РБД
+    - `$dbConnect` (`avtomon\CachePDO`) - подключение к РБД
 - Ничего не возвращает.
 
 ### `execute()` <a name="execute"></a>
@@ -170,7 +170,7 @@ class устанавливает следующие свойства:
 
 - **public** method.
 - Может принимать следующий параметр(ы):
-    - `$prefix` (`string`) &mdash; - префикс ключей
+    - `$prefix` (`string`) - префикс ключей
 - Возвращает `avtomon\DbResultItem` value.
 - Выбрасывает одно из следующих исключений:
     - `avtomon\DbResultItemException`

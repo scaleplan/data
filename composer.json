@@ -12,14 +12,14 @@
     },
     "require": {
         "php": ">=7.2",
-        "avtomon/_PDO": "dev-master",
+        "avtomon/CachePDO": "dev-master",
         "avtomon/SqlTemplater": "dev-master",
         "avtomon/InitTrait": "dev-master"
     },
     "repositories": [
         {
             "type": "git",
-            "url": "git@github.com:avtomon/_PDO.git"
+            "url": "git@github.com:avtomon/CachePDO.git"
         },
         {
             "type": "git",

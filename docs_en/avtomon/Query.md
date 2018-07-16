@@ -72,7 +72,7 @@ Connection to the RDB
 - **protected** property.
 - Can be one of the following types:
   - `null`
-  - `avtomon\_PDO`
+  - `avtomon\CachePDO`
 
 ### `$result`<a name="result"> </a>
 
@@ -108,7 +108,7 @@ Constructor
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$dbConnect`(`avtomon\_PDO`)
+  - `$dbConnect`(`avtomon\CachePDO`)
   - `$sql`(`string`)
   - `$params`(`array`)
 - Returns nothing.
@@ -159,7 +159,7 @@ Establish connection to the RDB
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$dbConnect`(`avtomon\_PDO`) &mdash; - connection to the RDB
+  - `$dbConnect`(`avtomon\CachePDO`) - connection to the RDB
 - Returns nothing.
 
 ### `execute()`<a name="execute"> </a>
@@ -170,7 +170,7 @@ Run Query
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$prefix`(`string`) &mdash; - key prefix
+  - `$prefix`(`string`) - the prefix of the keys
 - Returns the `avtomon\DbResultItem`value.
 - Throws one of the following exceptions:
   - `avtomon\DbResultItemException`

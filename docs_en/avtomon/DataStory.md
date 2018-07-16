@@ -75,7 +75,7 @@ Connection to the RDB
 - **protected** property.
 - Can be one of the following types:
   - `null`
-  - `avtomon\_PDO`
+  - `avtomon\CachePDO`
 
 ### `$cacheConnect`<a name="cacheConnect"> </a>
 
@@ -148,9 +148,9 @@ Create or return class intstrans
 
 - **public static** method.
 - It can take the following parameter (s):
-  - `$request`(`string`) &mdash; - the text of the request
-  - `$params`(`array`) &mdash; - query parameters
-  - `$settings`(`array`) &mdash; - additional settings
+  - `$request`(`string`) - the text of the request
+  - `$params`(`array`) - query parameters
+  - `$settings`(`array`) -additional settings
 - Returns [`DataStory`](../avtomon/DataStory.md) value.
 
 ### `__construct()`<a name="__construct"> </a>
@@ -161,9 +161,9 @@ Constructor
 
 - **protected** method.
 - It can take the following parameter (s):
-  - `$request`(`string`) &mdash; - the text of the request
-  - `$params`(`array`) &mdash; - query parameters
-  - `$settings`(`array`) &mdash; - settings
+  - `$request`(`string`) - the text of the request
+  - `$params`(`array`) - query parameters
+  - `$settings`(`array`) - settings
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`ReflectionException`](http://php.net/class.ReflectionException)
@@ -187,7 +187,7 @@ Set query parameters
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$params`(`array`) &mdash; - options
+  - `$params`(`array`) - parameters
 - Returns nothing.
 
 ### `setCacheConnect()`<a name="setCacheConnect"> </a>
@@ -198,7 +198,7 @@ Set cache connection
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$cacheConnect`(`null`| `Redis`|`Memcached`) &mdash; - connection to the cache
+  - `$cacheConnect`(`null`| `Redis`|`Memcached`) - connection to the cache
 - Returns nothing.
 
 ### `setDbConnect()`<a name="setDbConnect"> </a>
@@ -209,7 +209,7 @@ Establish connection to the RDB
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$dbConnect`(`avtomon\_PDO`| `null`)
+  - `$dbConnect`(`avtomon\CachePDO`| `null`)
 - Returns nothing.
 
 ### `getCacheQuery()`<a name="getCacheQuery"> </a>
@@ -243,7 +243,7 @@ Return the query result to the RDB
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$prefix`(`string`) &mdash; - the prefix of the names of the resulting fields
+  - `$prefix`(`string`) - the prefix of the names of the resulting fields
 - Returns the `avtomon\DbResultItem`value.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -268,7 +268,7 @@ Return HTML
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$verifyingFilePath`(`string`) &mdash; - the path to the file by which the cache's caching will be checked
+  - `$verifyingFilePath`(`string`) - the path to the file that will be used to check the cache's caching
 - Returns the `avtomon\HTMLResultItem`value.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -282,8 +282,8 @@ Cache HTML page
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$html`(`avtomon\HTMLResultItem`) &mdash; - HTML
-  - `$tags`(`array`) &mdash; - tags
+  - `$html`(`avtomon\HTMLResultItem`) - HTML
+  - `$tags`(`array`) - tags
 - Returns nothing.
 - Throws one of the following exceptions:
   - [`avtomon\AbstractCacheItemException`](../avtomon/AbstractCacheItemException.md)
@@ -310,9 +310,9 @@ Create a query object and execute it
 
 - **public static** method.
 - It can take the following parameter (s):
-  - `$request`(`string`) &mdash; - the text of the request
-  - `$params`(`array`) &mdash; - query parameters
-  - `$settings`(`array`) &mdash; - settings
+  - `$request`(`string`) - the text of the request
+  - `$params`(`array`) - query parameters
+  - `$settings`(`array`) - settings
 - Can return one of the following values:
   - `avtomon\DbResultItem`
   - `null`
