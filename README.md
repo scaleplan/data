@@ -64,7 +64,7 @@ $dataStory = DataStory :: create ($query, ['id' => 3]);
 $dataStory-> getValue ($prefix)
 ```
 
-then nothing will happen to the cache - DataStory will go to the database, give the result and save it to the cache, but on subsequent requests **from this and other clients** the result will be returned from the cache.
+then nothing will be added to the cache - DataStory descends into the database, returns the result and saves it in the cache, but on subsequent requests <b> from this and other clients </b> the result will be returned from the cache.
 
 If you then run:
 
@@ -76,7 +76,7 @@ $dataStory-> getValue ($prefix)
 
 ```
 
-then the cache for the *books * table is reset and the next read request from the * books* table will follow the data in the database.
+then the cache for the <i> books </i> table is reset and the next read request from the <i> books </i> table will follow the data in the database.
 
 <br>
 

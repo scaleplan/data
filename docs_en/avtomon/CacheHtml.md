@@ -58,7 +58,7 @@ Constructor
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$url`(`string`) - text Urla
+  - `$url`(`string`) - the URL text
   - `$params`(`array`) - query parameters
   - `$cacheConnect`(`Memcached`| `Redis`|`null`) - connect to the cache store
   - `$tags`(`array`) - array of tags
@@ -77,7 +77,7 @@ Set to the check file
 
 - **public** method.
 - It can take the following parameter (s):
-  - `$filePath`(`string`) - path to the file
+  - `$filePath`(`string`) - the path to the file
 - Returns nothing.
 
 ### `checkFileTime()`<a name="checkFileTime"> </a>
