@@ -6,7 +6,7 @@ The main feature is the transparent caching of query results in the cache store 
 
 <br>
 
-### Installation
+#### Installation
 
 ```
 composer require avtomon/datastory
@@ -14,7 +14,7 @@ composer require avtomon/datastory
 
 <br>
 
-### Mechanics of operation
+#### Mechanics of operation
 
 Cache disinfection is performed by tagging requests: we clear a certain number of cache keys belonging to a certain tag, as tags can be anything, but in DataStory database table names are used, that is, if a certain table is changed, consider the caches that are relevant to this table .
 
