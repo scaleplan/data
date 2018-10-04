@@ -1,22 +1,16 @@
 <?php
 
-namespace avtomon;
+namespace Scaleplan\Data;
 
-/**
- * Класс ошибок
- *
- * Class CacheQueryException
- * @package avtomon
- */
-class CacheQueryException extends CustomException
-{
-}
+use Scaleplan\CachePDO\CachePDO;
+use Scaleplan\Result\DbResult;
 
 /**
  * Класс кэширования результатов запросов к БД
  *
  * Class CacheQuery
- * @package avtomon
+ *
+ * @package Scaleplan\Data
  */
 class CacheQuery extends AbstractCacheItem
 {
@@ -43,7 +37,7 @@ class CacheQuery extends AbstractCacheItem
      * @param null $cacheConnect - подключение к кэшу
      * @param array $settings - настройки объекта
      *
-     * @throws AbstractCacheItemException
+     * @throws Exceptions\DataException
      * @throws \ReflectionException
      */
     public function __construct(CachePDO $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = [])
@@ -58,8 +52,6 @@ class CacheQuery extends AbstractCacheItem
 
     /**
      * Инициализация тегов
-     *
-     * @throws CachePDOException
      */
     protected function generateTags(): void
     {
@@ -97,15 +89,15 @@ class CacheQuery extends AbstractCacheItem
     /**
      * Получить данные элемента кэша
      *
-     * @return DbResultItem
+     * @return DbResult
      *
-     * @throws AbstractCacheItemException
-     * @throws DbResultItemException
+     * @throws Exceptions\DataException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function get(): DbResultItem
+    public function get(): DbResult
     {
         $result = parent::get();
-        return new DbResultItem($result['data'] ?? null);
+        return new DbResult($result['data'] ?? null);
     }
 
     /**

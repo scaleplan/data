@@ -1,16 +1,12 @@
 <?php
 
-namespace avtomon;
+namespace Scaleplan\Data;
 
-/**
- * Класс ошибок
- *
- * Class AbstractCacheItemException
- * @package avtomon
- */
-class AbstractCacheItemException extends CustomException
-{
-}
+use Scaleplan\Data\Exceptions\CacheConnectException;
+use Scaleplan\Data\Exceptions\DataException;
+use Scaleplan\Data\Exceptions\ValidationException;
+use Scaleplan\InitTrait\InitTrait;
+use Scaleplan\Result\AbstractResult;
 
 /**
  * Базовый класс кэширования
@@ -161,7 +157,7 @@ abstract class AbstractCacheItem
      * @param \Memcached|\Redis|null $cacheConnect - подключение к хранилицу кэшей
      * @param array $settings - настройки
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      * @throws \ReflectionException
      */
     protected function __construct(
@@ -174,7 +170,7 @@ abstract class AbstractCacheItem
         $this->initObject($settings);
 
         if (!$request) {
-            throw new AbstractCacheItemException('Текст запроса пуст');
+            throw new ValidationException('Текст запроса пуст');
         }
 
         $this->request = $request;
@@ -199,12 +195,14 @@ abstract class AbstractCacheItem
      *
      * @param \Memcached|\Redis $cacheConnect - объект подключения
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      */
     public function setCacheConnect($cacheConnect): void
     {
         if (!($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
-            throw new AbstractCacheItemException('В качестве кэша можно использовать только Redis или Memcached');
+            throw new CacheConnectException(
+                'В качестве кэша можно использовать только Redis или Memcached'
+            );
         }
 
         $this->cacheConnect = $cacheConnect;
@@ -213,17 +211,17 @@ abstract class AbstractCacheItem
     /**
      * Инициализация заданного массива тегов
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      */
     public function initTags(): void
     {
         if ($this->tags && !$this->cacheConnect) {
-            throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
+            throw new CacheConnectException();
         }
 
         foreach ($this->tags as &$tag) {
             if (!$this->cacheConnect->set($tag, time(), $this->tagTtl)) {
-                throw new AbstractCacheItemException('Не удалось установить значение тега');
+                throw new DataException('Не удалось установить значение тега');
             }
         }
 
@@ -245,12 +243,12 @@ abstract class AbstractCacheItem
      *
      * @param string|callable $hashFunc - функция хэширования
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      */
     public function setHashFunc($hashFunc): void
     {
         if (!\in_array(\gettype($hashFunc), ['callable', 'string'], true)) {
-            throw new AbstractCacheItemException('Формат передачи функции хэширования неверен');
+            throw new ValidationException('Формат передачи функции хэширования неверен');
         }
 
         $this->hashFunc = $hashFunc;
@@ -261,12 +259,12 @@ abstract class AbstractCacheItem
      *
      * @param callable|string $serializeFunc - функция сериализации
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      */
     public function setParamSerializeFunc($serializeFunc): void
     {
         if (!\in_array(\gettype($serializeFunc), ['callable', 'string'], true)) {
-            throw new AbstractCacheItemException('Формат передачи функции сериализации неверен');
+            throw new ValidationException('Формат передачи функции сериализации неверен');
         }
 
         $this->paramSerializeFunc = $serializeFunc;
@@ -291,12 +289,12 @@ abstract class AbstractCacheItem
      *
      * @return array
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      */
     protected function getTagsTimes(): array
     {
         if (!$this->cacheConnect) {
-            throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
+            throw new CacheConnectException();
         }
 
         return array_map(function ($tag) {
@@ -309,12 +307,12 @@ abstract class AbstractCacheItem
      *
      * @return array|null
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      */
     public function get()
     {
         if (!$this->cacheConnect) {
-            throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
+            throw new CacheConnectException();
         }
 
         for ($i = 0; $i < $this->tryCount; $i++) {
@@ -347,12 +345,12 @@ abstract class AbstractCacheItem
      *
      * @return bool
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      */
     public function set(AbstractResult $data): bool
     {
         if (!$this->cacheConnect) {
-            throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
+            throw new CacheConnectException();
         }
 
         $toSave = self::CACHE_STRUCTURE;
@@ -395,12 +393,12 @@ abstract class AbstractCacheItem
      *
      * @return bool
      *
-     * @throws AbstractCacheItemException
+     * @throws DataException
      */
     public function setLock(): bool
     {
         if (!$this->cacheConnect) {
-            throw new AbstractCacheItemException('Подключение к хранилищу кэшей отсутствует');
+            throw new CacheConnectException();
         }
 
         if (!$this->cacheConnect->set($this->getKey(), $this->lockValue, $this->ttl)) {
@@ -411,7 +409,4 @@ abstract class AbstractCacheItem
 
         return true;
     }
-
-
-
 }

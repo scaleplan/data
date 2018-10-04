@@ -1,22 +1,19 @@
 <?php
 
-namespace avtomon;
+namespace Scaleplan\Data;
 
-/**
- * Класс ошибок
- *
- * Class QueryException
- * @package avtomon
- */
-class QueryException extends CustomException
-{
-}
+use Scaleplan\CachePDO\CachePDO;
+use Scaleplan\Data\Exceptions\DbConnectException;
+use Scaleplan\Data\Exceptions\ValidationException;
+use Scaleplan\Result\DbResult;
+use Scaleplan\SqlTemplater\SqlTemplater;
 
 /**
  * Класс организации запросов к БД
  *
  * Class Query
- * @package avtomon
+ *
+ * @package Scaleplan\Data
  */
 class Query
 {
@@ -58,7 +55,7 @@ class Query
     /**
      * Результат запроса
      *
-     * @var DbResultItem|null
+     * @var DbResult|null
      */
     protected $result;
 
@@ -69,12 +66,12 @@ class Query
      * @param CachePDO|null $dbConnect - подключение к РБД
      * @param array $params - необработанный массив параметров запроса
      *
-     * @throws QueryException
+     * @throws ValidationException
      */
-    public function __construct(CachePDO $dbConnect = null, string $sql, array $params = [])
+    public function __construct(string $sql, CachePDO $dbConnect = null, array $params = [])
     {
         if (!$sql) {
-            throw new QueryException('Текст запроса пуст');
+            throw new ValidationException('Текст запроса пуст');
         }
 
         $this->rawSql = $sql;
@@ -145,21 +142,20 @@ class Query
      *
      * @param string $prefix - префикс ключей
      *
-     * @return DbResultItem
+     * @return DbResult
      *
-     * @throws CachePDOException
-     * @throws DbResultItemException
-     * @throws QueryException
+     * @throws DbConnectException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function execute(string $prefix = ''): DbResultItem
+    public function execute(string $prefix = ''): DbResult
     {
         if (!$this->dbConnect) {
-            throw new QueryException('Сначала установите подключение к базе данных');
+            throw new DbConnectException();
         }
 
         $result = $this->dbConnect->query($this->getSql(), $this->getParams());
 
-        return $this->result = new DbResultItem($result, $prefix);
+        return $this->result = new DbResult($result, $prefix);
     }
 
     /**
@@ -167,13 +163,13 @@ class Query
      *
      * @return bool
      *
-     * @throws CachePDOException
-     * @throws QueryException
+     * @throws DbConnectException
+     * @throws \Scaleplan\CachePDO\Exceptions\CachePDOException
      */
     public function executeAsync(): bool
     {
         if (!$this->dbConnect) {
-            throw new QueryException('Сначала установите подключение к базе данных');
+            throw new DbConnectException();
         }
 
         return $this->dbConnect->async($this->getSql(), $this->getParams());
@@ -182,9 +178,9 @@ class Query
     /**
      * Вернуть результат запроса
      *
-     * @return DbResultItem
+     * @return DbResult
      */
-    public function getResult(): DbResultItem
+    public function getResult(): DbResult
     {
         return $this->result;
     }

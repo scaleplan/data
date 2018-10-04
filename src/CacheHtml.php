@@ -1,21 +1,15 @@
 <?php
 
-namespace avtomon;
+namespace Scaleplan\Data;
 
-/**
- * Класс ошибок
- *
- * Class CacheHtmlException
- * @package avtomon
- */
-class CacheHtmlException extends CustomException
-{
-}
+use Scaleplan\Data\Exceptions\ValidationException;
+use Scaleplan\Result\HTMLResult;
 
 /**
  * Класс управления кэшированием HTML-страниц
  *
  * Class CacheHtml
+ *
  * @package avtomon
  */
 class CacheHtml extends AbstractCacheItem
@@ -41,14 +35,14 @@ class CacheHtml extends AbstractCacheItem
      * @param array $tags - массив тегов
      * @param array $settings - настройки объекта
      *
-     * @throws AbstractCacheItemException
-     * @throws CacheHtmlException
+     * @throws Exceptions\DataException
+     * @throws ValidationException
      * @throws \ReflectionException
      */
     public function __construct(string $url, array $params = [], $cacheConnect = null, array $tags = [], array $settings = [])
     {
         if (!$url || !preg_match(self::URL_TEMPLATE, $url)) {
-            throw new CacheHtmlException('URL не передан или передан в неверном формате');
+            throw new ValidationException('URL не передан или передан в неверном формате');
         }
 
         parent::__construct($url, $params, $cacheConnect, $settings);
@@ -83,11 +77,11 @@ class CacheHtml extends AbstractCacheItem
     /**
      * Получить данные элемента кэша
      *
-     * @return HTMLResultItem|null
+     * @return HTMLResult
      *
-     * @throws AbstractCacheItemException
+     * @throws Exceptions\DataException
      */
-    public function get(): HTMLResultItem
+    public function get(): HTMLResult
     {
         $result = parent::get();
         $time = $result['time'] ?? 0;
@@ -95,7 +89,7 @@ class CacheHtml extends AbstractCacheItem
             $result = null;
         }
 
-        return new HTMLResultItem($result['data'] ?? null);
+        return new HTMLResult($result['data'] ?? null);
     }
 
     /**

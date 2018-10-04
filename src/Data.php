@@ -1,16 +1,10 @@
 <?php
 
-namespace avtomon;
+namespace Scaleplan\Data;
 
-/**
- * Класс ошибок
- *
- * Class DataStoryException
- * @package avtomon
- */
-class DataStoryException extends CustomException
-{
-}
+use Scaleplan\CachePDO\CachePDO;
+use Scaleplan\InitTrait\InitTrait;
+use Scaleplan\Result\DbResult;
 
 /**
  * Основной класс получения данных
@@ -18,7 +12,7 @@ class DataStoryException extends CustomException
  * Class DataStory
  * @package avtomon
  */
-class DataStory
+class Data
 {
     /**
      * Трейт инициализации настроек
@@ -98,15 +92,15 @@ class DataStory
      * @param array $params - параметры запроса
      * @param array $settings - дополниетельные настройки
      *
-     * @return DataStory
+     * @return Data
      *
      * @throws \ReflectionException
      */
-    public static function create(string $request, array $params = [], array $settings = []): DataStory
+    public static function create(string $request, array $params = [], array $settings = []) : Data
     {
         $key = md5($request . serialize($params));
         if (empty(self::$instances[$key])) {
-            self::$instances[$key] = new DataStory($request, $params, $settings);
+            self::$instances[$key] = new static($request, $params, $settings);
         }
 
         return self::$instances[$key];
@@ -134,7 +128,7 @@ class DataStory
      *
      * @param bool $flag
      */
-    public function setIsModifying(bool $flag = true): void
+    public function setIsModifying(bool $flag = true) : void
     {
         $this->requestSettings['isModifying'] = $flag;
     }
@@ -144,7 +138,7 @@ class DataStory
      *
      * @param array $params - параметры
      */
-    public function setParams(array $params): void
+    public function setParams(array $params) : void
     {
         $this->params = $params;
     }
@@ -154,7 +148,7 @@ class DataStory
      *
      * @param null|\Redis|\Memcached $cacheConnect - подключение к кэшу
      */
-    public function setCacheConnect($cacheConnect): void
+    public function setCacheConnect($cacheConnect) : void
     {
         $this->cacheConnect = $cacheConnect;
     }
@@ -164,7 +158,7 @@ class DataStory
      *
      * @param CachePDO|null $dbConnect
      */
-    public function setDbConnect(?CachePDO $dbConnect): void
+    public function setDbConnect(?CachePDO $dbConnect) : void
     {
         $this->dbConnect = $dbConnect;
     }
@@ -174,10 +168,10 @@ class DataStory
      *
      * @return CacheQuery
      *
-     * @throws AbstractCacheItemException
+     * @throws Exceptions\DataException
      * @throws \ReflectionException
      */
-    protected function getCacheQuery(): CacheQuery
+    protected function getCacheQuery() : CacheQuery
     {
         if (!$this->cacheQuery) {
             $this->cacheQuery = new CacheQuery($this->dbConnect, $this->request, $this->params, $this->cacheConnect, $this->requestSettings);
@@ -191,11 +185,11 @@ class DataStory
      *
      * @return CacheHtml
      *
-     * @throws AbstractCacheItemException
-     * @throws CacheHtmlException
+     * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      */
-    protected function getCacheHtml(): CacheHtml
+    protected function getCacheHtml() : CacheHtml
     {
         if (!$this->cacheHtml) {
             $this->cacheHtml = new CacheHtml($this->request, $this->params, $this->cacheConnect, $this->requestSettings);
@@ -215,7 +209,7 @@ class DataStory
      * @throws DbResultItemException
      * @throws \ReflectionException
      */
-    public function getValue(string $prefix = ''): DbResultItem
+    public function getValue(string $prefix = '') : DbResult
     {
         $getQuery = function () use ($prefix) {
             return (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
@@ -245,7 +239,7 @@ class DataStory
      * @throws AbstractCacheItemException
      * @throws \ReflectionException
      */
-    public function deleteValue(): bool
+    public function deleteValue() : bool
     {
         return $this->getCacheQuery()->delete();
     }
@@ -261,7 +255,7 @@ class DataStory
      * @throws CacheHtmlException
      * @throws \ReflectionException
      */
-    public function getHtml(string $verifyingFilePath = ''): HTMLResultItem
+    public function getHtml(string $verifyingFilePath = '') : HTMLResultItem
     {
         $cacheHtml = $this->getCacheHtml();
         $cacheHtml->setCheckFile($verifyingFilePath);
@@ -279,7 +273,7 @@ class DataStory
      * @throws DataStoryException
      * @throws \ReflectionException
      */
-    public function setHtml(HTMLResultItem $html, array $tags = []): void
+    public function setHtml(HTMLResultItem $html, array $tags = []) : void
     {
         $cacheHtml = $this->getCacheHtml();
         $cacheHtml->setTags($tags);
@@ -297,7 +291,7 @@ class DataStory
      * @throws CacheHtmlException
      * @throws \ReflectionException
      */
-    public function deleteHtml(): bool
+    public function deleteHtml() : bool
     {
         return $this->getCacheHtml()->delete();
     }
@@ -315,7 +309,7 @@ class DataStory
      * @throws DbResultItemException
      * @throws \ReflectionException
      */
-    public static function execQuery(string $request, array $params = [], array $settings = []): ?DbResultItem
+    public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResultItem
     {
         return self::create($request, $params, $settings)->getValue();
     }
