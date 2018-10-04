@@ -9,7 +9,7 @@ DataStory представляет собой представляет собо�
 #### Установка
 
 ```
-composer require avtomon/datastory
+composer require scaleplan/data
 ```
 
 <br>

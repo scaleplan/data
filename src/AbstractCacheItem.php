@@ -12,7 +12,8 @@ use Scaleplan\Result\AbstractResult;
  * Базовый класс кэширования
  *
  * Class AbstractCacheItem
- * @package avtomon
+ *
+ * @package Scaleplan\Data
  */
 abstract class AbstractCacheItem
 {

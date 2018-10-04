@@ -3,7 +3,7 @@
     "description": "Data requests wrapper",
     "autoload": {
         "psr-4": {
-            "avtomon\\": "src/"
+            "Scaleplan\\Data\\": "src/"
         }
     },
     "require": {

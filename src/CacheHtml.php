@@ -10,7 +10,7 @@ use Scaleplan\Result\HTMLResult;
  *
  * Class CacheHtml
  *
- * @package avtomon
+ * @package Scaleplan\Data
  */
 class CacheHtml extends AbstractCacheItem
 {

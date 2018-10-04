@@ -10,7 +10,7 @@ use Scaleplan\Result\DbResult;
  * Основной класс получения данных
  *
  * Class DataStory
- * @package avtomon
+ * @package Scaleplan\Data
  */
 class Data
 {

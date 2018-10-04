@@ -9,7 +9,7 @@ The main feature is the transparent caching of query results in the cache store 
 #### Installation
 
 ```
-composer require avtomon/datastory
+composer require scaleplan/data
 ```
 
 <br>
@@ -28,7 +28,7 @@ In addition, there are queries that use stored procedures, for which it is diffi
 
 ```
 
-$dataStory-> setIsModifying (true);
+$dataStory->setIsModifying (true);
 
 ```
 
