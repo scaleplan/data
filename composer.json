@@ -1,10 +1,6 @@
 {
-    "name": "avtomon/dataStory",
+    "name": "scaleplan/data",
     "description": "Data requests wrapper",
-    "minimum-stability": "dev",
-    "config": {
-        "process-timeout": 1800
-    },
     "autoload": {
         "psr-4": {
             "avtomon\\": "src/"
@@ -12,14 +8,14 @@
     },
     "require": {
         "php": ">=7.2",
-        "avtomon/CachePDO": "dev-master",
+        "scaleplan/cache-pdo": "dev-master",
         "avtomon/SqlTemplater": "dev-master",
-        "avtomon/InitTrait": "dev-master"
+        "scaleplan/InitTrait": "dev-master"
     },
     "repositories": [
         {
             "type": "git",
-            "url": "git@github.com:avtomon/CachePDO.git"
+            "url": "git@github.com:scaleplan/CachePDO.git"
         },
         {
             "type": "git",
@@ -27,7 +23,7 @@
         },
         {
             "type": "git",
-            "url": "git@github.com:avtomon/InitTrait.git"
+            "url": "git@github.com:scaleplan/InitTrait.git"
         }
     ]
 }
