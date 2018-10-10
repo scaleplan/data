@@ -9,21 +9,21 @@
     "require": {
         "php": ">=7.2",
         "scaleplan/cache-pdo": "dev-master",
-        "avtomon/SqlTemplater": "dev-master",
-        "scaleplan/InitTrait": "dev-master"
+        "scaleplan/sql-templater": "dev-master",
+        "scaleplan/inittrait": "dev-master"
     },
     "repositories": [
         {
             "type": "git",
-            "url": "git@github.com:scaleplan/CachePDO.git"
+            "url": "git@github.com:scaleplan/cache-pdo.git"
         },
         {
             "type": "git",
-            "url": "git@github.com:avtomon/SqlTemplater.git"
+            "url": "git@github.com:scaleplan/sql-templater.git"
         },
         {
             "type": "git",
-            "url": "git@github.com:scaleplan/InitTrait.git"
+            "url": "git@github.com:scaleplan/inittrait.git"
         }
     ]
 }
