@@ -3,8 +3,10 @@
 namespace Scaleplan\Data;
 
 use Scaleplan\CachePDO\CachePDO;
+use Scaleplan\Data\Exceptions\CacheException;
 use Scaleplan\InitTrait\InitTrait;
 use Scaleplan\Result\DbResult;
+use Scaleplan\Result\HTMLResult;
 
 /**
  * Основной класс получения данных
@@ -26,7 +28,7 @@ class Data
      */
     protected static $settings = [
         'dbConnect' => null,
-        'cacheConnect' => null
+        'cacheConnect' => null,
     ];
 
     /**
@@ -84,6 +86,20 @@ class Data
      * @var array
      */
     protected $requestSettings = [];
+
+    /**
+     * Путь к файлу, по которому будет проверяться акутуальность кэша
+     *
+     * @var string
+     */
+    protected $verifyingFilePath = '';
+
+    /**
+     * Префикс имен результирующих полей
+     *
+     * @var string
+     */
+    protected $prefix = '';
 
     /**
      * Создать или вернуть инстранс класса
@@ -164,6 +180,22 @@ class Data
     }
 
     /**
+     * @param string $verifyingFilePath
+     */
+    public function setVerifyingFilePath(string $verifyingFilePath) : void
+    {
+        $this->verifyingFilePath = $verifyingFilePath;
+    }
+
+    /**
+     * @param string $prefix
+     */
+    public function setPrefix(string $prefix) : void
+    {
+        $this->prefix = $prefix;
+    }
+
+    /**
      * Вернуть объект кэша запросов
      *
      * @return CacheQuery
@@ -174,7 +206,13 @@ class Data
     protected function getCacheQuery() : CacheQuery
     {
         if (!$this->cacheQuery) {
-            $this->cacheQuery = new CacheQuery($this->dbConnect, $this->request, $this->params, $this->cacheConnect, $this->requestSettings);
+            $this->cacheQuery = new CacheQuery(
+                $this->dbConnect,
+                $this->request,
+                $this->params,
+                $this->cacheConnect,
+                $this->requestSettings
+            );
         }
 
         return $this->cacheQuery;
@@ -192,7 +230,12 @@ class Data
     protected function getCacheHtml() : CacheHtml
     {
         if (!$this->cacheHtml) {
-            $this->cacheHtml = new CacheHtml($this->request, $this->params, $this->cacheConnect, $this->requestSettings);
+            $this->cacheHtml = new CacheHtml(
+                $this->request,
+                $this->params,
+                $this->cacheConnect,
+                $this->requestSettings
+            );
         }
 
         return $this->cacheHtml;
@@ -201,21 +244,19 @@ class Data
     /**
      * Вернуть результат запроса к РБД
      *
-     * @param string $prefix - префикс имен результирующих полей
+     * @return DbResult
      *
-     * @return DbResultItem
-     *
-     * @throws AbstractCacheItemException
-     * @throws DbResultItemException
+     * @throws Exceptions\DataException
      * @throws \ReflectionException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function getValue(string $prefix = '') : DbResult
+    public function getValue() : DbResult
     {
-        $getQuery = function () use ($prefix) {
-            return (new Query($this->dbConnect, $this->request, $this->params))->execute($prefix);
+        $getQuery = function() {
+            return (new Query($this->request, $this->dbConnect, $this->params))->execute($this->prefix);
         };
 
-        if ($this->getCacheQuery()->getIsModifying()) {
+        if ($this->getCacheQuery()->isModifying()) {
             $result = $getQuery();
             $this->getCacheQuery()->initTags();
             return $result;
@@ -236,7 +277,7 @@ class Data
      *
      * @return bool
      *
-     * @throws AbstractCacheItemException
+     * @throws Exceptions\DataException
      * @throws \ReflectionException
      */
     public function deleteValue() : bool
@@ -247,38 +288,35 @@ class Data
     /**
      * Вернуть HTML
      *
-     * @param string $verifyingFilePath - путь к файлу, по которому будет проверяться акутуальность кэша
+     * @return HTMLResult
      *
-     * @return HTMLResultItem
-     *
-     * @throws AbstractCacheItemException
-     * @throws CacheHtmlException
+     * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      */
-    public function getHtml(string $verifyingFilePath = '') : HTMLResultItem
+    public function getHtml() : HTMLResult
     {
         $cacheHtml = $this->getCacheHtml();
-        $cacheHtml->setCheckFile($verifyingFilePath);
+        $cacheHtml->setCheckFile($this->verifyingFilePath);
         return $this->getCacheHtml()->get();
     }
 
     /**
      * Сохранить к кэше HTML-страницу
      *
-     * @param HTMLResultItem $html - HTML
+     * @param HTMLResult $html - HTML
      * @param array|null $tags - теги
      *
-     * @throws AbstractCacheItemException
-     * @throws CacheHtmlException
-     * @throws DataStoryException
+     * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      */
-    public function setHtml(HTMLResultItem $html, array $tags = []) : void
+    public function setHtml(HTMLResult $html, array $tags = []) : void
     {
         $cacheHtml = $this->getCacheHtml();
         $cacheHtml->setTags($tags);
         if (!$cacheHtml->set($html)) {
-            throw new DataStoryException('Не удалось сохранить HTML в кэше');
+            throw new CacheException('Не удалось сохранить HTML в кэше');
         }
     }
 
@@ -287,8 +325,8 @@ class Data
      *
      * @return bool
      *
-     * @throws AbstractCacheItemException
-     * @throws CacheHtmlException
+     * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      */
     public function deleteHtml() : bool
@@ -303,14 +341,30 @@ class Data
      * @param array $params - параметры запроса
      * @param array $settings - настройки
      *
-     * @return DbResultItem|null
-     *
-     * @throws AbstractCacheItemException
-     * @throws DbResultItemException
+     * @return null|DbResult
+     * @throws Exceptions\DataException
      * @throws \ReflectionException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResultItem
+    public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResult
     {
         return self::create($request, $params, $settings)->getValue();
+    }
+
+    /**
+     * @return string
+     *
+     * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
+     * @throws \ReflectionException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
+     */
+    public function getCache() : string
+    {
+        if ($this->dbConnect) {
+            return (string) $this->getValue();
+        }
+
+        return (string) $this->getHtml();
     }
 }

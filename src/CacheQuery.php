@@ -71,7 +71,7 @@ class CacheQuery extends AbstractCacheItem
      *
      * @return bool
      */
-    public function getIsModifying(): bool
+    public function isModifying(): bool
     {
         return $this->isModifying;
     }
