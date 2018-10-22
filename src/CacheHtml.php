@@ -27,25 +27,38 @@ class CacheHtml extends AbstractCacheItem
     protected $checkFile = '';
 
     /**
+     * @var string|int|null
+     */
+    protected $userId;
+
+    /**
      * Конструктор
      *
      * @param string $url - текст урла
      * @param array $params - параметры запроса
      * @param null $cacheConnect - подключение к кэшу
-     * @param array $tags - массив тегов
      * @param array $settings - настройки объекта
      *
      * @throws Exceptions\DataException
      * @throws ValidationException
      * @throws \ReflectionException
      */
-    public function __construct(string $url, array $params = [], $cacheConnect = null, array $tags = [], array $settings = [])
+    public function __construct(string $url, array $params = [], $cacheConnect = null, array $settings = [])
     {
         if (!$url || !preg_match(self::URL_TEMPLATE, $url)) {
             throw new ValidationException('URL не передан или передан в неверном формате');
         }
 
         parent::__construct($url, $params, $cacheConnect, $settings);
+    }
+
+    /**
+     * @param $userId
+     */
+    public function setUserId($userId) : void
+    {
+        $this->userId = $userId;
+        $this->key = parent::getKey() . ":$userId";
     }
 
     /**

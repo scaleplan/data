@@ -288,16 +288,18 @@ class Data
     /**
      * Вернуть HTML
      *
-     * @return HTMLResult
+     * @param $userId
      *
+     * @return HTMLResult
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      */
-    public function getHtml() : HTMLResult
+    public function getHtml($userId) : HTMLResult
     {
         $cacheHtml = $this->getCacheHtml();
         $cacheHtml->setCheckFile($this->verifyingFilePath);
+        $cacheHtml->setUserId($userId);
         return $this->getCacheHtml()->get();
     }
 
