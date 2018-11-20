@@ -45,7 +45,7 @@ class CacheHtml extends AbstractCacheItem
      */
     public function __construct(string $url, array $params = [], $cacheConnect = null, array $settings = [])
     {
-        if (!$url || !preg_match(self::URL_TEMPLATE, $url)) {
+        if (!$url || !preg_match(static::URL_TEMPLATE, $url)) {
             throw new ValidationException('URL не передан или передан в неверном формате');
         }
 

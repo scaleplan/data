@@ -325,7 +325,7 @@ abstract class AbstractCacheItem
             }
 
             $this->value = json_decode($this->value, true);
-            if ($this->value === null || array_diff_key($this->value, self::CACHE_STRUCTURE)) {
+            if ($this->value === null || array_diff_key($this->value, static::CACHE_STRUCTURE)) {
                 return null;
             }
 
@@ -354,7 +354,7 @@ abstract class AbstractCacheItem
             throw new CacheConnectException();
         }
 
-        $toSave = self::CACHE_STRUCTURE;
+        $toSave = static::CACHE_STRUCTURE;
         foreach ($toSave as $key => &$value) {
             $value = $this->$key ?? $value;
         }

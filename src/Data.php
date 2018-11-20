@@ -12,6 +12,7 @@ use Scaleplan\Result\HTMLResult;
  * Основной класс получения данных
  *
  * Class DataStory
+ *
  * @package Scaleplan\Data
  */
 class Data
@@ -27,7 +28,7 @@ class Data
      * @var array
      */
     protected static $settings = [
-        'dbConnect' => null,
+        'dbConnect'    => null,
         'cacheConnect' => null,
     ];
 
@@ -115,11 +116,11 @@ class Data
     public static function create(string $request, array $params = [], array $settings = []) : Data
     {
         $key = md5($request . serialize($params));
-        if (empty(self::$instances[$key])) {
-            self::$instances[$key] = new static($request, $params, $settings);
+        if (empty(static::$instances[$key])) {
+            static::$instances[$key] = new static($request, $params, $settings);
         }
 
-        return self::$instances[$key];
+        return static::$instances[$key];
     }
 
     /**
@@ -252,7 +253,7 @@ class Data
      */
     public function getValue() : DbResult
     {
-        $getQuery = function() {
+        $getQuery = function () {
             return (new Query($this->request, $this->dbConnect, $this->params))->execute($this->prefix);
         };
 
@@ -350,10 +351,12 @@ class Data
      */
     public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResult
     {
-        return self::create($request, $params, $settings)->getValue();
+        return static::create($request, $params, $settings)->getValue();
     }
 
     /**
+     * @param $userId
+     *
      * @return string
      *
      * @throws Exceptions\DataException
@@ -361,12 +364,12 @@ class Data
      * @throws \ReflectionException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function getCache() : string
+    public function getCache($userId) : string
     {
         if ($this->dbConnect) {
-            return (string) $this->getValue();
+            return (string)$this->getValue();
         }
 
-        return (string) $this->getHtml();
+        return (string)$this->getHtml($userId);
     }
 }

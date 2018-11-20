@@ -53,7 +53,7 @@ class CacheQuery extends AbstractCacheItem
     /**
      * Инициализация тегов
      */
-    protected function generateTags(): void
+    protected function generateTags() : void
     {
         if ($this->tags || !$this->request) {
             return;
@@ -61,7 +61,7 @@ class CacheQuery extends AbstractCacheItem
 
         $editTags = $this->dbConnect->getEditTables($this->request);
 
-        $this->isModifying = (bool) $editTags;
+        $this->isModifying = (bool)$editTags;
 
         $this->tags = $editTags ?: $this->dbConnect->getTables($this->request);
     }
@@ -71,7 +71,7 @@ class CacheQuery extends AbstractCacheItem
      *
      * @return bool
      */
-    public function isModifying(): bool
+    public function isModifying() : bool
     {
         return $this->isModifying;
     }
@@ -81,7 +81,7 @@ class CacheQuery extends AbstractCacheItem
      *
      * @param bool $flag
      */
-    public function setIsModifying(bool $flag = true): void
+    public function setIsModifying(bool $flag = true) : void
     {
         $this->isModifying = $flag;
     }
@@ -94,7 +94,7 @@ class CacheQuery extends AbstractCacheItem
      * @throws Exceptions\DataException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function get(): DbResult
+    public function get() : DbResult
     {
         $result = parent::get();
         return new DbResult($result['data'] ?? null);
@@ -105,7 +105,7 @@ class CacheQuery extends AbstractCacheItem
      *
      * @return array
      */
-    public function getTags(): array
+    public function getTags() : array
     {
         return $this->tags;
     }

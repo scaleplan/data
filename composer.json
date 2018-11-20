@@ -10,20 +10,7 @@
         "php": ">=7.2",
         "scaleplan/cache-pdo": "dev-master",
         "scaleplan/sql-templater": "dev-master",
-        "scaleplan/inittrait": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "git@github.com:scaleplan/cache-pdo.git"
-        },
-        {
-            "type": "git",
-            "url": "git@github.com:scaleplan/sql-templater.git"
-        },
-        {
-            "type": "git",
-            "url": "git@github.com:scaleplan/inittrait.git"
-        }
-    ]
+        "scaleplan/inittrait": "dev-master",
+        "scaleplan/result": "dev-master"
+    }
 }
