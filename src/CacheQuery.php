@@ -2,7 +2,7 @@
 
 namespace Scaleplan\Data;
 
-use Scaleplan\CachePDO\Db;
+use Scaleplan\Db\Db;
 use Scaleplan\Result\DbResult;
 
 /**

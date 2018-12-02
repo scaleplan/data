@@ -2,7 +2,7 @@
 
 namespace Scaleplan\Data;
 
-use Scaleplan\CachePDO\Db;
+use Scaleplan\Db\Db;
 use Scaleplan\Data\Exceptions\DbConnectException;
 use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\Result\DbResult;
@@ -164,7 +164,7 @@ class Query
      * @return bool
      *
      * @throws DbConnectException
-     * @throws \Scaleplan\CachePDO\Exceptions\CachePDOException
+     * @throws \Scaleplan\Db\Exceptions\DbException
      */
     public function executeAsync(): bool
     {
