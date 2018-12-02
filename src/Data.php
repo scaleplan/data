@@ -2,7 +2,7 @@
 
 namespace Scaleplan\Data;
 
-use Scaleplan\CachePDO\CachePDO;
+use Scaleplan\CachePDO\Db;
 use Scaleplan\Data\Exceptions\CacheException;
 use Scaleplan\InitTrait\InitTrait;
 use Scaleplan\Result\DbResult;
@@ -56,7 +56,7 @@ class Data
     /**
      * Подключение к РБД
      *
-     * @var null|CachePDO
+     * @var null|Db
      */
     protected $dbConnect;
 
@@ -129,8 +129,6 @@ class Data
      * @param string $request - текст запроса
      * @param array $params - параметры запроса
      * @param array $settings - настройки
-     *
-     * @throws \ReflectionException
      */
     protected function __construct(string $request, array $params = [], array $settings = [])
     {
@@ -173,9 +171,9 @@ class Data
     /**
      * Установить подключение к РБД
      *
-     * @param CachePDO|null $dbConnect
+     * @param Db|null $dbConnect
      */
-    public function setDbConnect(?CachePDO $dbConnect) : void
+    public function setDbConnect(?Db $dbConnect) : void
     {
         $this->dbConnect = $dbConnect;
     }

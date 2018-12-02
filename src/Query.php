@@ -2,7 +2,7 @@
 
 namespace Scaleplan\Data;
 
-use Scaleplan\CachePDO\CachePDO;
+use Scaleplan\CachePDO\Db;
 use Scaleplan\Data\Exceptions\DbConnectException;
 use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\Result\DbResult;
@@ -48,7 +48,7 @@ class Query
     /**
      * Подключение к РБД
      *
-     * @var null|CachePDO
+     * @var null|Db
      */
     protected $dbConnect;
 
@@ -63,12 +63,12 @@ class Query
      * Конструктор
      *
      * @param string $sql - необработанный текст запроса
-     * @param CachePDO|null $dbConnect - подключение к РБД
+     * @param Db|null $dbConnect - подключение к РБД
      * @param array $params - необработанный массив параметров запроса
      *
      * @throws ValidationException
      */
-    public function __construct(string $sql, CachePDO $dbConnect = null, array $params = [])
+    public function __construct(string $sql, Db $dbConnect = null, array $params = [])
     {
         if (!$sql) {
             throw new ValidationException('Текст запроса пуст');
@@ -130,9 +130,9 @@ class Query
     /**
      * Установить подключение к РБД
      *
-     * @param CachePDO $dbConnect - подключение к РБД
+     * @param Db $dbConnect - подключение к РБД
      */
-    public function setDbConnect(CachePDO $dbConnect): void
+    public function setDbConnect(Db $dbConnect): void
     {
         $this->dbConnect = $dbConnect;
     }

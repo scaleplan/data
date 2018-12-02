@@ -10,7 +10,7 @@
         "php": ">=7.2",
         "scaleplan/cache-pdo": "dev-master",
         "scaleplan/sql-templater": "dev-master",
-        "scaleplan/inittrait": "dev-master",
+        "scaleplan/init-trait": "dev-master",
         "scaleplan/result": "dev-master"
     }
 }

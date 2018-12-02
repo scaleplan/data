@@ -2,7 +2,7 @@
 
 namespace Scaleplan\Data;
 
-use Scaleplan\CachePDO\CachePDO;
+use Scaleplan\CachePDO\Db;
 use Scaleplan\Result\DbResult;
 
 /**
@@ -17,7 +17,7 @@ class CacheQuery extends AbstractCacheItem
     /**
      * Подключение к РБД
      *
-     * @var CachePDO|null
+     * @var Db|null
      */
     protected $dbConnect;
 
@@ -31,7 +31,7 @@ class CacheQuery extends AbstractCacheItem
     /**
      * Конструктор
      *
-     * @param CachePDO $dbConnect - подключение к РБД
+     * @param Db $dbConnect - подключение к РБД
      * @param string $request - текст SQL-запроса
      * @param array $params - параметры запроса
      * @param null $cacheConnect - подключение к кэшу
@@ -40,7 +40,7 @@ class CacheQuery extends AbstractCacheItem
      * @throws Exceptions\DataException
      * @throws \ReflectionException
      */
-    public function __construct(CachePDO $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = [])
+    public function __construct(Db $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = [])
     {
         $this->dbConnect = $dbConnect;
         $this->request = $request;
