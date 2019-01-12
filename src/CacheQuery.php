@@ -8,11 +8,11 @@ use Scaleplan\Result\DbResult;
 /**
  * Класс кэширования результатов запросов к БД
  *
- * Class CacheQuery
+ * Class QueryCache
  *
  * @package Scaleplan\Data
  */
-class CacheQuery extends AbstractCacheItem
+class QueryCache extends AbstractCacheItem
 {
     /**
      * Подключение к РБД
@@ -34,36 +34,28 @@ class CacheQuery extends AbstractCacheItem
      * @param Db $dbConnect - подключение к РБД
      * @param string $request - текст SQL-запроса
      * @param array $params - параметры запроса
+     * @param array|null $tags - теги запроса
      * @param null $cacheConnect - подключение к кэшу
      * @param array $settings - настройки объекта
      *
-     * @throws Exceptions\DataException
-     * @throws \ReflectionException
+     * @throws Exceptions\ValidationException
      */
-    public function __construct(Db $dbConnect, string $request, array $params = [], $cacheConnect = null, array $settings = [])
-    {
+    public function __construct(
+        Db $dbConnect,
+        string $request,
+        array $params = [],
+        array $tags = null,
+        $cacheConnect = null,
+        array $settings = []
+    ) {
         $this->dbConnect = $dbConnect;
         $this->request = $request;
 
-        $this->generateTags();
+        $editTags = $this->dbConnect->getEditTables($this->request);
+        $this->isModifying = (bool)$editTags;
+        $this->tags = $tags ?? ($editTags ?: $this->dbConnect->getTables($this->request));
 
         parent::__construct($request, $params, $cacheConnect, $settings);
-    }
-
-    /**
-     * Инициализация тегов
-     */
-    protected function generateTags() : void
-    {
-        if ($this->tags || !$this->request) {
-            return;
-        }
-
-        $editTags = $this->dbConnect->getEditTables($this->request);
-
-        $this->isModifying = (bool)$editTags;
-
-        $this->tags = $editTags ?: $this->dbConnect->getTables($this->request);
     }
 
     /**
@@ -92,7 +84,6 @@ class CacheQuery extends AbstractCacheItem
      * @return DbResult
      *
      * @throws Exceptions\DataException
-     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function get() : DbResult
     {

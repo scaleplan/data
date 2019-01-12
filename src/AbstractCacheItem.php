@@ -38,7 +38,7 @@ abstract class AbstractCacheItem
      */
     protected static $settings = [
         'tagTtl' => 7200,
-        'solt' => '',
+        'salt' => '',
         'hashFunc' => 'md5',
         'paramSerializeFunc' => 'serialize',
         'ttl' => 3600,
@@ -115,7 +115,7 @@ abstract class AbstractCacheItem
      *
      * @var string
      */
-    protected $solt = '';
+    protected $salt = '';
 
     /**
      * @var string|callable
@@ -158,8 +158,7 @@ abstract class AbstractCacheItem
      * @param \Memcached|\Redis|null $cacheConnect - подключение к хранилицу кэшей
      * @param array $settings - настройки
      *
-     * @throws DataException
-     * @throws \ReflectionException
+     * @throws ValidationException
      */
     protected function __construct(
         string $request,
@@ -183,8 +182,6 @@ abstract class AbstractCacheItem
      * Установить настройки объекта
      *
      * @param array $settings - массив настроек
-     *
-     * @throws \ReflectionException
      */
     public function setSettings(array $settings): void
     {
@@ -220,6 +217,11 @@ abstract class AbstractCacheItem
             throw new CacheConnectException();
         }
 
+        if ($this->cacheConnect instanceof \Redis) {
+            $this->cacheConnect->mSet(array_fill_keys($this->tags, time()));
+            return;
+        }
+
         foreach ($this->tags as &$tag) {
             if (!$this->cacheConnect->set($tag, time(), $this->tagTtl)) {
                 throw new DataException('Не удалось установить значение тега');
@@ -234,7 +236,7 @@ abstract class AbstractCacheItem
      *
      * @param array $tags - массив тегов
      */
-    protected function setTags(array $tags = []): void
+    public function setTags(array $tags = []): void
     {
         $this->tags = $tags;
     }
@@ -279,7 +281,7 @@ abstract class AbstractCacheItem
     protected function getKey(): string
     {
         if (!$this->key) {
-            $this->key = ($this->hashFunc)($this->request . ($this->paramSerializeFunc)($this->params) . $this->solt);
+            $this->key = ($this->hashFunc)($this->request . ($this->paramSerializeFunc)($this->params) . $this->salt);
         }
 
         return $this->key;
@@ -296,6 +298,10 @@ abstract class AbstractCacheItem
     {
         if (!$this->cacheConnect) {
             throw new CacheConnectException();
+        }
+
+        if ($this->cacheConnect instanceof \Redis) {
+            return $this->cacheConnect->mGet($this->tags);
         }
 
         return array_map(function ($tag) {
@@ -340,7 +346,7 @@ abstract class AbstractCacheItem
     }
 
     /**
-     * Cохранение значение в кэше
+     * Сохранение значение в кэше
      *
      * @param AbstractResult $data - значение для сохрания
      *

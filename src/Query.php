@@ -3,6 +3,7 @@
 namespace Scaleplan\Data;
 
 use Scaleplan\Db\Db;
+use Scaleplan\Db\pgDb;
 use Scaleplan\Data\Exceptions\DbConnectException;
 use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\Result\DbResult;
@@ -48,7 +49,7 @@ class Query
     /**
      * Подключение к РБД
      *
-     * @var null|Db
+     * @var null|PgDb|Db
      */
     protected $dbConnect;
 
@@ -84,7 +85,7 @@ class Query
      *
      * @return string
      */
-    public function getRawSql(): string
+    public function getRawSql() : string
     {
         return $this->rawSql;
     }
@@ -94,7 +95,7 @@ class Query
      *
      * @return array
      */
-    public function getRawParams(): array
+    public function getRawParams() : array
     {
         return $this->rawParams;
     }
@@ -104,7 +105,7 @@ class Query
      *
      * @return string
      */
-    public function getSql(): string
+    public function getSql() : string
     {
         if (!$this->sql) {
             $sql = $this->rawSql;
@@ -120,7 +121,7 @@ class Query
      *
      * @return array
      */
-    public function getParams(): array
+    public function getParams() : array
     {
         $this->getSql();
 
@@ -132,7 +133,7 @@ class Query
      *
      * @param Db $dbConnect - подключение к РБД
      */
-    public function setDbConnect(Db $dbConnect): void
+    public function setDbConnect(Db $dbConnect) : void
     {
         $this->dbConnect = $dbConnect;
     }
@@ -145,9 +146,11 @@ class Query
      * @return DbResult
      *
      * @throws DbConnectException
+     * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
+     * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function execute(string $prefix = ''): DbResult
+    public function execute(string $prefix = '') : DbResult
     {
         if (!$this->dbConnect) {
             throw new DbConnectException();
@@ -166,9 +169,9 @@ class Query
      * @throws DbConnectException
      * @throws \Scaleplan\Db\Exceptions\DbException
      */
-    public function executeAsync(): bool
+    public function executeAsync() : bool
     {
-        if (!$this->dbConnect) {
+        if (!$this->dbConnect || !($this->dbConnect instanceof PgDb)) {
             throw new DbConnectException();
         }
 
@@ -180,7 +183,7 @@ class Query
      *
      * @return DbResult
      */
-    public function getResult(): DbResult
+    public function getResult() : DbResult
     {
         return $this->result;
     }

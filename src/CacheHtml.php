@@ -8,11 +8,11 @@ use Scaleplan\Result\HTMLResult;
 /**
  * Класс управления кэшированием HTML-страниц
  *
- * Class CacheHtml
+ * Class HtmlCache
  *
  * @package Scaleplan\Data
  */
-class CacheHtml extends AbstractCacheItem
+class HtmlCache extends AbstractCacheItem
 {
     /**
      * Регулярное выражение для проверки правильности формата передаваемого урла
@@ -36,20 +36,25 @@ class CacheHtml extends AbstractCacheItem
      *
      * @param string $url - текст урла
      * @param array $params - параметры запроса
+     * @param array $tags - теги запроса
      * @param null $cacheConnect - подключение к кэшу
      * @param array $settings - настройки объекта
      *
-     * @throws Exceptions\DataException
      * @throws ValidationException
-     * @throws \ReflectionException
      */
-    public function __construct(string $url, array $params = [], $cacheConnect = null, array $settings = [])
-    {
+    public function __construct(
+        string $url,
+        array $params = [],
+        array $tags = [],
+        $cacheConnect = null,
+        array $settings = []
+    ) {
         if (!$url || !preg_match(static::URL_TEMPLATE, $url)) {
             throw new ValidationException('URL не передан или передан в неверном формате');
         }
 
         parent::__construct($url, $params, $cacheConnect, $settings);
+        $this->tags = $tags;
     }
 
     /**
@@ -103,15 +108,5 @@ class CacheHtml extends AbstractCacheItem
         }
 
         return new HTMLResult($result['data'] ?? null);
-    }
-
-    /**
-     * Установка тегов
-     *
-     * @param array $tags - массив тегов
-     */
-    public function setTags(array $tags = []): void
-    {
-        parent::setTags($tags);
     }
 }

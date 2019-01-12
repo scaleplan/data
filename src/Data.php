@@ -70,16 +70,16 @@ class Data
     /**
      * Объект кэша запросов
      *
-     * @var null|CacheQuery
+     * @var null|QueryCache
      */
-    protected $cacheQuery;
+    protected $queryCache;
 
     /**
      * Объект кэша страниц
      *
-     * @var null|CacheHtml
+     * @var null|HtmlCache
      */
-    protected $cacheHtml;
+    protected $htmlCache;
 
     /**
      * Свойства запроса
@@ -103,6 +103,11 @@ class Data
     protected $prefix = '';
 
     /**
+     * @var array|null
+     */
+    protected $tags;
+
+    /**
      * Создать или вернуть инстранс класса
      *
      * @param string $request - текст запроса
@@ -110,8 +115,6 @@ class Data
      * @param array $settings - дополниетельные настройки
      *
      * @return Data
-     *
-     * @throws \ReflectionException
      */
     public static function create(string $request, array $params = [], array $settings = []) : Data
     {
@@ -195,49 +198,65 @@ class Data
     }
 
     /**
+     * @return array|null
+     */
+    public function getTags() : ?array
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param array|null $tags
+     */
+    public function setTags(?array $tags) : void
+    {
+        $this->tags = $tags;
+    }
+
+    /**
      * Вернуть объект кэша запросов
      *
-     * @return CacheQuery
+     * @return QueryCache
      *
      * @throws Exceptions\DataException
-     * @throws \ReflectionException
      */
-    protected function getCacheQuery() : CacheQuery
+    protected function getQueryCache() : QueryCache
     {
-        if (!$this->cacheQuery) {
-            $this->cacheQuery = new CacheQuery(
+        if (!$this->queryCache) {
+            $this->queryCache = new QueryCache(
                 $this->dbConnect,
                 $this->request,
                 $this->params,
+                $this->tags,
                 $this->cacheConnect,
                 $this->requestSettings
             );
         }
 
-        return $this->cacheQuery;
+        return $this->queryCache;
     }
 
     /**
      * Вернуть объект кэша страниц
      *
-     * @return CacheHtml
+     * @return HtmlCache
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
-     * @throws \ReflectionException
      */
-    protected function getCacheHtml() : CacheHtml
+    protected function getHtmlCache() : HtmlCache
     {
-        if (!$this->cacheHtml) {
-            $this->cacheHtml = new CacheHtml(
+        if (!$this->htmlCache) {
+            $this->htmlCache = new HtmlCache(
                 $this->request,
                 $this->params,
+                $this->tags ?? [],
                 $this->cacheConnect,
                 $this->requestSettings
             );
         }
 
-        return $this->cacheHtml;
+        return $this->htmlCache;
     }
 
     /**
@@ -246,8 +265,6 @@ class Data
      * @return DbResult
      *
      * @throws Exceptions\DataException
-     * @throws \ReflectionException
-     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function getValue() : DbResult
     {
@@ -255,17 +272,17 @@ class Data
             return (new Query($this->request, $this->dbConnect, $this->params))->execute($this->prefix);
         };
 
-        if ($this->getCacheQuery()->isModifying()) {
+        if ($this->getQueryCache()->isModifying()) {
             $result = $getQuery();
-            $this->getCacheQuery()->initTags();
+            $this->getQueryCache()->initTags();
             return $result;
         }
 
-        $result = $this->getCacheQuery()->get();
+        $result = $this->getQueryCache()->get();
         if ($result->getResult() === null) {
-            $this->getCacheQuery()->setLock();
+            $this->getQueryCache()->setLock();
             $result = $getQuery();
-            $this->getCacheQuery()->set($result);
+            $this->getQueryCache()->set($result);
         }
 
         return $result;
@@ -277,11 +294,10 @@ class Data
      * @return bool
      *
      * @throws Exceptions\DataException
-     * @throws \ReflectionException
      */
     public function deleteValue() : bool
     {
-        return $this->getCacheQuery()->delete();
+        return $this->getQueryCache()->delete();
     }
 
     /**
@@ -292,14 +308,13 @@ class Data
      * @return HTMLResult
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
-     * @throws \ReflectionException
      */
     public function getHtml($userId) : HTMLResult
     {
-        $cacheHtml = $this->getCacheHtml();
-        $cacheHtml->setCheckFile($this->verifyingFilePath);
-        $cacheHtml->setUserId($userId);
-        return $this->getCacheHtml()->get();
+        $htmlCache = $this->getHtmlCache();
+        $htmlCache->setCheckFile($this->verifyingFilePath);
+        $htmlCache->setUserId($userId);
+        return $this->getHtmlCache()->get();
     }
 
     /**
@@ -310,13 +325,12 @@ class Data
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
-     * @throws \ReflectionException
      */
     public function setHtml(HTMLResult $html, array $tags = []) : void
     {
-        $cacheHtml = $this->getCacheHtml();
-        $cacheHtml->setTags($tags);
-        if (!$cacheHtml->set($html)) {
+        $htmlCache = $this->getHtmlCache();
+        $htmlCache->setTags($tags);
+        if (!$htmlCache->set($html)) {
             throw new CacheException('Не удалось сохранить HTML в кэше');
         }
     }
@@ -328,11 +342,10 @@ class Data
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
-     * @throws \ReflectionException
      */
     public function deleteHtml() : bool
     {
-        return $this->getCacheHtml()->delete();
+        return $this->getHtmlCache()->delete();
     }
 
     /**
@@ -344,8 +357,6 @@ class Data
      *
      * @return null|DbResult
      * @throws Exceptions\DataException
-     * @throws \ReflectionException
-     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResult
     {
@@ -359,8 +370,6 @@ class Data
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
-     * @throws \ReflectionException
-     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function getCache($userId) : string
     {
