@@ -3,6 +3,7 @@
 namespace Scaleplan\Data;
 
 use Scaleplan\Db\Db;
+use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\Result\DbResult;
 
 /**
@@ -31,7 +32,7 @@ class QueryCache extends AbstractCacheItem
     /**
      * Конструктор
      *
-     * @param Db $dbConnect - подключение к РБД
+     * @param DbInterface $dbConnect - подключение к РБД
      * @param string $request - текст SQL-запроса
      * @param array $params - параметры запроса
      * @param array|null $tags - теги запроса
@@ -41,7 +42,7 @@ class QueryCache extends AbstractCacheItem
      * @throws Exceptions\ValidationException
      */
     public function __construct(
-        Db $dbConnect,
+        DbInterface $dbConnect,
         string $request,
         array $params = [],
         array $tags = null,
@@ -73,7 +74,7 @@ class QueryCache extends AbstractCacheItem
      *
      * @param bool $flag
      */
-    public function setIsModifying(bool $flag = true) : void
+    public function setIsModifying(\bool $flag = true) : void
     {
         $this->isModifying = $flag;
     }
@@ -84,6 +85,7 @@ class QueryCache extends AbstractCacheItem
      * @return DbResult
      *
      * @throws Exceptions\DataException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function get() : DbResult
     {

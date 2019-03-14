@@ -3,6 +3,7 @@
 namespace Scaleplan\Data;
 
 use Scaleplan\Db\Db;
+use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\Db\pgDb;
 use Scaleplan\Data\Exceptions\DbConnectException;
 use Scaleplan\Data\Exceptions\ValidationException;
@@ -64,12 +65,12 @@ class Query
      * Конструктор
      *
      * @param string $sql - необработанный текст запроса
-     * @param Db|null $dbConnect - подключение к РБД
+     * @param DbInterface|null $dbConnect - подключение к РБД
      * @param array $params - необработанный массив параметров запроса
      *
      * @throws ValidationException
      */
-    public function __construct(string $sql, Db $dbConnect = null, array $params = [])
+    public function __construct(string $sql, DbInterface $dbConnect = null, array $params = [])
     {
         if (!$sql) {
             throw new ValidationException('Текст запроса пуст');

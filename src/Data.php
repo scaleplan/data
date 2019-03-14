@@ -2,8 +2,10 @@
 
 namespace Scaleplan\Data;
 
+use Scaleplan\Data\Exceptions\CacheDriverNotSupportedException;
 use Scaleplan\Db\Db;
 use Scaleplan\Data\Exceptions\CacheException;
+use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\InitTrait\InitTrait;
 use Scaleplan\Result\DbResult;
 use Scaleplan\Result\HTMLResult;
@@ -56,7 +58,7 @@ class Data
     /**
      * Подключение к РБД
      *
-     * @var null|Db
+     * @var null|DbInterface
      */
     protected $dbConnect;
 
@@ -116,7 +118,7 @@ class Data
      *
      * @return Data
      */
-    public static function create(string $request, array $params = [], array $settings = []) : Data
+    public static function getInstance(string $request, array $params = [], array $settings = []) : Data
     {
         $key = md5($request . serialize($params));
         if (empty(static::$instances[$key])) {
@@ -146,7 +148,7 @@ class Data
      *
      * @param bool $flag
      */
-    public function setIsModifying(bool $flag = true) : void
+    public function setIsModifying(\bool $flag = true) : void
     {
         $this->requestSettings['isModifying'] = $flag;
     }
@@ -165,18 +167,24 @@ class Data
      * Установить посдключение к кэшу
      *
      * @param null|\Redis|\Memcached $cacheConnect - подключение к кэшу
+     *
+     * @throws CacheDriverNotSupportedException
      */
     public function setCacheConnect($cacheConnect) : void
     {
+        if (!($cacheConnect instanceof \Redis) || !($cacheConnect instanceof \Memcached)) {
+            throw new CacheDriverNotSupportedException('Cache driver ' . gettype($cacheConnect) . ' not supporting.');
+        }
+
         $this->cacheConnect = $cacheConnect;
     }
 
     /**
      * Установить подключение к РБД
      *
-     * @param Db|null $dbConnect
+     * @param DbInterface|null $dbConnect
      */
-    public function setDbConnect(?Db $dbConnect) : void
+    public function setDbConnect(?DbInterface $dbConnect) : void
     {
         $this->dbConnect = $dbConnect;
     }
@@ -260,11 +268,10 @@ class Data
     }
 
     /**
-     * Вернуть результат запроса к РБД
-     *
      * @return DbResult
      *
      * @throws Exceptions\DataException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function getValue() : DbResult
     {
@@ -355,12 +362,14 @@ class Data
      * @param array $params - параметры запроса
      * @param array $settings - настройки
      *
-     * @return null|DbResult
+     * @return DbResult|null
+     *
      * @throws Exceptions\DataException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResult
     {
-        return static::create($request, $params, $settings)->getValue();
+        return static::getInstance($request, $params, $settings)->getValue();
     }
 
     /**
@@ -370,6 +379,7 @@ class Data
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
+     * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function getCache($userId) : string
     {

@@ -32,13 +32,13 @@ class HtmlCache extends AbstractCacheItem
     protected $userId;
 
     /**
-     * Конструктор
+     * HtmlCache constructor.
      *
-     * @param string $url - текст урла
-     * @param array $params - параметры запроса
-     * @param array $tags - теги запроса
-     * @param null $cacheConnect - подключение к кэшу
-     * @param array $settings - настройки объекта
+     * @param string $url
+     * @param array $params
+     * @param array $tags
+     * @param null $cacheConnect
+     * @param array $settings
      *
      * @throws ValidationException
      */
@@ -63,7 +63,7 @@ class HtmlCache extends AbstractCacheItem
     public function setUserId($userId) : void
     {
         $this->userId = $userId;
-        $this->key = parent::getKey() . ":$userId";
+        $this->key = $this->getKey() . ":$userId";
     }
 
     /**

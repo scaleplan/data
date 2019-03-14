@@ -218,7 +218,7 @@ abstract class AbstractCacheItem
         }
 
         if ($this->cacheConnect instanceof \Redis) {
-            $this->cacheConnect->mSet(array_fill_keys($this->tags, time()));
+            $this->cacheConnect->mset(array_fill_keys($this->tags, time()));
             return;
         }
 
@@ -301,7 +301,7 @@ abstract class AbstractCacheItem
         }
 
         if ($this->cacheConnect instanceof \Redis) {
-            return $this->cacheConnect->mGet($this->tags);
+            return $this->cacheConnect->mget($this->tags);
         }
 
         return array_map(function ($tag) {
@@ -367,7 +367,7 @@ abstract class AbstractCacheItem
 
         unset($value);
 
-        $toSave['data'] = $data->getArrayResult() ?? $data->getStringResult();
+        $toSave['data'] = $data->getResult();
         $toSave['time'] = time();
 
         if (!$this->cacheConnect->set($this->getKey(), json_encode($toSave, JSON_UNESCAPED_UNICODE), $this->ttl)) {
