@@ -4,6 +4,8 @@ namespace Scaleplan\Data;
 
 use Scaleplan\Db\Db;
 use Scaleplan\Db\Interfaces\DbInterface;
+use Scaleplan\Db\Interfaces\TableTagsInterface;
+use function Scaleplan\DependencyInjection\get_container;
 use Scaleplan\Result\DbResult;
 
 /**
@@ -30,7 +32,7 @@ class QueryCache extends AbstractCacheItem
     protected $isModifying = false;
 
     /**
-     * Конструктор
+     * QueryCache constructor.
      *
      * @param DbInterface $dbConnect - подключение к РБД
      * @param string $request - текст SQL-запроса
@@ -40,6 +42,11 @@ class QueryCache extends AbstractCacheItem
      * @param array $settings - настройки объекта
      *
      * @throws Exceptions\ValidationException
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      */
     public function __construct(
         DbInterface $dbConnect,
@@ -52,9 +59,10 @@ class QueryCache extends AbstractCacheItem
         $this->dbConnect = $dbConnect;
         $this->request = $request;
 
-        $editTags = $this->dbConnect->getEditTables($this->request);
+        $tableTags = get_container(TableTagsInterface::class, [$dbConnect]);
+        $editTags = $tableTags->getEditTables($this->request);
         $this->isModifying = (bool)$editTags;
-        $this->tags = $tags ?? ($editTags ?: $this->dbConnect->getTables($this->request));
+        $this->tags = $tags ?? ($editTags ?: $tableTags->getTables($this->request));
 
         parent::__construct($request, $params, $cacheConnect, $settings);
     }

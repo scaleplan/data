@@ -149,6 +149,7 @@ class Query
      * @throws DbConnectException
      * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
      * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
+     * @throws \Scaleplan\Db\Exceptions\QueryExecutionException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function execute(string $prefix = '') : DbResult

@@ -3,7 +3,6 @@
 namespace Scaleplan\Data;
 
 use Scaleplan\Data\Exceptions\CacheDriverNotSupportedException;
-use Scaleplan\Db\Db;
 use Scaleplan\Data\Exceptions\CacheException;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\InitTrait\InitTrait;
