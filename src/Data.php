@@ -4,6 +4,7 @@ namespace Scaleplan\Data;
 
 use Scaleplan\Data\Exceptions\CacheDriverNotSupportedException;
 use Scaleplan\Data\Exceptions\CacheException;
+use Scaleplan\Data\Interfaces\CacheInterface;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\InitTrait\InitTrait;
 use Scaleplan\Result\DbResult;
@@ -16,7 +17,7 @@ use Scaleplan\Result\HTMLResult;
  *
  * @package Scaleplan\Data
  */
-class Data
+class Data implements CacheInterface
 {
     /**
      * Трейт инициализации настроек
@@ -92,7 +93,7 @@ class Data
     /**
      * Путь к файлу, по которому будет проверяться акутуальность кэша
      *
-     * @var string
+     * @var string|null
      */
     protected $verifyingFilePath = '';
 
@@ -147,7 +148,7 @@ class Data
      *
      * @param bool $flag
      */
-    public function setIsModifying(\bool $flag = true) : void
+    public function setIsModifying(bool $flag = true) : void
     {
         $this->requestSettings['isModifying'] = $flag;
     }
@@ -171,7 +172,7 @@ class Data
      */
     public function setCacheConnect($cacheConnect) : void
     {
-        if (!($cacheConnect instanceof \Redis) || !($cacheConnect instanceof \Memcached)) {
+        if ($cacheConnect !== null && !($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
             throw new CacheDriverNotSupportedException('Cache driver ' . gettype($cacheConnect) . ' not supporting.');
         }
 
@@ -189,9 +190,9 @@ class Data
     }
 
     /**
-     * @param string $verifyingFilePath
+     * @param string|null $verifyingFilePath
      */
-    public function setVerifyingFilePath(string $verifyingFilePath) : void
+    public function setVerifyingFilePath(?string $verifyingFilePath) : void
     {
         $this->verifyingFilePath = $verifyingFilePath;
     }
@@ -225,7 +226,12 @@ class Data
      *
      * @return QueryCache
      *
-     * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      */
     protected function getQueryCache() : QueryCache
     {
@@ -267,9 +273,17 @@ class Data
     }
 
     /**
+     * Получить данные БД
+     *
      * @return DbResult
      *
      * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function getValue() : DbResult
@@ -299,7 +313,12 @@ class Data
      *
      * @return bool
      *
-     * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      */
     public function deleteValue() : bool
     {
@@ -315,7 +334,7 @@ class Data
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
      */
-    public function getHtml($userId) : HTMLResult
+    public function getHtml(int $userId) : HTMLResult
     {
         $htmlCache = $this->getHtmlCache();
         $htmlCache->setCheckFile($this->verifyingFilePath);
@@ -364,6 +383,12 @@ class Data
      * @return DbResult|null
      *
      * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResult
@@ -378,6 +403,11 @@ class Data
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function getCache($userId) : string

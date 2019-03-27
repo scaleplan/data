@@ -82,7 +82,7 @@ class QueryCache extends AbstractCacheItem
      *
      * @param bool $flag
      */
-    public function setIsModifying(\bool $flag = true) : void
+    public function setIsModifying(bool $flag = true) : void
     {
         $this->isModifying = $flag;
     }

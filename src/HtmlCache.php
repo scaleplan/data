@@ -22,7 +22,7 @@ class HtmlCache extends AbstractCacheItem
     /**
      * Путь до файла, по которому будет проверяться актуальность кэша
      *
-     * @var string
+     * @var string|null
      */
     protected $checkFile = '';
 
@@ -69,9 +69,9 @@ class HtmlCache extends AbstractCacheItem
     /**
      * Установить пусть к файлу проверки
      *
-     * @param string $filePath - путь к файлу
+     * @param string|null $filePath - путь к файлу
      */
-    public function setCheckFile(string $filePath): void
+    public function setCheckFile(?string $filePath): void
     {
         $this->checkFile = $filePath;
     }

@@ -4,7 +4,7 @@ namespace Scaleplan\Data;
 
 use Scaleplan\Db\Db;
 use Scaleplan\Db\Interfaces\DbInterface;
-use Scaleplan\Db\pgDb;
+use Scaleplan\Db\PgDb;
 use Scaleplan\Data\Exceptions\DbConnectException;
 use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\Result\DbResult;
