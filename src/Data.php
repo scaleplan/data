@@ -5,6 +5,7 @@ namespace Scaleplan\Data;
 use Scaleplan\Data\Exceptions\CacheDriverNotSupportedException;
 use Scaleplan\Data\Exceptions\CacheException;
 use Scaleplan\Data\Interfaces\CacheInterface;
+use Scaleplan\Data\Interfaces\DataInterface;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\InitTrait\InitTrait;
 use Scaleplan\Result\DbResult;
@@ -17,7 +18,7 @@ use Scaleplan\Result\HTMLResult;
  *
  * @package Scaleplan\Data
  */
-class Data implements CacheInterface
+class Data implements CacheInterface, DataInterface
 {
     /**
      * Трейт инициализации настроек
