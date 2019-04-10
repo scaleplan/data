@@ -5,7 +5,7 @@ namespace Scaleplan\Data;
 use Scaleplan\Db\Db;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\Db\Interfaces\TableTagsInterface;
-use function Scaleplan\DependencyInjection\get_container;
+use function Scaleplan\DependencyInjection\get_required_container;
 use Scaleplan\Result\DbResult;
 
 /**
@@ -59,7 +59,8 @@ class QueryCache extends AbstractCacheItem
         $this->dbConnect = $dbConnect;
         $this->request = $request;
 
-        $tableTags = get_container(TableTagsInterface::class, [$dbConnect]);
+        /** @var TableTagsInterface $tableTags */
+        $tableTags = get_required_container(TableTagsInterface::class, [$dbConnect]);
         $editTags = $tableTags->getEditTables($this->request);
         $this->isModifying = (bool)$editTags;
         $this->tags = $tags ?? ($editTags ?: $tableTags->getTables($this->request));

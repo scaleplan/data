@@ -28,7 +28,7 @@ abstract class AbstractCacheItem
     protected const CACHE_STRUCTURE = [
         'data' => '',
         'time' => 0,
-        'tags' => []
+        'tags' => [],
     ];
 
     /**
@@ -37,14 +37,14 @@ abstract class AbstractCacheItem
      * @var array
      */
     protected static $settings = [
-        'tagTtl' => 7200,
-        'salt' => '',
-        'hashFunc' => 'md5',
+        'tagTtl'             => 7200,
+        'salt'               => '',
+        'hashFunc'           => 'md5',
         'paramSerializeFunc' => 'serialize',
-        'ttl' => 3600,
-        'lockValue' => '906a58a0aac5281e89718496686bb322',
-        'tryCount' => 5,
-        'tryDelay' => 10000
+        'ttl'                => 3600,
+        'lockValue'          => '906a58a0aac5281e89718496686bb322',
+        'tryCount'           => 5,
+        'tryDelay'           => 10000,
     ];
 
     /**
@@ -183,7 +183,7 @@ abstract class AbstractCacheItem
      *
      * @param array $settings - массив настроек
      */
-    public function setSettings(array $settings): void
+    public function setSettings(array $settings) : void
     {
         $this->initObject($settings);
     }
@@ -195,7 +195,7 @@ abstract class AbstractCacheItem
      *
      * @throws DataException
      */
-    public function setCacheConnect($cacheConnect): void
+    public function setCacheConnect($cacheConnect) : void
     {
         if (!($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
             throw new CacheConnectException(
@@ -211,7 +211,7 @@ abstract class AbstractCacheItem
      *
      * @throws DataException
      */
-    public function initTags(): void
+    public function initTags() : void
     {
         if ($this->tags && !$this->cacheConnect) {
             throw new CacheConnectException();
@@ -236,7 +236,7 @@ abstract class AbstractCacheItem
      *
      * @param array $tags - массив тегов
      */
-    public function setTags(array $tags = []): void
+    public function setTags(array $tags = []) : void
     {
         $this->tags = $tags;
     }
@@ -248,7 +248,7 @@ abstract class AbstractCacheItem
      *
      * @throws DataException
      */
-    public function setHashFunc($hashFunc): void
+    public function setHashFunc($hashFunc) : void
     {
         if (!\in_array(\gettype($hashFunc), ['callable', 'string'], true)) {
             throw new ValidationException('Формат передачи функции хэширования неверен');
@@ -264,7 +264,7 @@ abstract class AbstractCacheItem
      *
      * @throws DataException
      */
-    public function setParamSerializeFunc($serializeFunc): void
+    public function setParamSerializeFunc($serializeFunc) : void
     {
         if (!\in_array(\gettype($serializeFunc), ['callable', 'string'], true)) {
             throw new ValidationException('Формат передачи функции сериализации неверен');
@@ -278,7 +278,7 @@ abstract class AbstractCacheItem
      *
      * @return string
      */
-    protected function getKey(): string
+    protected function getKey() : string
     {
         if (!$this->key) {
             $this->key = ($this->hashFunc)($this->request . ($this->paramSerializeFunc)($this->params) . $this->salt);
@@ -294,8 +294,12 @@ abstract class AbstractCacheItem
      *
      * @throws DataException
      */
-    protected function getTagsTimes(): array
+    protected function getTagsTimes() : array
     {
+        if (!$this->tags) {
+            return [];
+        }
+
         if (!$this->cacheConnect) {
             throw new CacheConnectException();
         }
@@ -305,7 +309,7 @@ abstract class AbstractCacheItem
         }
 
         return array_map(function ($tag) {
-            return (int) $this->cacheConnect->get($tag);
+            return (int)$this->cacheConnect->get($tag);
         }, $this->tags);
     }
 
@@ -354,7 +358,7 @@ abstract class AbstractCacheItem
      *
      * @throws DataException
      */
-    public function set(AbstractResult $data): bool
+    public function set(AbstractResult $data) : bool
     {
         if (!$this->cacheConnect) {
             throw new CacheConnectException();
@@ -385,7 +389,7 @@ abstract class AbstractCacheItem
      *
      * @return bool
      */
-    public function delete(): bool
+    public function delete() : bool
     {
         $func = $this->cacheConnect instanceof \Redis ? 'unlink' : 'delete';
         if (!$this->cacheConnect->$func($this->getKey())) {
@@ -402,7 +406,7 @@ abstract class AbstractCacheItem
      *
      * @throws DataException
      */
-    public function setLock(): bool
+    public function setLock() : bool
     {
         if (!$this->cacheConnect) {
             throw new CacheConnectException();
