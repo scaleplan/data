@@ -17,11 +17,6 @@ interface CacheInterface
     public function setTags(array $tags) : void;
 
     /**
-     * @param $cacheConnect
-     */
-    public function setCacheConnect($cacheConnect) : void;
-
-    /**
      * @param int $userId
      *
      * @return HTMLResult
@@ -30,9 +25,9 @@ interface CacheInterface
 
     /**
      * @param HTMLResult $html
-     * @param array $tags
+     * @param int $userId
      *
      * @return mixed
      */
-    public function setHtml(HTMLResult $html, array $tags = []);
+    public function setHtml(HTMLResult $html, int $userId);
 }

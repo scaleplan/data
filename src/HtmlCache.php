@@ -27,7 +27,7 @@ class HtmlCache extends AbstractCacheItem
     protected $checkFile = '';
 
     /**
-     * @var string|int|null
+     * @var int|null
      */
     protected $userId;
 
@@ -37,7 +37,6 @@ class HtmlCache extends AbstractCacheItem
      * @param string $url
      * @param array $params
      * @param array $tags
-     * @param null $cacheConnect
      * @param array $settings
      *
      * @throws ValidationException
@@ -46,14 +45,13 @@ class HtmlCache extends AbstractCacheItem
         string $url,
         array $params = [],
         array $tags = [],
-        $cacheConnect = null,
         array $settings = []
     ) {
         if (!$url || !preg_match(static::URL_TEMPLATE, $url)) {
             throw new ValidationException('URL не передан или передан в неверном формате');
         }
 
-        parent::__construct($url, $params, $cacheConnect, $settings);
+        parent::__construct($url, $params, $settings);
         $this->tags = $tags;
     }
 
@@ -63,7 +61,14 @@ class HtmlCache extends AbstractCacheItem
     public function setUserId($userId) : void
     {
         $this->userId = $userId;
-        $this->key = $this->getKey() . ":$userId";
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey() : string
+    {
+        return parent::getKey() . ":{$this->userId}";
     }
 
     /**

@@ -8,6 +8,7 @@ use Scaleplan\Db\PgDb;
 use Scaleplan\Data\Exceptions\DbConnectException;
 use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\Result\DbResult;
+use Scaleplan\Result\Interfaces\DbResultInterface;
 use Scaleplan\SqlTemplater\SqlTemplater;
 
 /**
@@ -57,7 +58,7 @@ class Query
     /**
      * Результат запроса
      *
-     * @var DbResult|null
+     * @var DbResultInterface|null
      */
     protected $result;
 
@@ -144,15 +145,16 @@ class Query
      *
      * @param string $prefix - префикс ключей
      *
-     * @return DbResult
+     * @return DbResultInterface
      *
      * @throws DbConnectException
      * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
+     * @throws \Scaleplan\Db\Exceptions\PDOConnectionException
      * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
      * @throws \Scaleplan\Db\Exceptions\QueryExecutionException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function execute(string $prefix = '') : DbResult
+    public function execute(string $prefix = '') : DbResultInterface
     {
         if (!$this->dbConnect) {
             throw new DbConnectException();
@@ -183,9 +185,9 @@ class Query
     /**
      * Вернуть результат запроса
      *
-     * @return DbResult
+     * @return DbResultInterface
      */
-    public function getResult() : DbResult
+    public function getResult() : DbResultInterface
     {
         return $this->result;
     }

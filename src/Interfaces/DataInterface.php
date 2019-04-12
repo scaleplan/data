@@ -3,8 +3,8 @@
 namespace Scaleplan\Data\Interfaces;
 
 use Scaleplan\Db\Interfaces\DbInterface;
-use Scaleplan\Result\DbResult;
 use Scaleplan\Result\HTMLResult;
+use Scaleplan\Result\Interfaces\DbResultInterface;
 
 /**
  * Основной класс получения данных
@@ -28,13 +28,6 @@ interface DataInterface
      * @param array $params - параметры
      */
     public function setParams(array $params) : void;
-
-    /**
-     * Установить посдключение к кэшу
-     *
-     * @param null|\Redis|\Memcached $cacheConnect - подключение к кэшу
-     */
-    public function setCacheConnect($cacheConnect) : void;
 
     /**
      * Установить подключение к РБД
@@ -66,16 +59,14 @@ interface DataInterface
     /**
      * Получить данные БД
      *
-     * @return DbResult
+     * @return DbResultInterface
      */
-    public function getValue() : DbResult;
+    public function getValue() : DbResultInterface;
 
     /**
      * Удаление элемента кэша запросов к БД
-     *
-     * @return bool
      */
-    public function deleteValue() : bool;
+    public function deleteValue() : void ;
 
     /**
      * Вернуть HTML
@@ -90,16 +81,14 @@ interface DataInterface
      * Сохранить к кэше HTML-страницу
      *
      * @param HTMLResult $html - HTML
-     * @param array|null $tags - теги
+     * @param $userId - идентификатор пользователя
      */
-    public function setHtml(HTMLResult $html, array $tags = []) : void;
+    public function setHtml(HTMLResult $html, int $userId) : void;
 
     /**
      * Удаление элемента кэша страниц
-     *
-     * @return bool
      */
-    public function deleteHtml() : bool;
+    public function deleteHtml() : void ;
 
     /**
      * Создать объект запроса и выполнить его
@@ -108,9 +97,9 @@ interface DataInterface
      * @param array $params - параметры запроса
      * @param array $settings - настройки
      *
-     * @return DbResult|null
+     * @return DbResultInterface|null
      */
-    public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResult;
+    public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResultInterface;
 
     /**
      * @param $userId

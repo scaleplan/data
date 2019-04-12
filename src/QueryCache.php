@@ -38,7 +38,6 @@ class QueryCache extends AbstractCacheItem
      * @param string $request - текст SQL-запроса
      * @param array $params - параметры запроса
      * @param array|null $tags - теги запроса
-     * @param null $cacheConnect - подключение к кэшу
      * @param array $settings - настройки объекта
      *
      * @throws Exceptions\ValidationException
@@ -53,7 +52,6 @@ class QueryCache extends AbstractCacheItem
         string $request,
         array $params = [],
         array $tags = null,
-        $cacheConnect = null,
         array $settings = []
     ) {
         $this->dbConnect = $dbConnect;
@@ -65,7 +63,7 @@ class QueryCache extends AbstractCacheItem
         $this->isModifying = (bool)$editTags;
         $this->tags = $tags ?? ($editTags ?: $tableTags->getTables($this->request));
 
-        parent::__construct($request, $params, $cacheConnect, $settings);
+        parent::__construct($request, $params, $settings);
     }
 
     /**

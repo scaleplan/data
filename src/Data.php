@@ -2,14 +2,12 @@
 
 namespace Scaleplan\Data;
 
-use Scaleplan\Data\Exceptions\CacheDriverNotSupportedException;
-use Scaleplan\Data\Exceptions\CacheException;
 use Scaleplan\Data\Interfaces\CacheInterface;
 use Scaleplan\Data\Interfaces\DataInterface;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\InitTrait\InitTrait;
-use Scaleplan\Result\DbResult;
 use Scaleplan\Result\HTMLResult;
+use Scaleplan\Result\Interfaces\DbResultInterface;
 
 /**
  * Основной класс получения данных
@@ -32,7 +30,6 @@ class Data implements CacheInterface, DataInterface
      */
     protected static $settings = [
         'dbConnect'    => null,
-        'cacheConnect' => null,
     ];
 
     /**
@@ -64,13 +61,6 @@ class Data implements CacheInterface, DataInterface
     protected $dbConnect;
 
     /**
-     * Подключение к хранилищу кэшей
-     *
-     * @var null|\Redis|\Memcached
-     */
-    protected $cacheConnect;
-
-    /**
      * Объект кэша запросов
      *
      * @var null|QueryCache
@@ -85,20 +75,6 @@ class Data implements CacheInterface, DataInterface
     protected $htmlCache;
 
     /**
-     * Свойства запроса
-     *
-     * @var array
-     */
-    protected $requestSettings = [];
-
-    /**
-     * Путь к файлу, по которому будет проверяться акутуальность кэша
-     *
-     * @var string|null
-     */
-    protected $verifyingFilePath = '';
-
-    /**
      * Префикс имен результирующих полей
      *
      * @var string
@@ -109,6 +85,28 @@ class Data implements CacheInterface, DataInterface
      * @var array|null
      */
     protected $tags;
+
+    /**
+     * Свойства запроса
+     *
+     * @var array
+     */
+    protected $requestSettings = [];
+
+    /**
+     * @var string
+     */
+    protected $idTag = '';
+
+    /**
+     * @var int
+     */
+    protected $maxId = 0;
+
+    /**
+     * @var int
+     */
+    protected $minId = 0;
 
     /**
      * Создать или вернуть инстранс класса
@@ -148,10 +146,17 @@ class Data implements CacheInterface, DataInterface
      * Установить тип запроса: изменяющий (true) или читающий (false)
      *
      * @param bool $flag
+     *
+     * @throws Exceptions\ValidationException
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      */
     public function setIsModifying(bool $flag = true) : void
     {
-        $this->requestSettings['isModifying'] = $flag;
+        $this->getQueryCache()->setIsModifying($flag);
     }
 
     /**
@@ -162,22 +167,6 @@ class Data implements CacheInterface, DataInterface
     public function setParams(array $params) : void
     {
         $this->params = $params;
-    }
-
-    /**
-     * Установить посдключение к кэшу
-     *
-     * @param null|\Redis|\Memcached $cacheConnect - подключение к кэшу
-     *
-     * @throws CacheDriverNotSupportedException
-     */
-    public function setCacheConnect($cacheConnect) : void
-    {
-        if ($cacheConnect !== null && !($cacheConnect instanceof \Redis) && !($cacheConnect instanceof \Memcached)) {
-            throw new CacheDriverNotSupportedException('Cache driver ' . gettype($cacheConnect) . ' not supporting.');
-        }
-
-        $this->cacheConnect = $cacheConnect;
     }
 
     /**
@@ -192,10 +181,13 @@ class Data implements CacheInterface, DataInterface
 
     /**
      * @param string|null $verifyingFilePath
+     *
+     * @throws Exceptions\DataException
+     * @throws Exceptions\ValidationException
      */
     public function setVerifyingFilePath(?string $verifyingFilePath) : void
     {
-        $this->verifyingFilePath = $verifyingFilePath;
+        $this->getHtmlCache()->setCheckFile($verifyingFilePath);
     }
 
     /**
@@ -223,6 +215,30 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
+     * @param string $idTag
+     */
+    public function setIdTag(string $idTag) : void
+    {
+        $this->idTag = $idTag;
+    }
+
+    /**
+     * @param int $maxId
+     */
+    public function setMaxId(int $maxId) : void
+    {
+        $this->maxId = $maxId;
+    }
+
+    /**
+     * @param int $minId
+     */
+    public function setMinId(int $minId) : void
+    {
+        $this->minId = $minId;
+    }
+
+    /**
      * Вернуть объект кэша запросов
      *
      * @return QueryCache
@@ -242,7 +258,6 @@ class Data implements CacheInterface, DataInterface
                 $this->request,
                 $this->params,
                 $this->tags,
-                $this->cacheConnect,
                 $this->requestSettings
             );
         }
@@ -265,7 +280,6 @@ class Data implements CacheInterface, DataInterface
                 $this->request,
                 $this->params,
                 $this->tags ?? [],
-                $this->cacheConnect,
                 $this->requestSettings
             );
         }
@@ -276,7 +290,7 @@ class Data implements CacheInterface, DataInterface
     /**
      * Получить данные БД
      *
-     * @return DbResult
+     * @return DbResultInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
@@ -287,7 +301,7 @@ class Data implements CacheInterface, DataInterface
      * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function getValue() : DbResult
+    public function getValue() : DbResultInterface
     {
         $getQuery = function () {
             return (new Query($this->request, $this->dbConnect, $this->params))->execute($this->prefix);
@@ -295,7 +309,9 @@ class Data implements CacheInterface, DataInterface
 
         if ($this->getQueryCache()->isModifying()) {
             $result = $getQuery();
-            $this->getQueryCache()->initTags();
+            $this->getQueryCache()->initTags($result);
+            $this->getQueryCache()->setIdTag($this->idTag);
+
             return $result;
         }
 
@@ -312,8 +328,10 @@ class Data implements CacheInterface, DataInterface
     /**
      * Удаление элемента кэша запросов к БД
      *
-     * @return bool
-     *
+     * @throws Exceptions\DataException
+     * @throws Exceptions\MemcachedCacheException
+     * @throws Exceptions\RedisCacheException
+     * @throws Exceptions\RedisOperationException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
@@ -321,15 +339,15 @@ class Data implements CacheInterface, DataInterface
      * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      */
-    public function deleteValue() : bool
+    public function deleteValue() : void
     {
-        return $this->getQueryCache()->delete();
+        $this->getQueryCache()->delete();
     }
 
     /**
      * Вернуть HTML
      *
-     * @param $userId
+     * @param $userId - идентификатор пользователя
      *
      * @return HTMLResult
      * @throws Exceptions\DataException
@@ -338,40 +356,38 @@ class Data implements CacheInterface, DataInterface
     public function getHtml(int $userId) : HTMLResult
     {
         $htmlCache = $this->getHtmlCache();
-        $htmlCache->setCheckFile($this->verifyingFilePath);
         $htmlCache->setUserId($userId);
+
         return $this->getHtmlCache()->get();
     }
 
     /**
-     * Сохранить к кэше HTML-страницу
-     *
-     * @param HTMLResult $html - HTML
-     * @param array|null $tags - теги
+     * @param HTMLResult $html
+     * @param int $userId
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
      */
-    public function setHtml(HTMLResult $html, array $tags = []) : void
+    public function setHtml(HTMLResult $html, int $userId) : void
     {
         $htmlCache = $this->getHtmlCache();
-        $htmlCache->setTags($tags);
-        if (!$htmlCache->set($html)) {
-            throw new CacheException('Не удалось сохранить HTML в кэше');
-        }
+        $htmlCache->setUserId($userId);
+        $htmlCache->setTags($this->tags);
+        $htmlCache->setIdTag($this->idTag);
+        $htmlCache->setMinId($this->minId);
+        $htmlCache->setMaxId($this->maxId);
+        $htmlCache->set($html);
     }
 
     /**
      * Удаление элемента кэша страниц
      *
-     * @return bool
-     *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
      */
-    public function deleteHtml() : bool
+    public function deleteHtml() : void
     {
-        return $this->getHtmlCache()->delete();
+        $this->getHtmlCache()->delete();
     }
 
     /**
@@ -381,7 +397,7 @@ class Data implements CacheInterface, DataInterface
      * @param array $params - параметры запроса
      * @param array $settings - настройки
      *
-     * @return DbResult|null
+     * @return DbResultInterface|null
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
@@ -392,7 +408,7 @@ class Data implements CacheInterface, DataInterface
      * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResult
+    public static function execQuery(string $request, array $params = [], array $settings = []) : ?DbResultInterface
     {
         return static::getInstance($request, $params, $settings)->getValue();
     }
