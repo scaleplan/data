@@ -11,6 +11,11 @@ use Scaleplan\Data\CacheStructure;
  */
 interface CacheInterface
 {
+    public const CACHE_PCONNECT_ENV       = 'CACHE_PCONNECT';
+    public const CACHE_HOST_OR_SOCKET_ENV = 'CACHE_HOST_OR_SOCKET';
+    public const CACHE_PORT_ENV           = 'CACHE_PORT';
+    public const CACHE_TIMEOUT_ENV        = 'CACHE_TIMEOUT';
+
     /**
      * @return \Redis|\Memcached
      */

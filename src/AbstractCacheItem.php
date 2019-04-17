@@ -364,7 +364,7 @@ abstract class AbstractCacheItem
     /**
      * Получить значение элемента кэша
      *
-     * @return mixed
+     * @return CacheStructure
      *
      * @throws DataException
      */
@@ -376,16 +376,19 @@ abstract class AbstractCacheItem
 
                 if ($this->value->getData() === $this->lockValue) {
                     usleep($this->tryDelay);
+                    $this->value->setData(null);
                     continue;
                 }
 
                 if (!$this->validate($this->value)) {
                     $this->value->setData(null);
                 }
+
+                break;
             }
         }
 
-        return $this->value->getData();
+        return $this->value;
     }
 
     /**
@@ -400,6 +403,7 @@ abstract class AbstractCacheItem
         $cacheData = new CacheStructure();
         $cacheData->setData($data->getResult());
         $cacheData->setTime(time());
+        $cacheData->setTags($this->tags);
         if ($this->idTag && \in_array($this->idTag, $this->tags, true)) {
             $cacheData->setIdTag($this->idTag);
             if ($data instanceof DbResultInterface && !$this->minId) {

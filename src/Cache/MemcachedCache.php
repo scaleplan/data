@@ -31,9 +31,11 @@ class MemcachedCache implements CacheInterface
      *
      * @param bool $isPconnect
      */
-    public function __construct(bool $isPconnect = true)
+    public function __construct(bool $isPconnect = null)
     {
-        $this->memcached = $isPconnect ? new \Memcached(static::PERSISTENT_ID) : new \Memcached();
+        $this->memcached = ($isPconnect ?? (bool)getenv(self::CACHE_PCONNECT_ENV))
+            ? new \Memcached(static::PERSISTENT_ID)
+            : new \Memcached();
     }
 
     /**
@@ -47,8 +49,8 @@ class MemcachedCache implements CacheInterface
             $this->memcached;
         }
 
-        $hostOrSocket = getenv('MEMCACHED_HOST_OR_SOCKET');
-        $port = getenv('MEMCACHED_PORT');
+        $hostOrSocket = getenv(self::CACHE_HOST_OR_SOCKET_ENV);
+        $port = getenv(self::CACHE_PORT_ENV);
         if (!$hostOrSocket || !$hostOrSocket) {
             throw new MemcachedCacheException('Недостаточно даных для подключения к Memcached.');
         }
@@ -78,7 +80,7 @@ class MemcachedCache implements CacheInterface
      */
     public function set(string $key, CacheStructure $value, int $ttl = null) : void
     {
-        $ttl = $ttl ?? (getenv('MEMCACHED_TIMEOUT') ?: 0);
+        $ttl = $ttl ?? (getenv(self::CACHE_TIMEOUT_ENV) ?: 0);
         if (!$this->getCacheConnect()->set($key, (string)$value, $ttl)) {
             throw new MemcachedOperationException('Операция записи по ключу не удалась.');
         }

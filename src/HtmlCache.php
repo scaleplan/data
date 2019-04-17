@@ -107,11 +107,10 @@ class HtmlCache extends AbstractCacheItem
     public function get(): HTMLResult
     {
         $result = parent::get();
-        $time = $result['time'] ?? 0;
-        if (!$this->checkFileTime($time)) {
-            $result = null;
+        if (!$this->checkFileTime($result->getTime())) {
+            $result->setData(null);
         }
 
-        return new HTMLResult($result['data'] ?? null);
+        return new HTMLResult($result->getData());
     }
 }

@@ -37,10 +37,10 @@ class RedisCache implements CacheInterface
      *
      * @param bool $isPconnect
      */
-    public function __construct(bool $isPconnect = true)
+    public function __construct(bool $isPconnect = null)
     {
         $this->redis = new \Redis();
-        $this->isPconnect = $isPconnect;
+        $this->isPconnect = $isPconnect ?? (bool)getenv(static::CACHE_PCONNECT_ENV);
     }
 
     /**
@@ -54,9 +54,9 @@ class RedisCache implements CacheInterface
             return $this->redis;
         }
 
-        $hostOrSocket = getenv('REDIS_HOST_OR_SOCKET');
-        $port = getenv('REDIS_PORT');
-        $timeout = getenv('REDIS_TIMEOUT') ?: 0;
+        $hostOrSocket = getenv(self::CACHE_HOST_OR_SOCKET_ENV);
+        $port = getenv(self::CACHE_PORT_ENV);
+        $timeout = getenv(self::CACHE_TIMEOUT_ENV) ?: 0;
         if (!$hostOrSocket || !$hostOrSocket) {
             throw new RedisCacheException('Недостаточно даных для подключения к Redis.');
         }
@@ -91,7 +91,7 @@ class RedisCache implements CacheInterface
      */
     public function get(string $key) : CacheStructure
     {
-        return new CacheStructure((array)json_decode($this->getCacheConnect()->get($this->get($key)), true));
+        return new CacheStructure((array)json_decode($this->getCacheConnect()->get($key), true));
     }
 
     /**
@@ -115,7 +115,7 @@ class RedisCache implements CacheInterface
             $tagsToSave[$tagStructure->getName()] = (string)$tagStructure;
         }
 
-        if ($this->getCacheConnect()->msetnx($tagsToSave)) {
+        if (!$this->getCacheConnect()->msetnx($tagsToSave)) {
             throw new RedisOperationException('Операция инициализации тегов не удалась.');
         }
     }
@@ -152,7 +152,7 @@ class RedisCache implements CacheInterface
      */
     public function set(string $key, CacheStructure $value, int $ttl = null) : void
     {
-        $ttl = $ttl ?? $this->redis->getTimeout();
+        $ttl = $ttl ?? (int)$this->redis->getTimeout();
         if (!$this->getCacheConnect()->set($key, (string)$value, $ttl)) {
             throw new RedisOperationException('Операция записи по ключу не удалась.');
         }

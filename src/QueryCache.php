@@ -96,8 +96,7 @@ class QueryCache extends AbstractCacheItem
      */
     public function get() : DbResult
     {
-        $result = parent::get();
-        return new DbResult($result['data'] ?? null);
+        return new DbResult(parent::get()->getData());
     }
 
     /**
