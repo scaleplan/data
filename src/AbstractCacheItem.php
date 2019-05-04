@@ -114,6 +114,16 @@ abstract class AbstractCacheItem
     protected $value;
 
     /**
+     * @var string
+     */
+    protected $cacheDbName = '';
+
+    /**
+     * @var string
+     */
+    protected $key;
+
+    /**
      * Конструктор
      *
      * @param string $request - текст запроса
@@ -136,6 +146,22 @@ abstract class AbstractCacheItem
 
         $this->request = $request;
         $this->params = $params;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheDbName() : string
+    {
+        return $this->cacheDbName;
+    }
+
+    /**
+     * @param string $cacheDbName
+     */
+    public function setCacheDbName(string $cacheDbName) : void
+    {
+        $this->cacheDbName = $cacheDbName;
     }
 
     /**
@@ -222,6 +248,7 @@ abstract class AbstractCacheItem
                     throw new DataException("Тип кэша $cacheType не поддерживается.");
             }
         }
+        $cacheConnect->selectDatabase($this->cacheDbName);
 
         return $cacheConnect;
     }
@@ -313,12 +340,11 @@ abstract class AbstractCacheItem
      */
     protected function getKey() : string
     {
-        static $key;
-        if (!$key) {
-            $key = ($this->hashFunc)($this->request . ($this->paramSerializeFunc)($this->params) . $this->salt);
+        if (!$this->key) {
+            $this->key = ($this->hashFunc)($this->request . ($this->paramSerializeFunc)($this->params) . $this->salt);
         }
 
-        return $key;
+        return $this->key;
     }
 
     /**

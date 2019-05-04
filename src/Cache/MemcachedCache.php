@@ -24,7 +24,7 @@ class MemcachedCache implements CacheInterface
     /**
      * @var string
      */
-    protected $databaseKeyPrefix;
+    protected $databaseKeyPostfix;
 
     /**
      * MemcachedCache constructor.
@@ -67,7 +67,17 @@ class MemcachedCache implements CacheInterface
      */
     public function selectDatabase(string $dbName) : void
     {
-        $this->databaseKeyPrefix = $dbName;
+        $this->databaseKeyPostfix = $dbName;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    protected function getKey(string $key) : string
+    {
+        return $key . $this->databaseKeyPostfix;
     }
 
     /**
@@ -81,7 +91,7 @@ class MemcachedCache implements CacheInterface
     public function set(string $key, CacheStructure $value, int $ttl = null) : void
     {
         $ttl = $ttl ?? (getenv(self::CACHE_TIMEOUT_ENV) ?: 0);
-        if (!$this->getCacheConnect()->set($key, (string)$value, $ttl)) {
+        if (!$this->getCacheConnect()->set($this->getKey($key), (string)$value, $ttl)) {
             throw new MemcachedOperationException('Операция записи по ключу не удалась.');
         }
     }
@@ -96,7 +106,7 @@ class MemcachedCache implements CacheInterface
     {
         /** @var TagStructure $value */
         foreach ($tags as &$value) {
-            if (!$this->getCacheConnect()->set($value->getName(), (string)$value)) {
+            if (!$this->getCacheConnect()->set($this->getKey($value->getName()), (string)$value)) {
                 throw new MemcachedOperationException('Операция инициализации тегов не удалась.');
             }
         }
@@ -114,12 +124,12 @@ class MemcachedCache implements CacheInterface
     {
         $result = [];
         foreach ($tags as $tag) {
-            $tag = json_decode($this->getCacheConnect()->get($tag), true);
+            $tagData = json_decode($this->getCacheConnect()->get($this->getKey($tag)), true);
             if (!$tag) {
                 continue;
             }
 
-            $result[$tag] = new TagStructure();
+            $result[$tag] = new TagStructure($tagData);
             $result[$tag]->setName($tag);
         }
 
@@ -135,7 +145,7 @@ class MemcachedCache implements CacheInterface
      */
     public function get(string $key) : CacheStructure
     {
-        return new CacheStructure((array)json_decode($this->getCacheConnect()->get($key), true));
+        return new CacheStructure((array)json_decode($this->getCacheConnect()->get($this->getKey($key)), true));
     }
 
     /**
@@ -145,6 +155,6 @@ class MemcachedCache implements CacheInterface
      */
     public function delete(string $key) : void
     {
-        $this->getCacheConnect()->delete($key);
+        $this->getCacheConnect()->delete($this->getKey($key));
     }
 }

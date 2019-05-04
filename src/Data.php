@@ -109,9 +109,9 @@ class Data implements CacheInterface, DataInterface
     protected $minId = 0;
 
     /**
-     * @var bool
+     * @var string
      */
-    protected $isTransactional = true;
+    protected $cacheDbName;
 
     /**
      * Создать или вернуть инстранс класса
@@ -148,19 +148,11 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
-     * @return bool
+     * @param string $cacheDbName
      */
-    public function isTransactional() : bool
+    public function setCacheDbName(string $cacheDbName) : void
     {
-        return $this->isTransactional;
-    }
-
-    /**
-     * @param bool $isTransactional
-     */
-    public function setIsTransactional(bool $isTransactional) : void
-    {
-        $this->isTransactional = $isTransactional;
+        $this->cacheDbName = $cacheDbName;
     }
 
     /**
@@ -309,15 +301,13 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
+     * Получить данные БД
+     *
      * @return DbResultInterface
      *
      * @throws Exceptions\DataException
-     * @throws Exceptions\MemcachedCacheException
-     * @throws Exceptions\MemcachedOperationException
-     * @throws Exceptions\RedisCacheException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
-     * @throws \Scaleplan\Db\Exceptions\PDOConnectionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
      * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
@@ -331,7 +321,6 @@ class Data implements CacheInterface, DataInterface
         };
 
         if ($this->getQueryCache()->isModifying()) {
-            $this->isTransactional() && $this->dbConnect->beginTransaction();
             $result = $getQuery();
             $this->getQueryCache()->initTags($result);
             $this->getQueryCache()->setIdTag($this->idTag);

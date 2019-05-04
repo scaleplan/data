@@ -25,7 +25,7 @@ class RedisCache implements CacheInterface
     /**
      * @var string
      */
-    protected $databaseKeyPrefix;
+    protected $databaseKeyPostfix;
 
     /**
      * @var bool
@@ -79,7 +79,17 @@ class RedisCache implements CacheInterface
      */
     public function selectDatabase(string $dbName) : void
     {
-        $this->databaseKeyPrefix = $dbName;
+        $this->databaseKeyPostfix = $dbName;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    protected function getKey(string $key) : string
+    {
+        return $key . $this->databaseKeyPostfix;
     }
 
     /**
@@ -91,7 +101,7 @@ class RedisCache implements CacheInterface
      */
     public function get(string $key) : CacheStructure
     {
-        return new CacheStructure((array)json_decode($this->getCacheConnect()->get($key), true));
+        return new CacheStructure((array)json_decode($this->getCacheConnect()->get($this->getKey($key)), true));
     }
 
     /**
@@ -112,10 +122,10 @@ class RedisCache implements CacheInterface
                 continue;
             }
 
-            $tagsToSave[$tagStructure->getName()] = (string)$tagStructure;
+            $tagsToSave[$this->getKey($tagStructure->getName())] = (string)$tagStructure;
         }
 
-        if (!$this->getCacheConnect()->msetnx($tagsToSave)) {
+        if (!$this->getCacheConnect()->mset($tagsToSave)) {
             throw new RedisOperationException('Операция инициализации тегов не удалась.');
         }
     }
@@ -130,7 +140,10 @@ class RedisCache implements CacheInterface
     public function getTagsData(array $tags) : array
     {
         $result = [];
-        foreach ($this->getCacheConnect()->mget($tags) as $key => $value) {
+        $databaseKeys = array_map(function (&$value) {
+            $value = $this->getKey($value);
+        }, $tags);
+        foreach ($this->getCacheConnect()->mget($databaseKeys) ?: [] as $key => $value) {
             $value = \json_decode($value, true);
             if (!$value) {
                 continue;
