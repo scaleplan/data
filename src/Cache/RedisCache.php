@@ -75,9 +75,9 @@ class RedisCache implements CacheInterface
     }
 
     /**
-     * @param string $dbName
+     * @param string|null $dbName
      */
-    public function selectDatabase(string $dbName) : void
+    public function selectDatabase(?string $dbName) : void
     {
         $this->databaseKeyPostfix = $dbName;
     }
@@ -140,8 +140,8 @@ class RedisCache implements CacheInterface
     public function getTagsData(array $tags) : array
     {
         $result = [];
-        $databaseKeys = array_map(function (&$value) {
-            $value = $this->getKey($value);
+        $databaseKeys = array_map(function ($value) {
+            return $this->getKey($value);
         }, $tags);
         foreach ($this->getCacheConnect()->mget($databaseKeys) ?: [] as $key => $value) {
             $value = \json_decode($value, true);
@@ -166,7 +166,7 @@ class RedisCache implements CacheInterface
     public function set(string $key, CacheStructure $value, int $ttl = null) : void
     {
         $ttl = $ttl ?? (int)$this->redis->getTimeout();
-        if (!$this->getCacheConnect()->set($key, (string)$value, $ttl)) {
+        if (!$this->getCacheConnect()->set($this->getKey($key), (string)$value, $ttl)) {
             throw new RedisOperationException('Операция записи по ключу не удалась.');
         }
     }
@@ -179,7 +179,7 @@ class RedisCache implements CacheInterface
      */
     public function delete(string $key) : void
     {
-        if (!$this->getCacheConnect()->unlink($key)) {
+        if (!$this->getCacheConnect()->unlink($this->getKey($key))) {
             throw new RedisOperationException('Операция удаления по ключу не удалась.');
         }
     }

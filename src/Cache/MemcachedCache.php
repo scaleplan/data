@@ -63,9 +63,9 @@ class MemcachedCache implements CacheInterface
     }
 
     /**
-     * @param string $dbName
+     * @param string|null $dbName
      */
-    public function selectDatabase(string $dbName) : void
+    public function selectDatabase(?string $dbName) : void
     {
         $this->databaseKeyPostfix = $dbName;
     }

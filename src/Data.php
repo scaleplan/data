@@ -148,9 +148,9 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
-     * @param string $cacheDbName
+     * @param string|null $cacheDbName
      */
-    public function setCacheDbName(string $cacheDbName) : void
+    public function setCacheDbName(?string $cacheDbName) : void
     {
         $this->cacheDbName = $cacheDbName;
     }
@@ -190,6 +190,7 @@ class Data implements CacheInterface, DataInterface
     public function setDbConnect(?DbInterface $dbConnect) : void
     {
         $this->dbConnect = $dbConnect;
+        $this->setCacheDbName($dbConnect ? $dbConnect->getDbName() : null);
     }
 
     /**
@@ -275,6 +276,8 @@ class Data implements CacheInterface, DataInterface
             );
         }
 
+        $this->queryCache->setCacheDbName($this->cacheDbName);
+
         return $this->queryCache;
     }
 
@@ -296,6 +299,8 @@ class Data implements CacheInterface, DataInterface
                 $this->requestSettings
             );
         }
+
+        $this->htmlCache->setCacheDbName($this->cacheDbName);
 
         return $this->htmlCache;
     }

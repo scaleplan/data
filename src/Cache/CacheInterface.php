@@ -57,7 +57,7 @@ interface CacheInterface
     public function delete(string $key) : void;
 
     /**
-     * @param string $dbName
+     * @param string|null $dbName
      */
-    public function selectDatabase(string $dbName) : void;
+    public function selectDatabase(?string $dbName) : void;
 }

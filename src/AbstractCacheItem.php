@@ -157,9 +157,9 @@ abstract class AbstractCacheItem
     }
 
     /**
-     * @param string $cacheDbName
+     * @param string|null $cacheDbName
      */
-    public function setCacheDbName(string $cacheDbName) : void
+    public function setCacheDbName(?string $cacheDbName) : void
     {
         $this->cacheDbName = $cacheDbName;
     }
