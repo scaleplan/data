@@ -10,4 +10,5 @@ namespace Scaleplan\Data\Exceptions;
 class CacheConnectException extends DataException
 {
     public const MESSAGE = 'Cache connect error.';
+    public const CODE = 523;
 }

@@ -10,4 +10,5 @@ namespace Scaleplan\Data\Exceptions;
 class ValidationException extends DataException
 {
     public const MESSAGE = 'Validation error.';
+    public const CODE = 422;
 }
