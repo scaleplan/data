@@ -42,9 +42,9 @@ interface DataInterface
     public function setVerifyingFilePath(?string $verifyingFilePath) : void;
 
     /**
-     * @param string $prefix
+     * @param string|null $prefix
      */
-    public function setPrefix(string $prefix) : void;
+    public function setPrefix(?string $prefix) : void;
 
     /**
      * @return array|null

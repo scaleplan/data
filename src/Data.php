@@ -77,9 +77,9 @@ class Data implements CacheInterface, DataInterface
     /**
      * Префикс имен результирующих полей
      *
-     * @var string
+     * @var string|null
      */
-    protected $prefix = '';
+    protected $prefix;
 
     /**
      * @var array|null
@@ -205,9 +205,9 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
-     * @param string $prefix
+     * @param string|null $prefix
      */
-    public function setPrefix(string $prefix) : void
+    public function setPrefix(?string $prefix) : void
     {
         $this->prefix = $prefix;
     }

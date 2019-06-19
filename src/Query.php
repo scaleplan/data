@@ -143,7 +143,7 @@ class Query
     /**
      * Выполнить запрос
      *
-     * @param string $prefix - префикс ключей
+     * @param string|null $prefix - префикс ключей
      *
      * @return DbResultInterface
      *
@@ -154,7 +154,7 @@ class Query
      * @throws \Scaleplan\Db\Exceptions\QueryExecutionException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
-    public function execute(string $prefix = '') : DbResultInterface
+    public function execute(string $prefix = null) : DbResultInterface
     {
         if (!$this->dbConnect) {
             throw new DbConnectException();
