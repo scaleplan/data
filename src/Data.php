@@ -114,6 +114,11 @@ class Data implements CacheInterface, DataInterface
     protected $cacheDbName;
 
     /**
+     * @var bool
+     */
+    protected $cacheEnable = true;
+
+    /**
      * Создать или вернуть инстранс класса
      *
      * @param string $request - текст запроса
@@ -130,6 +135,14 @@ class Data implements CacheInterface, DataInterface
         }
 
         return static::$instances[$key];
+    }
+
+    /**
+     * @param bool $cacheEnable
+     */
+    public function setCacheEnable(bool $cacheEnable) : void
+    {
+        $this->cacheEnable = $cacheEnable;
     }
 
     /**
@@ -324,6 +337,10 @@ class Data implements CacheInterface, DataInterface
         $getQuery = function () {
             return (new Query($this->request, $this->dbConnect, $this->params))->execute($this->prefix);
         };
+
+        if (!$this->cacheEnable) {
+            return $getQuery();
+        }
 
         if ($this->getQueryCache()->isModifying()) {
             $result = $getQuery();
