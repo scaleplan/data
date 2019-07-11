@@ -2,11 +2,11 @@
 
 namespace Scaleplan\Data;
 
+use Scaleplan\Data\Exceptions\DbConnectException;
+use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\Db\Db;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\Db\PgDb;
-use Scaleplan\Data\Exceptions\DbConnectException;
-use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\Result\DbResult;
 use Scaleplan\Result\Interfaces\DbResultInterface;
 use Scaleplan\SqlTemplater\SqlTemplater;
@@ -63,6 +63,11 @@ class Query
     protected $result;
 
     /**
+     * @var array|bool
+     */
+    protected $castings = true;
+
+    /**
      * Конструктор
      *
      * @param string $sql - необработанный текст запроса
@@ -112,10 +117,18 @@ class Query
         if (!$this->sql) {
             $sql = $this->rawSql;
             $params = $this->rawParams;
-            [$this->sql, $this->params] = SqlTemplater::sql($sql, $params);
+            [$this->sql, $this->params] = SqlTemplater::sql($sql, $params, $this->castings);
         }
 
         return $this->sql;
+    }
+
+    /**
+     * @param array|bool $castings
+     */
+    public function setCastings($castings) : void
+    {
+        $this->castings = $castings;
     }
 
     /**
@@ -191,5 +204,4 @@ class Query
     {
         return $this->result;
     }
-
 }

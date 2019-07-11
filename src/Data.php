@@ -29,7 +29,7 @@ class Data implements CacheInterface, DataInterface
      * @var array
      */
     protected static $settings = [
-        'dbConnect'    => null,
+        'dbConnect' => null,
     ];
 
     /**
@@ -66,6 +66,11 @@ class Data implements CacheInterface, DataInterface
      * @var null|QueryCache
      */
     protected $queryCache;
+
+    /**
+     * @var null|Query
+     */
+    protected $query;
 
     /**
      * Объект кэша страниц
@@ -186,6 +191,30 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
+     * @param bool|array $castings
+     *
+     * @throws Exceptions\ValidationException
+     */
+    public function setCastings(bool $castings = true) : void
+    {
+        $this->getQuery()->setCastings($castings);
+    }
+
+    /**
+     * @return Query
+     *
+     * @throws Exceptions\ValidationException
+     */
+    public function getQuery() : Query
+    {
+        if (!$this->query) {
+            $this->query = new Query($this->request, $this->dbConnect, $this->params);
+        }
+
+        return $this->query;
+    }
+
+    /**
      * Установить параметры запроса
      *
      * @param array $params - параметры
@@ -193,6 +222,9 @@ class Data implements CacheInterface, DataInterface
     public function setParams(array $params) : void
     {
         $this->params = $params;
+        $this->htmlCache = null;
+        $this->queryCache = null;
+        $this->query = null;
     }
 
     /**
@@ -203,6 +235,8 @@ class Data implements CacheInterface, DataInterface
     public function setDbConnect(?DbInterface $dbConnect) : void
     {
         $this->dbConnect = $dbConnect;
+        $this->queryCache = null;
+        $this->query = null;
         $this->setCacheDbName($dbConnect ? $dbConnect->getDbName() : null);
     }
 
@@ -239,6 +273,8 @@ class Data implements CacheInterface, DataInterface
     public function setTags(?array $tags) : void
     {
         $this->tags = $tags;
+        $this->htmlCache = null;
+        $this->queryCache = null;
     }
 
     /**
@@ -324,8 +360,16 @@ class Data implements CacheInterface, DataInterface
      * @return DbResultInterface
      *
      * @throws Exceptions\DataException
+     * @throws Exceptions\DbConnectException
+     * @throws Exceptions\MemcachedCacheException
+     * @throws Exceptions\MemcachedOperationException
+     * @throws Exceptions\RedisCacheException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
+     * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
+     * @throws \Scaleplan\Db\Exceptions\PDOConnectionException
+     * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
+     * @throws \Scaleplan\Db\Exceptions\QueryExecutionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
      * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
@@ -334,16 +378,12 @@ class Data implements CacheInterface, DataInterface
      */
     public function getValue() : DbResultInterface
     {
-        $getQuery = function () {
-            return (new Query($this->request, $this->dbConnect, $this->params))->execute($this->prefix);
-        };
-
         if (!$this->cacheEnable) {
-            return $getQuery();
+            return $this->getQuery()->execute($this->prefix);
         }
 
         if ($this->getQueryCache()->isModifying()) {
-            $result = $getQuery();
+            $result = $this->getQuery()->execute($this->prefix);
             $this->getQueryCache()->initTags($result);
             $this->getQueryCache()->setIdTag($this->idTag);
 
@@ -353,7 +393,7 @@ class Data implements CacheInterface, DataInterface
         $result = $this->getQueryCache()->get();
         if ($result->getResult() === null) {
             $this->getQueryCache()->setLock();
-            $result = $getQuery();
+            $result = $this->getQuery()->execute($this->prefix);
             $this->getQueryCache()->set($result);
         }
 
@@ -435,8 +475,16 @@ class Data implements CacheInterface, DataInterface
      * @return DbResultInterface|null
      *
      * @throws Exceptions\DataException
+     * @throws Exceptions\DbConnectException
+     * @throws Exceptions\MemcachedCacheException
+     * @throws Exceptions\MemcachedOperationException
+     * @throws Exceptions\RedisCacheException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
+     * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
+     * @throws \Scaleplan\Db\Exceptions\PDOConnectionException
+     * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
+     * @throws \Scaleplan\Db\Exceptions\QueryExecutionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
      * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
@@ -454,8 +502,16 @@ class Data implements CacheInterface, DataInterface
      * @return string
      *
      * @throws Exceptions\DataException
+     * @throws Exceptions\DbConnectException
+     * @throws Exceptions\MemcachedCacheException
+     * @throws Exceptions\MemcachedOperationException
+     * @throws Exceptions\RedisCacheException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
+     * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
+     * @throws \Scaleplan\Db\Exceptions\PDOConnectionException
+     * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
+     * @throws \Scaleplan\Db\Exceptions\QueryExecutionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
      * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
