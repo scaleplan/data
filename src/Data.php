@@ -195,7 +195,7 @@ class Data implements CacheInterface, DataInterface
      *
      * @throws Exceptions\ValidationException
      */
-    public function setCastings(bool $castings = true) : void
+    public function setCastings($castings) : void
     {
         $this->getQuery()->setCastings($castings);
     }
