@@ -7,8 +7,8 @@ use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\Db\Db;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\Db\PgDb;
-use Scaleplan\Result\DbResult;
 use Scaleplan\Result\Interfaces\DbResultInterface;
+use Scaleplan\Result\TranslatedDbResult;
 use Scaleplan\SqlTemplater\SqlTemplater;
 
 /**
@@ -32,7 +32,7 @@ class Query
      *
      * @var string
      */
-    protected $sql = '';
+    protected $sql;
 
     /**
      * Параметры запроса до обработки SqlTemplater::sql()
@@ -46,7 +46,7 @@ class Query
      *
      * @var array
      */
-    protected $params = [];
+    protected $params;
 
     /**
      * Подключение к РБД
@@ -79,7 +79,7 @@ class Query
     public function __construct(string $sql, DbInterface $dbConnect = null, array $params = [])
     {
         if (!$sql) {
-            throw new ValidationException('Текст запроса пуст');
+            throw new ValidationException('Текст запроса пуст.');
         }
 
         $this->rawSql = $sql;
@@ -138,7 +138,9 @@ class Query
      */
     public function getParams() : array
     {
-        $this->getSql();
+        if ($this->params === null) {
+            $this->getSql();
+        }
 
         return $this->params;
     }
@@ -175,7 +177,7 @@ class Query
 
         $result = $this->dbConnect->query($this->getSql(), $this->getParams());
 
-        return $this->result = new DbResult($result, $prefix);
+        return $this->result = new TranslatedDbResult($result, $prefix);
     }
 
     /**
