@@ -92,6 +92,8 @@ class QueryCache extends AbstractCacheItem
      * @return DbResult
      *
      * @throws Exceptions\DataException
+     * @throws \Scaleplan\Cache\Exceptions\MemcachedCacheException
+     * @throws \Scaleplan\Cache\Exceptions\RedisCacheException
      * @throws \Scaleplan\Result\Exceptions\ResultException
      */
     public function get() : DbResult

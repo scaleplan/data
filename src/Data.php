@@ -2,6 +2,10 @@
 
 namespace Scaleplan\Data;
 
+use Scaleplan\Cache\Exceptions\MemcachedCacheException;
+use Scaleplan\Cache\Exceptions\MemcachedOperationException;
+use Scaleplan\Cache\Exceptions\RedisCacheException;
+use Scaleplan\Cache\Exceptions\RedisOperationException;
 use Scaleplan\Data\Interfaces\CacheInterface;
 use Scaleplan\Data\Interfaces\DataInterface;
 use Scaleplan\Db\Interfaces\DbInterface;
@@ -361,9 +365,9 @@ class Data implements CacheInterface, DataInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\DbConnectException
-     * @throws Exceptions\MemcachedCacheException
-     * @throws Exceptions\MemcachedOperationException
-     * @throws Exceptions\RedisCacheException
+     * @throws MemcachedCacheException
+     * @throws MemcachedOperationException
+     * @throws RedisCacheException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
@@ -404,9 +408,9 @@ class Data implements CacheInterface, DataInterface
      * Удаление элемента кэша запросов к БД
      *
      * @throws Exceptions\DataException
-     * @throws Exceptions\MemcachedCacheException
-     * @throws Exceptions\RedisCacheException
-     * @throws Exceptions\RedisOperationException
+     * @throws MemcachedCacheException
+     * @throws RedisCacheException
+     * @throws RedisOperationException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
@@ -425,8 +429,11 @@ class Data implements CacheInterface, DataInterface
      * @param $userId - идентификатор пользователя
      *
      * @return HTMLResult
+     *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
+     * @throws MemcachedCacheException
+     * @throws RedisCacheException
      */
     public function getHtml(int $userId) : HTMLResult
     {
@@ -442,6 +449,9 @@ class Data implements CacheInterface, DataInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
+     * @throws MemcachedCacheException
+     * @throws MemcachedOperationException
+     * @throws RedisCacheException
      */
     public function setHtml(HTMLResult $html, int $userId) : void
     {
@@ -459,6 +469,9 @@ class Data implements CacheInterface, DataInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
+     * @throws MemcachedCacheException
+     * @throws RedisCacheException
+     * @throws RedisOperationException
      */
     public function deleteHtml() : void
     {
@@ -476,9 +489,9 @@ class Data implements CacheInterface, DataInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\DbConnectException
-     * @throws Exceptions\MemcachedCacheException
-     * @throws Exceptions\MemcachedOperationException
-     * @throws Exceptions\RedisCacheException
+     * @throws MemcachedCacheException
+     * @throws MemcachedOperationException
+     * @throws RedisCacheException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
@@ -503,9 +516,9 @@ class Data implements CacheInterface, DataInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\DbConnectException
-     * @throws Exceptions\MemcachedCacheException
-     * @throws Exceptions\MemcachedOperationException
-     * @throws Exceptions\RedisCacheException
+     * @throws MemcachedCacheException
+     * @throws MemcachedOperationException
+     * @throws RedisCacheException
      * @throws Exceptions\ValidationException
      * @throws \ReflectionException
      * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException

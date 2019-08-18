@@ -2,9 +2,14 @@
 
 namespace Scaleplan\Data;
 
-use Scaleplan\Data\Cache\CacheInterface;
-use Scaleplan\Data\Cache\MemcachedCache;
-use Scaleplan\Data\Cache\RedisCache;
+use Scaleplan\Cache\CacheInterface;
+use Scaleplan\Cache\Exceptions\MemcachedCacheException;
+use Scaleplan\Cache\Exceptions\MemcachedOperationException;
+use Scaleplan\Cache\Exceptions\RedisCacheException;
+use Scaleplan\Cache\MemcachedCache;
+use Scaleplan\Cache\RedisCache;
+use Scaleplan\Cache\Structures\CacheStructure;
+use Scaleplan\Cache\Structures\TagStructure;
 use Scaleplan\Data\Exceptions\DataException;
 use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\InitTrait\InitTrait;
@@ -259,9 +264,9 @@ abstract class AbstractCacheItem
      * @param DbResultInterface $result
      *
      * @throws DataException
-     * @throws Exceptions\MemcachedCacheException
-     * @throws Exceptions\MemcachedOperationException
-     * @throws Exceptions\RedisCacheException
+     * @throws MemcachedCacheException
+     * @throws MemcachedOperationException
+     * @throws RedisCacheException
      */
     public function initTags(DbResultInterface $result) : void
     {
@@ -353,8 +358,8 @@ abstract class AbstractCacheItem
      * @return bool
      *
      * @throws DataException
-     * @throws Exceptions\MemcachedCacheException
-     * @throws Exceptions\RedisCacheException
+     * @throws MemcachedCacheException
+     * @throws RedisCacheException
      */
     public function validate(CacheStructure $value) : bool
     {
@@ -393,6 +398,8 @@ abstract class AbstractCacheItem
      * @return CacheStructure
      *
      * @throws DataException
+     * @throws MemcachedCacheException
+     * @throws RedisCacheException
      */
     public function get()
     {
@@ -420,9 +427,12 @@ abstract class AbstractCacheItem
     /**
      * Сохранение значение в кэше
      *
-     * @param ResultInterface $data - значение для сохрания
+     * @param ResultInterface $data
      *
      * @throws DataException
+     * @throws MemcachedCacheException
+     * @throws MemcachedOperationException
+     * @throws RedisCacheException
      */
     public function set(ResultInterface $data) : void
     {
@@ -452,9 +462,9 @@ abstract class AbstractCacheItem
      * Удаление элемента кэша
      *
      * @throws DataException
-     * @throws Exceptions\MemcachedCacheException
-     * @throws Exceptions\RedisCacheException
-     * @throws Exceptions\RedisOperationException
+     * @throws MemcachedCacheException
+     * @throws RedisCacheException
+     * @throws \Scaleplan\Cache\Exceptions\RedisOperationException
      */
     public function delete() : void
     {
@@ -466,6 +476,9 @@ abstract class AbstractCacheItem
      * Установить блокировку по ключу
      *
      * @throws DataException
+     * @throws MemcachedCacheException
+     * @throws MemcachedOperationException
+     * @throws RedisCacheException
      */
     public function setLock() : void
     {

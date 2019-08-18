@@ -11,6 +11,7 @@
         "scaleplan/db": "dev-master",
         "scaleplan/sql-templater": "dev-master",
         "scaleplan/init-trait": "dev-master",
+        "scaleplan/cache": "dev-master",
         "scaleplan/result": "dev-master"
     }
 }

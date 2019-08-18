@@ -103,6 +103,8 @@ class HtmlCache extends AbstractCacheItem
      * @return HTMLResult
      *
      * @throws Exceptions\DataException
+     * @throws \Scaleplan\Cache\Exceptions\MemcachedCacheException
+     * @throws \Scaleplan\Cache\Exceptions\RedisCacheException
      */
     public function get(): HTMLResult
     {
