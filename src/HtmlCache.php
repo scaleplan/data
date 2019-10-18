@@ -17,7 +17,7 @@ class HtmlCache extends AbstractCacheItem
     /**
      * Регулярное выражение для проверки правильности формата передаваемого урла
      */
-    protected const URL_TEMPLATE = '/^.+?\/[^\/]+$/';
+    //protected const URL_TEMPLATE = '/^.+?\/[^\/]+$/';
 
     /**
      * Путь до файла, по которому будет проверяться актуальность кэша
@@ -47,9 +47,9 @@ class HtmlCache extends AbstractCacheItem
         array $tags = [],
         array $settings = []
     ) {
-        if (!$url || !preg_match(static::URL_TEMPLATE, $url)) {
-            throw new ValidationException('URL не передан или передан в неверном формате');
-        }
+//        if (!$url || !preg_match(static::URL_TEMPLATE, $url)) {
+//            throw new ValidationException('URL не передан или передан в неверном формате');
+//        }
 
         parent::__construct($url, $params, $settings);
         $this->tags = $tags;
