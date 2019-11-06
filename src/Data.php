@@ -10,6 +10,7 @@ use Scaleplan\Data\Interfaces\CacheInterface;
 use Scaleplan\Data\Interfaces\DataInterface;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\InitTrait\InitTrait;
+use Scaleplan\Result\DbResult;
 use Scaleplan\Result\HTMLResult;
 use Scaleplan\Result\Interfaces\DbResultInterface;
 
@@ -128,6 +129,11 @@ class Data implements CacheInterface, DataInterface
     protected $cacheEnable = true;
 
     /**
+     * @var bool
+     */
+    protected $isAsync = false;
+
+    /**
      * Создать или вернуть инстранс класса
      *
      * @param string $request - текст запроса
@@ -147,14 +153,6 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
-     * @param bool $cacheEnable
-     */
-    public function setCacheEnable(bool $cacheEnable) : void
-    {
-        $this->cacheEnable = $cacheEnable;
-    }
-
-    /**
      * Конструктор
      *
      * @param string $request - текст запроса
@@ -168,6 +166,30 @@ class Data implements CacheInterface, DataInterface
 
         $this->request = $request;
         $this->params = $params;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAsync() : bool
+    {
+        return $this->isAsync;
+    }
+
+    /**
+     * @param bool $isAsync
+     */
+    public function setIsAsync(bool $isAsync = true) : void
+    {
+        $this->isAsync = $isAsync;
+    }
+
+    /**
+     * @param bool $cacheEnable
+     */
+    public function setCacheEnable(bool $cacheEnable) : void
+    {
+        $this->cacheEnable = $cacheEnable;
     }
 
     /**
@@ -360,17 +382,18 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
-     * Получить данные БД
+     * Выполнить запрос
      *
      * @return DbResultInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\DbConnectException
+     * @throws Exceptions\ValidationException
      * @throws MemcachedCacheException
      * @throws MemcachedOperationException
      * @throws RedisCacheException
-     * @throws Exceptions\ValidationException
      * @throws \ReflectionException
+     * @throws \Scaleplan\Db\Exceptions\DbException
      * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
      * @throws \Scaleplan\Db\Exceptions\PDOConnectionException
      * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
@@ -385,6 +408,11 @@ class Data implements CacheInterface, DataInterface
     {
         if (!$this->cacheEnable) {
             return $this->getQuery()->execute($this->prefix);
+        }
+
+        if ($this->isAsync) {
+            $this->getQuery()->executeAsync();
+            return new DbResult(null);
         }
 
         if ($this->getQueryCache()->isModifying()) {

@@ -183,18 +183,16 @@ class Query
     /**
      * Выполнить запрос асинхронно
      *
-     * @return bool
-     *
      * @throws DbConnectException
      * @throws \Scaleplan\Db\Exceptions\DbException
      */
-    public function executeAsync() : bool
+    public function executeAsync() : void
     {
         if (!$this->dbConnect || !($this->dbConnect instanceof PgDb)) {
             throw new DbConnectException();
         }
 
-        return $this->dbConnect->async($this->getSql(), $this->getParams());
+        $this->dbConnect->async($this->getSql(), $this->getParams());
     }
 
     /**
