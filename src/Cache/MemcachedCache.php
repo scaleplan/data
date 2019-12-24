@@ -90,7 +90,7 @@ class MemcachedCache implements CacheInterface
      */
     public function set(string $key, CacheStructure $value, int $ttl = null) : void
     {
-        $ttl = $ttl ?? (getenv(self::CACHE_TIMEOUT_ENV) ?: 0);
+        $ttl = $ttl ?? ((int)getenv(self::CACHE_TIMEOUT_ENV) ?: 0);
         if (!$this->getCacheConnect()->set($this->getKey($key), (string)$value, $ttl)) {
             throw new MemcachedOperationException('Операция записи по ключу не удалась.');
         }

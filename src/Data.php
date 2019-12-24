@@ -518,11 +518,12 @@ class Data implements CacheInterface, DataInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\DbConnectException
+     * @throws Exceptions\ValidationException
      * @throws MemcachedCacheException
      * @throws MemcachedOperationException
      * @throws RedisCacheException
-     * @throws Exceptions\ValidationException
      * @throws \ReflectionException
+     * @throws \Scaleplan\Db\Exceptions\DbException
      * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
      * @throws \Scaleplan\Db\Exceptions\PDOConnectionException
      * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
@@ -545,11 +546,12 @@ class Data implements CacheInterface, DataInterface
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\DbConnectException
+     * @throws Exceptions\ValidationException
      * @throws MemcachedCacheException
      * @throws MemcachedOperationException
      * @throws RedisCacheException
-     * @throws Exceptions\ValidationException
      * @throws \ReflectionException
+     * @throws \Scaleplan\Db\Exceptions\DbException
      * @throws \Scaleplan\Db\Exceptions\InvalidIsolationLevelException
      * @throws \Scaleplan\Db\Exceptions\PDOConnectionException
      * @throws \Scaleplan\Db\Exceptions\QueryCountNotMatchParamsException
