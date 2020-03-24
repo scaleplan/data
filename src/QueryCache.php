@@ -1,12 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace Scaleplan\Data;
 
 use Scaleplan\Db\Db;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\Db\Interfaces\TableTagsInterface;
-use function Scaleplan\DependencyInjection\get_required_container;
 use Scaleplan\Result\DbResult;
+use function Scaleplan\DependencyInjection\get_required_container;
 
 /**
  * Класс кэширования результатов запросов к БД
@@ -53,17 +54,40 @@ class QueryCache extends AbstractCacheItem
         array $params = [],
         array $tags = null,
         array $settings = []
-    ) {
-        $this->dbConnect = $dbConnect;
+    )
+    {
         $this->request = $request;
+        $this->tags = $tags;
+        $this->setDbConnect($dbConnect);
 
+        parent::__construct($request, $params, $settings);
+    }
+
+    /**
+     * @return Db|null
+     */
+    public function getDbConnect() : ?Db
+    {
+        return $this->dbConnect;
+    }
+
+    /**
+     * @param DbInterface|null $dbConnect
+     *
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
+     */
+    public function setDbConnect(?DbInterface $dbConnect) : void
+    {
+        $this->dbConnect = $dbConnect;
         /** @var TableTagsInterface $tableTags */
         $tableTags = get_required_container(TableTagsInterface::class, [$dbConnect]);
         $editTags = $tableTags->getEditTables($this->request);
         $this->isModifying = (bool)$editTags;
-        $this->tags = $tags ?? ($editTags ?: $tableTags->getTables($this->request));
-
-        parent::__construct($request, $params, $settings);
+        $this->tags = $this->tags ?? ($editTags ?: $tableTags->getTables($this->request));
     }
 
     /**

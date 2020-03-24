@@ -32,9 +32,9 @@ interface DataInterface
     /**
      * Установить подключение к РБД
      *
-     * @param DbInterface|null $dbConnect
+     * @param DbInterface $dbConnect
      */
-    public function setDbConnect(?DbInterface $dbConnect) : void;
+    public function setDbConnect(DbInterface $dbConnect) : void;
 
     /**
      * @param string|null $verifyingFilePath

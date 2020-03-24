@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Scaleplan\Data;
 
@@ -27,15 +28,6 @@ class Data implements CacheInterface, DataInterface
      * Трейт инициализации настроек
      */
     use InitTrait;
-
-    /**
-     * Настройки класса
-     *
-     * @var array
-     */
-    protected static $settings = [
-        'dbConnect' => null,
-    ];
 
     /**
      * Доступный инстансы класса
@@ -258,12 +250,18 @@ class Data implements CacheInterface, DataInterface
      * Установить подключение к РБД
      *
      * @param DbInterface|null $dbConnect
+     *
+     * @throws \ReflectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      */
-    public function setDbConnect(?DbInterface $dbConnect) : void
+    public function setDbConnect(DbInterface $dbConnect) : void
     {
         $this->dbConnect = $dbConnect;
-        $this->queryCache = null;
-        $this->query = null;
+        $this->queryCache && $this->queryCache->setDbConnect($dbConnect);
+        $this->query && $this->query->setDbConnect($dbConnect);
         $this->setCacheDbName($dbConnect ? $dbConnect->getDbName() : null);
     }
 

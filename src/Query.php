@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Scaleplan\Data;
 
@@ -148,9 +149,9 @@ class Query
     /**
      * Установить подключение к РБД
      *
-     * @param Db $dbConnect - подключение к РБД
+     * @param DbInterface $dbConnect - подключение к РБД
      */
-    public function setDbConnect(Db $dbConnect) : void
+    public function setDbConnect(DbInterface $dbConnect) : void
     {
         $this->dbConnect = $dbConnect;
     }
