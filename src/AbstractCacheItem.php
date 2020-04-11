@@ -382,8 +382,7 @@ abstract class AbstractCacheItem
         if ($this->idTag
             && !empty($tags[$this->idTag])
             && $times[1] === $value->getTime()
-            && $tags[$this->idTag]->getTime() === $times[0])
-        {
+            && $tags[$this->idTag]->getTime() === $times[0]) {
             if ($tags[$this->idTag]->getMinId() > $value->getMaxId()
                 || $tags[$this->idTag]->getMaxId() < $value->getMinId()) {
                 return true;
@@ -448,10 +447,10 @@ abstract class AbstractCacheItem
             }
             $cacheData->setMinId($this->minId);
 
-            if ($data instanceof DbResultInterface && !$this->minId) {
+            if ($data instanceof DbResultInterface && !$this->maxId) {
                 $this->setMaxId(max(array_column($data->getArrayResult(), static::ID_FIELD)));
             }
-            $cacheData->setMaxId($this->minId);
+            $cacheData->setMaxId($this->maxId);
         }
 
         $this->getCacheConnect()->set($this->getKey(), $cacheData);

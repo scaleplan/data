@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Scaleplan\Data;
 
@@ -14,6 +15,21 @@ use Scaleplan\Result\HTMLResult;
  */
 class HtmlCache extends AbstractCacheItem
 {
+    /**
+     * Доступные данные для уникальной идентификации запроса
+     */
+    protected const SERVER_FINGERPRINT_ALLOW_DATA = [
+        'HTTP_ACCEPT',
+        'HTTP_X_REQUESTED_WITH',
+    ];
+
+    /**
+     * Разделитель для значений уникально идентифицирующих запрос
+     *
+     * @const string
+     */
+    protected const STORAGE_KEY_FINGERPRINT_SEPARATOR = ':';
+
     /**
      * Регулярное выражение для проверки правильности формата передаваемого урла
      */
@@ -68,7 +84,19 @@ class HtmlCache extends AbstractCacheItem
      */
     public function getKey() : string
     {
-        return parent::getKey() . ":{$this->userId}";
+        return parent::getKey() . ":{$this->userId}:" . $this->getFingerPrintString();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFingerPrintString() : string
+    {
+        $data = array_map(static function ($item) {
+            return (string)($_SERVER[$item] ?? '');
+        }, static::SERVER_FINGERPRINT_ALLOW_DATA);
+
+        return implode(static::STORAGE_KEY_FINGERPRINT_SEPARATOR, $data);
     }
 
     /**
