@@ -159,8 +159,8 @@ class Data implements CacheInterface, DataInterface
      */
     protected function __construct(string $request, array $params = [], array $settings = [])
     {
-        if (null !== get_env('DB_CACHE_ENABLE')) {
-            $this->setCacheEnable((bool)getenv('DB_CACHE_ENABLE'));
+        if (null !== get_env('CACHE_ENABLE')) {
+            $this->setCacheEnable((bool)getenv('CACHE_ENABLE'));
         }
 
         $this->requestSettings = $this->initObject($settings);
