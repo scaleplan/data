@@ -22,7 +22,7 @@ interface CacheInterface
      *
      * @return HTMLResult
      */
-    public function getHtml(int $userId) : HTMLResult;
+    public function getHtml($userId) : HTMLResult;
 
     /**
      * @param HTMLResult $html
@@ -31,4 +31,9 @@ interface CacheInterface
      * @return mixed
      */
     public function setHtml(HTMLResult $html, int $userId);
+
+    /**
+     * @param string $idTag
+     */
+    public function setIdTag(string $idTag) : void;
 }

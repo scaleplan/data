@@ -43,7 +43,7 @@ class HtmlCache extends AbstractCacheItem
     protected $checkFile = '';
 
     /**
-     * @var int|null
+     * @var mixed|null
      */
     protected $userId;
 

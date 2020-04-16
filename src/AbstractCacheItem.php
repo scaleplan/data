@@ -88,9 +88,9 @@ abstract class AbstractCacheItem
     /**
      * Теги элемента кэша
      *
-     * @var array
+     * @var array|null
      */
-    protected $tags = [];
+    protected $tags;
 
     /**
      * @var string
@@ -130,6 +130,11 @@ abstract class AbstractCacheItem
     protected $key;
 
     /**
+     * @var string
+     */
+    protected $idField = self::ID_FIELD;
+
+    /**
      * Конструктор
      *
      * @param string $request - текст запроса
@@ -152,6 +157,22 @@ abstract class AbstractCacheItem
 
         $this->request = $request;
         $this->params = $params;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdField() : string
+    {
+        return $this->idField;
+    }
+
+    /**
+     * @param string|null $idField
+     */
+    public function setIdField(?string $idField) : void
+    {
+        $this->idField = $idField;
     }
 
     /**
@@ -272,20 +293,32 @@ abstract class AbstractCacheItem
     public function initTags(DbResultInterface $result) : void
     {
         $tagsToSave = [];
-        foreach ($this->tags as $tagName) {
+        if (!$this->idTag && count($this->tags ?? []) === 1) {
+            $this->idTag = $this->tags[0];
+        }
+
+        foreach ($this->tags ?? [] as $tagName) {
+            if (!$tagName && !is_string($tagName)) {
+                continue;
+            }
+
             $tagStructure = new TagStructure();
             $tagStructure->setName($tagName);
             $tagStructure->setTime(time());
-            if ($this->idTag && $tagName === $this->idTag) {
+            if ($this->idTag
+                && $tagName === $this->idTag
+                && $result->count()
+                && array_key_exists($this->idField, $result->getFirstResult())
+            ) {
                 /** @var TagStructure $tag */
                 $tag = $this->getCacheConnect()->getTagsData([$tagName])[0];
 
-                $max = max(array_column($result->getArrayResult(), static::ID_FIELD));
+                $max = max(array_column($result->getArrayResult(), $this->idField));
                 if ($tag->getMaxId() < $max) {
                     $tagStructure->setMaxId($max);
                 }
 
-                $min = min(array_column($result->getArrayResult(), static::ID_FIELD));
+                $min = min(array_column($result->getArrayResult(), $this->idField));
                 if ($tag->getMinId() > $min) {
                     $tagStructure->setMinId($max);
                 }
@@ -302,7 +335,7 @@ abstract class AbstractCacheItem
      *
      * @param array $tags - массив тегов
      */
-    public function setTags(array $tags = []) : void
+    public function setTags(?array $tags = []) : void
     {
         $this->tags = $tags;
     }
@@ -368,7 +401,7 @@ abstract class AbstractCacheItem
             return false;
         }
 
-        $tags = $this->getCacheConnect()->getTagsData($value->getTags());
+        $tags = $this->getCacheConnect()->getTagsData($this->tags ?? $value->getTags());
         $tagsData = array_map(static function (TagStructure $item) {
             return $item->toArray();
         }, $tags);
@@ -437,19 +470,26 @@ abstract class AbstractCacheItem
     public function set(ResultInterface $data) : void
     {
         $cacheData = new CacheStructure();
-        $cacheData->setData($data->getResult());
+        $cacheData->setData($data);
         $cacheData->setTime(time());
-        $cacheData->setTags($this->tags);
-        if ($this->idTag && \in_array($this->idTag, $this->tags, true)) {
+        $cacheData->setTags($this->tags ?? []);
+
+        if (!$this->idTag && count($this->tags ?? []) === 1) {
+            $this->idTag = $this->tags[0];
+        }
+
+        if ($data instanceof DbResultInterface
+            && $this->idTag
+            && $data->count()
+            && \in_array($this->idTag, $this->tags ?? [], true)
+            && array_key_exists($this->idField, $data->getFirstResult())
+        ) {
             $cacheData->setIdTag($this->idTag);
-            if ($data instanceof DbResultInterface && !$this->minId) {
-                $this->setMinId(min(array_column($data->getArrayResult(), static::ID_FIELD)));
-            }
+
+            $this->setMinId(min(array_column($data->getArrayResult(), $this->idField)));
             $cacheData->setMinId($this->minId);
 
-            if ($data instanceof DbResultInterface && !$this->maxId) {
-                $this->setMaxId(max(array_column($data->getArrayResult(), static::ID_FIELD)));
-            }
+            $this->setMaxId(max(array_column($data->getArrayResult(), $this->idField)));
             $cacheData->setMaxId($this->maxId);
         }
 

@@ -7,6 +7,7 @@ use Scaleplan\Db\Db;
 use Scaleplan\Db\Interfaces\DbInterface;
 use Scaleplan\Db\Interfaces\TableTagsInterface;
 use Scaleplan\Result\DbResult;
+use Scaleplan\Result\TranslatedDbResult;
 use function Scaleplan\DependencyInjection\get_required_container;
 
 /**
@@ -122,7 +123,7 @@ class QueryCache extends AbstractCacheItem
      */
     public function get() : DbResult
     {
-        return new DbResult(parent::get()->getData());
+        return new TranslatedDbResult(parent::get()->getData());
     }
 
     /**

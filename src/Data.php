@@ -14,6 +14,7 @@ use Scaleplan\InitTrait\InitTrait;
 use Scaleplan\Result\DbResult;
 use Scaleplan\Result\HTMLResult;
 use Scaleplan\Result\Interfaces\DbResultInterface;
+use function Scaleplan\Helpers\get_env;
 
 /**
  * Основной класс получения данных
@@ -126,6 +127,11 @@ class Data implements CacheInterface, DataInterface
     protected $isAsync = false;
 
     /**
+     * @var string
+     */
+    protected $idField;
+
+    /**
      * Создать или вернуть инстранс класса
      *
      * @param string $request - текст запроса
@@ -153,11 +159,30 @@ class Data implements CacheInterface, DataInterface
      */
     protected function __construct(string $request, array $params = [], array $settings = [])
     {
-        $this->setCacheEnable((bool)getenv('DB_CACHE_ENABLE'));
+        if (null !== get_env('DB_CACHE_ENABLE')) {
+            $this->setCacheEnable((bool)getenv('DB_CACHE_ENABLE'));
+        }
+
         $this->requestSettings = $this->initObject($settings);
 
         $this->request = $request;
         $this->params = $params;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdField() : string
+    {
+        return $this->idField;
+    }
+
+    /**
+     * @param string $idField
+     */
+    public function setIdField(string $idField) : void
+    {
+        $this->idField = $idField;
     }
 
     /**
@@ -415,8 +440,10 @@ class Data implements CacheInterface, DataInterface
 
         if ($this->getQueryCache()->isModifying()) {
             $result = $this->getQuery()->execute($this->prefix);
-            $this->getQueryCache()->initTags($result);
+            $this->getQueryCache()->setTags($this->tags);
+            $this->getQueryCache()->setIdField($this->idField);
             $this->getQueryCache()->setIdTag($this->idTag);
+            $this->getQueryCache()->initTags($result);
 
             return $result;
         }
@@ -425,6 +452,9 @@ class Data implements CacheInterface, DataInterface
         if ($result->getResult() === null) {
             $this->getQueryCache()->setLock();
             $result = $this->getQuery()->execute($this->prefix);
+            $this->getQueryCache()->setTags($this->tags);
+            $this->getQueryCache()->setIdField($this->idField);
+            $this->getQueryCache()->setIdTag($this->idTag);
             $this->getQueryCache()->set($result);
         }
 
@@ -462,17 +492,16 @@ class Data implements CacheInterface, DataInterface
      * @throws MemcachedCacheException
      * @throws RedisCacheException
      */
-    public function getHtml(int $userId) : HTMLResult
+    public function getHtml($userId) : HTMLResult
     {
-        $htmlCache = $this->getHtmlCache();
-        $htmlCache->setUserId($userId);
+        $this->getHtmlCache()->setUserId($userId);
 
         return $this->getHtmlCache()->get();
     }
 
     /**
      * @param HTMLResult $html
-     * @param int $userId
+     * @param $userId
      *
      * @throws Exceptions\DataException
      * @throws Exceptions\ValidationException
@@ -480,15 +509,15 @@ class Data implements CacheInterface, DataInterface
      * @throws MemcachedOperationException
      * @throws RedisCacheException
      */
-    public function setHtml(HTMLResult $html, int $userId) : void
+    public function setHtml(HTMLResult $html, $userId) : void
     {
-        $htmlCache = $this->getHtmlCache();
-        $htmlCache->setUserId($userId);
-        $htmlCache->setTags($this->tags);
-        $htmlCache->setIdTag($this->idTag);
-        $htmlCache->setMinId($this->minId);
-        $htmlCache->setMaxId($this->maxId);
-        $htmlCache->set($html);
+        $this->getHtmlCache()->setUserId($userId);
+        $this->getHtmlCache()->setTags($this->tags);
+        $this->getHtmlCache()->setIdField($this->idField);
+        $this->getHtmlCache()->setIdTag($this->idTag);
+        $this->getHtmlCache()->setMinId($this->minId);
+        $this->getHtmlCache()->setMaxId($this->maxId);
+        $this->getHtmlCache()->set($html);
     }
 
     /**
