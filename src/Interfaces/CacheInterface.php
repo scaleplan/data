@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Scaleplan\Data\Interfaces;
 
-use Scaleplan\Result\HTMLResult;
+use Scaleplan\Result\Interfaces\HTMLResultInterface;
 
 /**
  * Interface CacheInterface
@@ -20,20 +20,25 @@ interface CacheInterface
     /**
      * @param int $userId
      *
-     * @return HTMLResult
+     * @return HTMLResultInterface
      */
-    public function getHtml($userId) : HTMLResult;
+    public function getHtml($userId) : HTMLResultInterface;
 
     /**
-     * @param HTMLResult $html
+     * @param $html
      * @param int $userId
      *
-     * @return mixed
+     * @return void
      */
-    public function setHtml(HTMLResult $html, int $userId);
+    public function setHtml($html, int $userId) : void;
 
     /**
      * @param string $idTag
      */
     public function setIdTag(string $idTag) : void;
+
+    /**
+     * @param string|null $verifyingFilePath
+     */
+    public function setVerifyingFilePath(?string $verifyingFilePath) : void;
 }

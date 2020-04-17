@@ -15,7 +15,6 @@ use Scaleplan\Data\Exceptions\DataException;
 use Scaleplan\Data\Exceptions\ValidationException;
 use Scaleplan\InitTrait\InitTrait;
 use Scaleplan\Result\Interfaces\DbResultInterface;
-use Scaleplan\Result\Interfaces\ResultInterface;
 
 /**
  * Базовый класс кэширования
@@ -309,9 +308,10 @@ abstract class AbstractCacheItem
                 && $tagName === $this->idTag
                 && $result->count()
                 && array_key_exists($this->idField, $result->getFirstResult())
+                && $tagData = $this->getCacheConnect()->getTagsData([$tagName])
             ) {
                 /** @var TagStructure $tag */
-                $tag = $this->getCacheConnect()->getTagsData([$tagName])[0];
+                $tag = $tagData[0];
 
                 $max = max(array_column($result->getArrayResult(), $this->idField));
                 if ($tag->getMaxId() < $max) {
@@ -323,6 +323,7 @@ abstract class AbstractCacheItem
                     $tagStructure->setMinId($max);
                 }
             }
+
             $tagsToSave[$tagName] = $tagStructure;
 
         }
@@ -408,16 +409,18 @@ abstract class AbstractCacheItem
 
         $times = array_merge(array_column($tagsData, 'time'), [$value->getTime()]);
         rsort($times);
-        if ($times[0] === $value->getTime()) {
+        if ($times[0] <= $value->getTime()) {
             return true;
         }
 
         if ($this->idTag
             && !empty($tags[$this->idTag])
             && $times[1] === $value->getTime()
-            && $tags[$this->idTag]->getTime() === $times[0]) {
+            && $tags[$this->idTag]->getTime() === $times[0]
+        ) {
             if ($tags[$this->idTag]->getMinId() > $value->getMaxId()
-                || $tags[$this->idTag]->getMaxId() < $value->getMinId()) {
+                || $tags[$this->idTag]->getMaxId() < $value->getMinId()
+            ) {
                 return true;
             }
         }
@@ -460,14 +463,14 @@ abstract class AbstractCacheItem
     /**
      * Сохранение значение в кэше
      *
-     * @param ResultInterface $data
+     * @param $data
      *
      * @throws DataException
      * @throws MemcachedCacheException
      * @throws MemcachedOperationException
      * @throws RedisCacheException
      */
-    public function set(ResultInterface $data) : void
+    public function set($data) : void
     {
         $cacheData = new CacheStructure();
         $cacheData->setData($data);

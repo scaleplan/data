@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Scaleplan\Data\Interfaces;
 
 use Scaleplan\Db\Interfaces\DbInterface;
-use Scaleplan\Result\HTMLResult;
 use Scaleplan\Result\Interfaces\DbResultInterface;
 
 /**
@@ -66,29 +66,27 @@ interface DataInterface
     /**
      * Удаление элемента кэша запросов к БД
      */
-    public function deleteValue() : void ;
+    public function deleteValue() : void;
 
     /**
      * Вернуть HTML
      *
      * @param $userId
-     *
-     * @return HTMLResult
      */
-    public function getHtml(int $userId) : HTMLResult;
+    public function getHtml(int $userId);
 
     /**
      * Сохранить к кэше HTML-страницу
      *
-     * @param HTMLResult $html - HTML
+     * @param $html - HTML
      * @param $userId - идентификатор пользователя
      */
-    public function setHtml(HTMLResult $html, int $userId) : void;
+    public function setHtml($html, int $userId) : void;
 
     /**
      * Удаление элемента кэша страниц
      */
-    public function deleteHtml() : void ;
+    public function deleteHtml() : void;
 
     /**
      * Создать объект запроса и выполнить его
