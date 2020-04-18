@@ -311,7 +311,7 @@ abstract class AbstractCacheItem
                 && $tagData = $this->getCacheConnect()->getTagsData([$tagName])
             ) {
                 /** @var TagStructure $tag */
-                $tag = $tagData[0];
+                $tag = array_shift($tagData);
 
                 $max = max(array_column($result->getArrayResult(), $this->idField));
                 if ($tag->getMaxId() < $max) {

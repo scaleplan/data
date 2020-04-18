@@ -172,7 +172,7 @@ class Data implements CacheInterface, DataInterface
     /**
      * @return string
      */
-    public function getIdField() : string
+    protected function getIdField() : string
     {
         return $this->idField;
     }
@@ -215,6 +215,7 @@ class Data implements CacheInterface, DataInterface
     public function setCacheDbName(?string $cacheDbName) : void
     {
         $this->cacheDbName = $cacheDbName;
+        $this->queryCache && $this->queryCache->setCacheDbName($cacheDbName);
     }
 
     /**
@@ -374,8 +375,6 @@ class Data implements CacheInterface, DataInterface
                 $this->requestSettings
             );
         }
-
-        $this->queryCache->setCacheDbName($this->cacheDbName);
 
         return $this->queryCache;
     }
