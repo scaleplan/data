@@ -69,6 +69,11 @@ class Query
     protected $castings = true;
 
     /**
+     * @var bool
+     */
+    protected $parseOptional = true;
+
+    /**
      * Конструктор
      *
      * @param string $sql - необработанный текст запроса
@@ -86,6 +91,22 @@ class Query
         $this->rawSql = $sql;
         $this->rawParams = $params;
         $this->dbConnect = $dbConnect;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isParseOptional() : bool
+    {
+        return $this->parseOptional;
+    }
+
+    /**
+     * @param bool $parseOptional
+     */
+    public function setParseOptional(bool $parseOptional) : void
+    {
+        $this->parseOptional = $parseOptional;
     }
 
     /**
@@ -118,7 +139,7 @@ class Query
         if (!$this->sql) {
             $sql = $this->rawSql;
             $params = $this->rawParams;
-            [$this->sql, $this->params] = SqlTemplater::sql($sql, $params, $this->castings);
+            [$this->sql, $this->params] = SqlTemplater::sql($sql, $params, $this->castings, $this->parseOptional);
         }
 
         return $this->sql;

@@ -319,8 +319,8 @@ abstract class AbstractCacheItem
                 }
 
                 $min = min(array_column($result->getArrayResult(), $this->idField));
-                if ($tag->getMinId() > $min) {
-                    $tagStructure->setMinId($max);
+                if (!$tag->getMinId() || $tag->getMinId() > $min) {
+                    $tagStructure->setMinId($min);
                 }
             }
 

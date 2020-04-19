@@ -246,6 +246,16 @@ class Data implements CacheInterface, DataInterface
     }
 
     /**
+     * @param bool $parseOptional
+     *
+     * @throws Exceptions\ValidationException
+     */
+    public function setParseOptional(bool $parseOptional) : void
+    {
+        $this->getQuery()->setParseOptional($parseOptional);
+    }
+
+    /**
      * @return Query
      *
      * @throws Exceptions\ValidationException
@@ -288,7 +298,7 @@ class Data implements CacheInterface, DataInterface
         $this->dbConnect = $dbConnect;
         $this->queryCache && $this->queryCache->setDbConnect($dbConnect);
         $this->query && $this->query->setDbConnect($dbConnect);
-        $this->setCacheDbName($dbConnect ? $dbConnect->getDbName() : null);
+        $this->setCacheDbName($dbConnect->getDbName());
     }
 
     /**
@@ -374,6 +384,7 @@ class Data implements CacheInterface, DataInterface
                 $this->tags,
                 $this->requestSettings
             );
+            $this->queryCache->setCacheDbName($this->cacheDbName);
         }
 
         return $this->queryCache;
