@@ -297,7 +297,7 @@ abstract class AbstractCacheItem
         }
 
         foreach ($this->tags ?? [] as $tagName) {
-            if (!$tagName && !is_string($tagName)) {
+            if (!$tagName || !is_string($tagName)) {
                 continue;
             }
 
@@ -415,14 +415,12 @@ abstract class AbstractCacheItem
 
         if ($this->idTag
             && !empty($tags[$this->idTag])
-            && $times[1] === $value->getTime()
             && $tags[$this->idTag]->getTime() === $times[0]
+            && $times[1] <= $value->getTime()
+            && ($tags[$this->idTag]->getMinId() > $value->getMaxId()
+                || $tags[$this->idTag]->getMaxId() < $value->getMinId())
         ) {
-            if ($tags[$this->idTag]->getMinId() > $value->getMaxId()
-                || $tags[$this->idTag]->getMaxId() < $value->getMinId()
-            ) {
-                return true;
-            }
+            return true;
         }
 
         return false;
