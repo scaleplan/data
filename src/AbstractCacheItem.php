@@ -307,7 +307,7 @@ abstract class AbstractCacheItem
             if ($this->idTag
                 && $tagName === $this->idTag
                 && $result->count()
-                && array_key_exists($this->idField, $result->getFirstResult())
+                && array_key_exists($this->idField, $result->getFirstResult() ?? [])
                 && $tagData = $this->getCacheConnect()->getTagsData([$tagName])
             ) {
                 /** @var TagStructure $tag */
