@@ -9,6 +9,6 @@ namespace Scaleplan\Data\Exceptions;
  */
 class DbConnectException extends DataException
 {
-    public const MESSAGE = 'Database connect error.';
+    public const MESSAGE = 'Ошибка подключения к базе данных.';
     public const CODE = 523;
 }

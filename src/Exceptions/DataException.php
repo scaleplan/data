@@ -9,7 +9,7 @@ namespace Scaleplan\Data\Exceptions;
  */
 class DataException extends \Exception
 {
-    public const MESSAGE = 'Data grab error.';
+    public const MESSAGE = 'Ошибка получения данных.';
     public const CODE = 400;
 
     /**

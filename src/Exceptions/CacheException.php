@@ -9,5 +9,5 @@ namespace Scaleplan\Data\Exceptions;
  */
 class CacheException extends DataException
 {
-    public const MESSAGE = 'Cache error.';
+    public const MESSAGE = 'Ошибка кэша.';
 }

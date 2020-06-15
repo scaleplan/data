@@ -151,7 +151,7 @@ abstract class AbstractCacheItem
         $this->initObject($settings);
 
         if (!$request) {
-            throw new ValidationException('Текст запроса пуст');
+            throw new ValidationException('Текст запроса пуст.');
         }
 
         $this->request = $request;
@@ -351,7 +351,7 @@ abstract class AbstractCacheItem
     public function setHashFunc($hashFunc) : void
     {
         if (!\in_array(\gettype($hashFunc), ['callable', 'string'], true)) {
-            throw new ValidationException('Формат передачи функции хэширования неверен');
+            throw new ValidationException('Формат передачи функции хэширования неверен.');
         }
 
         $this->hashFunc = $hashFunc;
@@ -367,7 +367,7 @@ abstract class AbstractCacheItem
     public function setParamSerializeFunc($serializeFunc) : void
     {
         if (!\in_array(\gettype($serializeFunc), ['callable', 'string'], true)) {
-            throw new ValidationException('Формат передачи функции сериализации неверен');
+            throw new ValidationException('Формат передачи функции сериализации неверен.');
         }
 
         $this->paramSerializeFunc = $serializeFunc;
