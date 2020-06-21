@@ -1,0 +1,11 @@
+empty-request: Empty request
+cache-type-not-set: Cache type not set
+cache-type-not-supported: Cache type :cache-type not-supported.
+wrong-hash-function-format: Wrong hash function format.
+wrong-serialize-function-format: Wrong serialize function format.
+cache-connect-error: Cache connect error.
+cache-driver-not-supported: Cache driver not supported.
+cache-error: Cache error.
+data-received-error: Data received error.
+database-connect-error: Database connect error.
+validation-error: Validation error.

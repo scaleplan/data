@@ -1,0 +1,11 @@
+empty-request: Текст запроса пуст.
+cache-type-not-set: Не задан тип кэша.
+cache-type-not-supported: Тип кэша :cache-type не поддерживается.
+wrong-hash-function-format: Формат передачи функции хэширования неверен.
+wrong-serialize-function-format: Формат передачи функции сериализации неверен.
+cache-connect-error: Ошибка подключения к кэшу.
+cache-driver-not-supported: Драйвер кэша не поддерживается.
+cache-error: Ошибка кэша.
+data-received-error: Ошибка получения данных.
+database-connect-error: Ошибка подключения к базе данных.
+validation-error: Ошибка валидации.
