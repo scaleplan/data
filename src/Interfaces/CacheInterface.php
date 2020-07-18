@@ -41,4 +41,9 @@ interface CacheInterface
      * @param string|null $verifyingFilePath
      */
     public function setVerifyingFilePath(?string $verifyingFilePath) : void;
+
+    /**
+     * @param string|null $cacheDbName
+     */
+    public function setCacheDbName(?string $cacheDbName) : void;
 }
