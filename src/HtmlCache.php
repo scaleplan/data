@@ -21,6 +21,7 @@ class HtmlCache extends AbstractCacheItem
     protected const SERVER_FINGERPRINT_ALLOW_DATA = [
         'HTTP_ACCEPT',
         'HTTP_X_REQUESTED_WITH',
+        'HTTP_ACCEPT_LANGUAGE',
     ];
 
     /**
